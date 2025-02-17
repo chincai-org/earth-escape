@@ -261,7 +261,7 @@ class Wiring extends Scene {
 
             if (cell.isDot) {
                 if (cell.color !== this.track[0].color) {
-                    this.stopTrack(); // Is dot but not the same color as track
+                    // Is dot but not the same color as track
                     return;
                 }
 
@@ -269,7 +269,7 @@ class Wiring extends Scene {
                     // The dot is the head of the track
                     if (this.track.length > 2) {
                         // Uturn back to the starting dot
-                        this.stopTrack();
+                        return;
                     } else if (this.track.length === 2) {
                         // 2nd dot undo action
                         this.track[0].abandonChild();
@@ -282,7 +282,7 @@ class Wiring extends Scene {
                 }
 
                 if (!cell.isNeighbor(this.track[this.track.length - 1])) {
-                    this.stopTrack(); // Not a neighbor
+                    return; // Not a neighbor
                 }
 
                 this.track[this.track.length - 1].setChild(cell);
@@ -301,9 +301,9 @@ class Wiring extends Scene {
                     if (cell.parent) {
                         this.stopTrack(); // Taken path
                     } else if (!lastCell.isNeighbor(cell)) {
-                        this.stopTrack(); // Not a neighbor
+                        return; // Not a neighbor
                     } else {
-                        console.log(cell);
+                        // Valid path
                         lastCell.setChild(cell);
                         this.track.push(cell);
                     }
