@@ -5,6 +5,6 @@ class Scene {
 
     init() {}
     update() {}
-    late_update() {}
+    lateUpdate() {}
     draw() {}
 }

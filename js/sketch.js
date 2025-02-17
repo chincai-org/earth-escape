@@ -16,7 +16,7 @@ function draw() {
     if (currentSceneIndex >= 0) {
         scenes[currentSceneIndex].update();
         scenes[currentSceneIndex].draw();
-        scenes[currentSceneIndex].late_update();
+        scenes[currentSceneIndex].lateUpdate();
     } else {
         if (mouseIsPressed) {
             stroke(0);
