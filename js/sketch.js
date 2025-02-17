@@ -33,6 +33,18 @@ function keyPressed() {
     }
 }
 
+function mousePressed() {
+    if (currentSceneIndex >= 0) {
+        scenes[currentSceneIndex].mousePressed();
+    }
+}
+
+function mouseReleased() {
+    if (currentSceneIndex >= 0) {
+        scenes[currentSceneIndex].mouseReleased();
+    }
+}
+
 function transition(n) {
     currentSceneIndex = n;
 }

@@ -7,4 +7,6 @@ class Scene {
     update() {}
     lateUpdate() {}
     draw() {}
+    mousePressed() {}
+    mouseReleased() {}
 }
