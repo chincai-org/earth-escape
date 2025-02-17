@@ -1,7 +1,7 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 
-const scenes = [new Wiring()];
+const scenes = [new Wiring(), new LogicGates()];
 
 let currentSceneIndex = -1;
 
@@ -12,7 +12,7 @@ function setup() {
 }
 
 function draw() {
-    // background(255);
+    background(255);
     if (currentSceneIndex >= 0) {
         scenes[currentSceneIndex].update();
         scenes[currentSceneIndex].draw();
