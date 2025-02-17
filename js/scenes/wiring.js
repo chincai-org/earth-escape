@@ -320,6 +320,7 @@ class Wiring extends Scene {
             this.tracking = true;
             this.track = [cell];
             cell.recursivelyAbandon();
+            cell.friend.recursivelyAbandon();
             cell.debug();
         } else if (cell.parent && !cell.child) {
             this.tracking = true;
