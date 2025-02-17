@@ -97,7 +97,7 @@ class Wiring extends Scene {
     }
 
     draw() {
-        background(255);
+        //background(255);
 
         this.drawGrid();
         this.drawCells();
