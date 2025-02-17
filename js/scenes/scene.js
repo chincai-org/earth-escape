@@ -1,11 +1,10 @@
 class Scene {
-    constructor(transition) {
-        this.transition = transition;
-
+    constructor() {
         this.init();
     }
 
     init() {}
     update() {}
+    late_update() {}
     draw() {}
 }
