@@ -22,19 +22,19 @@ class Cell {
         this.color = color;
     }
 
-    draw(leftPad, topPad, tileSize) {
+    draw(leftPad, topPad, tileSize, isTracked) {
         if (this.isDot) {
             fill(...this.colors[this.color]);
             noStroke();
             ellipse(
                 leftPad + this.x * tileSize + tileSize / 2,
                 topPad + this.y * tileSize + tileSize / 2,
-                tileSize / 2
+                tileSize / 2 + isTracked * 10
             );
         } else {
             if (this.parent) {
                 stroke(...this.colors[this.color]);
-                strokeWeight(20);
+                strokeWeight(20 + isTracked * 10);
                 line(
                     leftPad + this.x * tileSize + tileSize / 2,
                     topPad + this.y * tileSize + tileSize / 2,
@@ -45,7 +45,7 @@ class Cell {
 
             if (this.child) {
                 stroke(...this.colors[this.color]);
-                strokeWeight(20);
+                strokeWeight(20 + isTracked * 10);
                 line(
                     leftPad + this.x * tileSize + tileSize / 2,
                     topPad + this.y * tileSize + tileSize / 2,
@@ -106,6 +106,25 @@ class Cell {
             this.parent.recursivelyAbandonParent();
             this.abandonParent();
         }
+    }
+
+    tree() {
+        let track = [this];
+        let current = this;
+
+        while (current.parent) {
+            current = current.parent;
+            track.unshift(current);
+        }
+
+        return track;
+    }
+
+    isNeighbor(other) {
+        return (
+            (this.x === other.x && Math.abs(this.y - other.y) === 1) ||
+            (this.y === other.y && Math.abs(this.x - other.x) === 1)
+        );
     }
 }
 
@@ -207,7 +226,12 @@ class Wiring extends Scene {
     drawCells() {
         for (let i = 0; i < this.gridSize; i++) {
             for (let j = 0; j < this.gridSize; j++) {
-                this.cells[i][j].draw(this.leftPad, this.topPad, this.tileSize);
+                this.cells[i][j].draw(
+                    this.leftPad,
+                    this.topPad,
+                    this.tileSize,
+                    this.isTracked(this.cells[i][j])
+                );
             }
         }
     }
@@ -217,26 +241,54 @@ class Wiring extends Scene {
             console.log(this.track);
             let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
-            if (
-                cell.isDot &&
-                cell.color == this.track[0].color &&
-                !cell.equals(this.track[0])
-            ) {
+            if (cell == null) {
+                this.stopTrack(); // Out of bounds
+                return;
+            }
+
+            if (cell.isDot) {
+                if (cell.color !== this.track[0].color) {
+                    this.stopTrack(); // Is dot but not the same color as track
+                    return;
+                }
+
+                if (cell.equals(this.track[0])) {
+                    // The dot is the head of the track
+                    if (this.track.length > 2) {
+                        // Uturn back to the starting dot
+                        this.stopTrack();
+                    } else if (this.track.length === 2) {
+                        // 2nd dot undo action
+                        this.track[0].abandonChild();
+                        this.track.pop();
+                    } else {
+                        // Still at first dot
+                        return;
+                    }
+                }
+
                 this.track[this.track.length - 1].setChild(cell);
-                this.tracking = false;
+                this.stopTrack();
             } else if (
                 this.track.length >= 2 &&
                 cell.equals(this.track[this.track.length - 2])
             ) {
+                // Undo action
                 this.track[this.track.length - 2].abandonChild();
                 this.track.pop();
             } else {
                 let lastCell = this.track[this.track.length - 1];
-                console.log("bruh");
+
                 if (!cell.equals(lastCell)) {
-                    console.log(cell);
-                    lastCell.setChild(cell);
-                    this.track.push(cell);
+                    if (cell.parent) {
+                        this.stopTrack(); // Taken path
+                    } else if (!lastCell.isNeighbor(cell)) {
+                        this.stopTrack(); // Not a neighbor
+                    } else {
+                        console.log(cell);
+                        lastCell.setChild(cell);
+                        this.track.push(cell);
+                    }
                 }
             }
         }
@@ -251,14 +303,15 @@ class Wiring extends Scene {
             this.track = [cell];
             cell.recursivelyAbandon();
             cell.debug();
-        } else if (cell.equals(this.track[this.track.length - 1])) {
+        } else if (cell.parent && !cell.child) {
             this.tracking = true;
+            this.track = cell.tree();
         }
     }
 
     mouseReleased() {
         console.log("mr");
-        this.tracking = false;
+        this.stopTrack();
     }
 
     getCellFromScreenPosition(sx, sy) {
@@ -270,5 +323,20 @@ class Wiring extends Scene {
         }
 
         return null;
+    }
+
+    isTracked(cell) {
+        for (let i = 0; i < this.track.length; i++) {
+            if (this.track[i].equals(cell)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    stopTrack() {
+        this.tracking = false;
+        this.track = [];
     }
 }
