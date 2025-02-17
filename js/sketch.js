@@ -4,6 +4,7 @@ const canvasHeight = window.innerHeight;
 const scenes = [new Wiring(), new LogicGates()];
 
 let currentSceneIndex = -1;
+let currentCharacter = 0;
 
 function setup() {
     let canvas = createCanvas(canvasWidth, canvasHeight);
@@ -18,11 +19,11 @@ function draw() {
         scenes[currentSceneIndex].draw();
         scenes[currentSceneIndex].lateUpdate();
     } else {
-        if (mouseIsPressed) {
-            stroke(0);
-            strokeWeight(4);
-            line(mouseX, mouseY, pmouseX, pmouseY);
-        }
+        let dialog = "Nothing can go wrong... right?";
+        let currentDialog = dialog.substring(0, currentCharacter);
+        dialogBox(currentDialog, "Kikiko", "right");
+        currentCharacter += Math.random() / 2;
+        console.log(currentCharacter)
     }
 }
 
