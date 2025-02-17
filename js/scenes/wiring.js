@@ -5,6 +5,7 @@ class Cell {
         this.isDot = false;
         this.parent = null;
         this.child = null;
+        this.friend = null;
         this.color = -1;
 
         this.colors = [
@@ -126,6 +127,11 @@ class Cell {
             (this.y === other.y && Math.abs(this.x - other.x) === 1)
         );
     }
+
+    makeFriend(other) {
+        this.friend = other;
+        other.friend = this;
+    }
 }
 
 class Wiring extends Scene {
@@ -188,10 +194,17 @@ class Wiring extends Scene {
         ];
 
         for (let color = 0; color < dots.length; color++) {
+            let first = null;
             for (let i = 0; i < dots[color].length; i++) {
                 let x = dots[color][i][0];
                 let y = dots[color][i][1];
                 this.cells[x][y].dot(color);
+
+                if (i == 0) {
+                    first = this.cells[x][y];
+                } else {
+                    first.makeFriend(this.cells[x][y]);
+                }
             }
         }
     }
@@ -242,7 +255,7 @@ class Wiring extends Scene {
             let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
             if (cell == null) {
-                this.stopTrack(); // Out of bounds
+                // Out of bounds
                 return;
             }
 
@@ -261,10 +274,15 @@ class Wiring extends Scene {
                         // 2nd dot undo action
                         this.track[0].abandonChild();
                         this.track.pop();
+                        return;
                     } else {
                         // Still at first dot
                         return;
                     }
+                }
+
+                if (!cell.isNeighbor(this.track[this.track.length - 1])) {
+                    this.stopTrack(); // Not a neighbor
                 }
 
                 this.track[this.track.length - 1].setChild(cell);
