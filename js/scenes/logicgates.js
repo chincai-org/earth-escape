@@ -51,8 +51,9 @@ class LogicGates extends Scene {
                     if (this.connection[i] & 8) {
                         rect(this.leftPad + (i % this.gridSize) * this.tileSize + this.tileSize / 4, this.topPad + Math.floor(i / this.gridSize) * this.tileSize - this.tileSize * .2443, this.tileSize / 2, this.tileSize / 2);
                     }
-                }
-                else {
+                } else if (this.grid[i] == 4) {
+                    triangle(this.leftPad + (i % this.gridSize) * this.tileSize + this.tileSize / 2, this.topPad + Math.floor(i / this.gridSize) * this.tileSize + this.tileSize / 4, this.leftPad + (i % this.gridSize) * this.tileSize + this.tileSize / 4, this.topPad + Math.floor(i / this.gridSize) * this.tileSize + this.tileSize * .75, this.leftPad + (i % this.gridSize) * this.tileSize + this.tileSize * .75, this.topPad + Math.floor(i / this.gridSize) * this.tileSize + this.tileSize * .75);
+                } else {
                     ellipse(this.leftPad + (i % this.gridSize) * this.tileSize + this.tileSize / 2, this.topPad + Math.floor(i / this.gridSize) * this.tileSize + this.tileSize / 2, this.tileSize / 2);
                 }
             }
@@ -91,33 +92,51 @@ class LogicGates extends Scene {
             if (x >= 0 && x < this.gridSize && y >= 0 && y < this.gridSize) {
                 const idx = y * this.gridSize + x;
                 if (!mode) {
-                    if (!([1, 2].includes(this.grid[idx]))) this.grid[idx] = mode;
+                    if (!([1, 2].includes(this.grid[idx]))) {
+                        this.grid[idx] = mode;
+                        if (this.connection[idx - 1] & 4) {
+                            this.connection[idx - 1] ^= 4;
+                        }
+                        if (this.connection[idx + 1] & 1) {
+                            this.connection[idx + 1] ^= 1;
+                        }
+                        if (this.connection[idx + this.gridSize] & 8) {
+                            this.connection[idx + this.gridSize] ^= 8;
+                        }
+                        if (this.connection[idx - this.gridSize] & 2) {
+                            this.connection[idx - this.gridSize] ^= 2;
+                        }
+                        this.connection[idx] = 0;
+                    }
                 } else if (!([5, 6].includes(mode))) {
                     if (!this.grid[idx]) {
-                        //0000 up,right,down,left
                         this.grid[idx] = mode;
-                        if (y - 1 >= 0) {
-                            if (this.grid[idx - this.gridSize] == mode) {
-                                this.connection[idx - this.gridSize] |= 2;
-                                this.connection[idx] |= 8;
+                        //0000 up,right,down,left
+                        if (mode == 3) {
+                            const availableConect = [1, 2, 3];
+                            if (y - 1 >= 0) {
+                                if (availableConect.includes(this.grid[idx - this.gridSize])) {
+                                    this.connection[idx - this.gridSize] |= 2;
+                                    this.connection[idx] |= 8;
+                                }
                             }
-                        }
-                        if (x + 1 < this.gridSize) {
-                            if (this.grid[idx + 1] == mode) {
-                                this.connection[idx + 1] |= 1;
-                                this.connection[idx] |= 4;
+                            if (x + 1 < this.gridSize) {
+                                if (availableConect.includes(this.grid[idx + 1])) {
+                                    this.connection[idx + 1] |= 1;
+                                    this.connection[idx] |= 4;
+                                }
                             }
-                        }
-                        if (y + 1 < this.gridSize) {
-                            if (this.grid[idx + this.gridSize] == mode) {
-                                this.connection[idx + this.gridSize] |= 8;
-                                this.connection[idx] |= 2;
+                            if (y + 1 < this.gridSize) {
+                                if (availableConect.includes(this.grid[idx + this.gridSize])) {
+                                    this.connection[idx + this.gridSize] |= 8;
+                                    this.connection[idx] |= 2;
+                                }
                             }
-                        }
-                        if (x - 1 >= 0) {
-                            if (this.grid[idx - 1] == mode) {
-                                this.connection[idx - 1] |= 4;
-                                this.connection[idx] |= 1;
+                            if (x - 1 >= 0) {
+                                if (availableConect.includes(this.grid[idx - 1])) {
+                                    this.connection[idx - 1] |= 4;
+                                    this.connection[idx] |= 1;
+                                }
                             }
                         }
                     }
