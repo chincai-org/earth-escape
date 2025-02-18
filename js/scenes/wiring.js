@@ -169,7 +169,7 @@ class Wiring extends Scene {
         const dots = [
             [
                 [2, 0],
-                [0, 5]
+                [1, 4]
             ],
             [
                 [1, 1],
@@ -181,7 +181,7 @@ class Wiring extends Scene {
             ],
             [
                 [4, 2],
-                [5, 0]
+                [5, 1]
             ],
             [
                 [4, 3],
@@ -214,6 +214,12 @@ class Wiring extends Scene {
 
         this.drawGrid();
         this.drawCells();
+
+        if (this.isSolved()) {
+            text("Solved", 0, 0, 100, 100);
+        } else {
+            text("Not solved", 0, 0, 100, 100);
+        }
     }
 
     drawGrid() {
@@ -251,7 +257,6 @@ class Wiring extends Scene {
 
     update() {
         if (mouseIsPressed && this.tracking) {
-            console.log(this.track);
             let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
             if (cell == null) {
@@ -286,6 +291,7 @@ class Wiring extends Scene {
                 }
 
                 this.track[this.track.length - 1].setChild(cell);
+                // cell.parent = this.track[this.track.length - 1];
                 this.stopTrack();
             } else if (
                 this.track.length >= 2 &&
@@ -314,15 +320,17 @@ class Wiring extends Scene {
 
     mousePressed() {
         super.mousePressed();
-        console.log("mp");
         let cell = this.getCellFromScreenPosition(mouseX, mouseY);
+
+        if (cell == null) {
+            return;
+        }
 
         if (cell.isDot) {
             this.tracking = true;
             this.track = [cell];
             cell.recursivelyAbandon();
             cell.friend.recursivelyAbandon();
-            cell.debug();
         } else if (cell.parent && !cell.child) {
             this.tracking = true;
             this.track = cell.tree();
@@ -331,7 +339,6 @@ class Wiring extends Scene {
 
     mouseReleased() {
         super.mouseReleased();
-        console.log("mr");
         this.stopTrack();
     }
 
@@ -359,5 +366,19 @@ class Wiring extends Scene {
     stopTrack() {
         this.tracking = false;
         this.track = [];
+    }
+
+    isSolved() {
+        for (let row of this.cells) {
+            for (let cell of row) {
+                if (cell.isDot) {
+                    if (!(cell.child || cell.parent)) return false;
+                } else if (!(cell.child && cell.parent)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }
