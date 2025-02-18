@@ -146,6 +146,8 @@ class Puzzle extends Scene {
     }
 
     initGrids() {
+        this.grids = [];
+
         const blocks = [
             [
                 [0, 0],
@@ -159,6 +161,12 @@ class Puzzle extends Scene {
         for (let block of blocks) {
             let grid = new Grid(this.gridSize, block, 0, 0, this.tileSize);
             this.grids.push(grid);
+        }
+    }
+
+    draw() {
+        for (let grid of this.grids) {
+            grid.draw();
         }
     }
 }
