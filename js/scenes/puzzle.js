@@ -234,7 +234,6 @@ class Puzzle extends Scene {
 
     isSolved() {
         let sum = Grid.zeros(this.gridSize);
-        console.log(sum.grid);
 
         for (let grid of this.grids) {
             sum.add(grid);
