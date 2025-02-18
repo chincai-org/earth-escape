@@ -23,7 +23,7 @@ function draw() {
         let currentDialog = dialog.substring(0, currentCharacter);
         dialogBox(currentDialog, "Kikiko", "right");
         currentCharacter += Math.random() / 2;
-        console.log(currentCharacter)
+        console.log(currentCharacter);
     }
 }
 
