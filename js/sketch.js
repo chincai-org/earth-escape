@@ -6,10 +6,27 @@ const scenes = [new Wiring(), new LogicGates(), new Puzzle()];
 let currentSceneIndex = -1;
 let currentCharacter = 0;
 
+const dialougeManager = new DialougeManager();
+
+let dialog = [
+    {
+        name: "Kikiko",
+        text: "Nothing can go wrong... right?",
+        align: "right"
+    },
+    {
+        name: "Polikino",
+        text: "I hope so...",
+        align: "left"
+    }
+];
+
 function setup() {
     let canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent("main");
     background(255);
+
+    dialougeManager.play(dialog);
 }
 
 function preload() {
@@ -24,10 +41,12 @@ function draw() {
         scenes[currentSceneIndex].lateUpdate();
     } else {
         image(menu_bg, 0, 0, canvasWidth, canvasHeight);
-        let dialog = "Nothing can go wrong... right?";
-        let currentDialog = dialog.substring(0, currentCharacter);
-        dialogBox(currentDialog, "Kikiko", "right");
-        currentCharacter += Math.random() / 2;
+
+        dialougeManager.update();
+        if (dialougeManager.active) {
+            dialougeManager.draw();
+            dialougeManager.lateUpdate();
+        }
     }
 }
 
@@ -39,6 +58,11 @@ function keyPressed() {
 }
 
 function mousePressed() {
+    if (dialougeManager.active) {
+        dialougeManager.mousePressed();
+        return; // Disable any click events if dialogue is active
+    }
+
     if (currentSceneIndex >= 0) {
         scenes[currentSceneIndex].mousePressed();
     }

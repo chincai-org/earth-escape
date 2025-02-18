@@ -107,3 +107,62 @@ function dialogBox(txt, name, align) {
         );
     }
 }
+
+class DialougeManager {
+    constructor() {
+        this.dialouges = [];
+        this.currentDialougeIndex = 0;
+        this.currentCharacter = 0;
+        this.active = false;
+    }
+
+    play(dialouges) {
+        this.dialouges = dialouges;
+        this.currentDialougeIndex = 0;
+        this.currentCharacter = 0;
+        this.active = true;
+    }
+
+    update() {
+        if (!this.active) return;
+
+        if (this.currentDialougeIndex >= this.dialouges.length) {
+            this.active = false;
+            return;
+        }
+
+        let dialog = this.dialouges[this.currentDialougeIndex];
+
+        // if (this.currentCharacter >= dialog.text.length) {
+        //     this.currentCharacter = 0;
+        //     this.currentDialougeIndex++;
+        // }
+    }
+
+    lateUpdate() {
+        this.currentCharacter += Math.random() / 2;
+        this.currentCharacter = Math.min(
+            this.currentCharacter,
+            this.dialouges[this.currentDialougeIndex].text.length
+        );
+    }
+
+    mousePressed() {
+        // Finish typewriter effect if dialogue on-going, else move to next dialogue
+        let currentDialog = this.dialouges[this.currentDialougeIndex];
+        let dialogText = currentDialog.text;
+
+        if (this.currentCharacter < dialogText.length) {
+            this.currentCharacter = dialogText.length;
+        } else {
+            this.currentCharacter = 0;
+            this.currentDialougeIndex++;
+        }
+    }
+
+    draw() {
+        let dialog = this.dialouges[this.currentDialougeIndex];
+        let currentDialog = dialog.text.substring(0, this.currentCharacter);
+        dialogBox(currentDialog, dialog.name, dialog.align || "left");
+    }
+}
