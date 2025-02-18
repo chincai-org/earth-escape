@@ -10,6 +10,7 @@ class Grid {
 
         this.shuffle();
 
+        this.gridSize = gridSize;
         this.leftPad = leftPad;
         this.topPad = topPad;
         this.cellSize = cellSize;
@@ -110,6 +111,23 @@ class Grid {
 
         return false;
     }
+
+    static zeros(gridSize) {
+        return new Grid(gridSize, [], 0, 0, 0);
+    }
+
+    isPerfect() {
+        // Every single number is exactly one
+        for (let y = 0; y < this.grid.length; y++) {
+            for (let x = 0; x < this.grid[y].length; x++) {
+                if (this.grid[y][x] !== 1) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
 
 class Puzzle extends Scene {
@@ -197,6 +215,12 @@ class Puzzle extends Scene {
         for (let grid of this.grids) {
             grid.draw();
         }
+
+        if (this.isSolved()) {
+            text("Solved", 0, 0, 100, 100);
+        } else {
+            text("Not solved", 0, 0, 100, 100);
+        }
     }
 
     mousePressed() {
@@ -206,5 +230,16 @@ class Puzzle extends Scene {
                 grid.rotate();
             }
         }
+    }
+
+    isSolved() {
+        let sum = Grid.zeros(this.gridSize);
+        console.log(sum.grid);
+
+        for (let grid of this.grids) {
+            sum.add(grid);
+        }
+
+        return sum.isPerfect();
     }
 }
