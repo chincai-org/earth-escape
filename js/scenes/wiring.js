@@ -313,6 +313,7 @@ class Wiring extends Scene {
     }
 
     mousePressed() {
+        super.mousePressed();
         console.log("mp");
         let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
@@ -329,6 +330,7 @@ class Wiring extends Scene {
     }
 
     mouseReleased() {
+        super.mouseReleased();
         console.log("mr");
         this.stopTrack();
     }

@@ -1,7 +1,7 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 
-const scenes = [new Wiring(), new LogicGates()];
+const scenes = [new Wiring(), new LogicGates(), new Puzzle()];
 
 let currentSceneIndex = -1;
 let currentCharacter = 0;
