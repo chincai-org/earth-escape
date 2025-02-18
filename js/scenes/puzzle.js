@@ -8,54 +8,60 @@ class Grid {
             this.grid[block[1]][block[0]] = 1;
         }
 
-        this.init_sum = blocks.length;
+        this.shuffle();
 
         this.leftPad = leftPad;
         this.topPad = topPad;
         this.cellSize = cellSize;
-
-        this.up_button = new Button(0, 0, 50, 50)
-            .setText("Up")
-            .onClick(() => this.move("up"));
-
-        this.down_button = new Button(0, 0, 50, 50)
-            .setText("Down")
-            .onClick(() => this.move("down"));
-
-        this.left_button = new Button(0, 0, 50, 50)
-
-            .setText("Left")
-            .onClick(() => this.move("left"));
-
-        this.right_button = new Button(0, 0, 50, 50)
-            .setText("Right")
-            .onClick(() => this.move("right"));
-
-        this.rotate_button = new Button(0, 0, 50, 50)
-            .setText("Rotate")
-            .onClick(() => this.rotate());
-
-        this.buttons = [
-            this.up_button,
-            this.down_button,
-            this.left_button,
-            this.right_button,
-            this.rotate_button
-        ];
     }
 
     draw() {
         for (let y = 0; y < this.grid.length; y++) {
             for (let x = 0; x < this.grid[y].length; x++) {
                 if (this.grid[y][x] === 1) {
-                    fill(0);
+                    // grey
+                    fill(200);
+                    strokeWeight(1);
                     rect(
-                        leftPad + x * cellSize,
-                        topPad + y * cellSize,
-                        cellSize,
-                        cellSize
+                        this.leftPad + x * this.cellSize,
+                        this.topPad + y * this.cellSize,
+                        this.cellSize,
+                        this.cellSize
                     );
                 }
+            }
+        }
+
+        // Grid lines
+
+        let isHovered = this.isHovered();
+
+        for (let y = 0; y < this.grid.length; y++) {
+            for (let x = 0; x < this.grid[y].length; x++) {
+                stroke(0);
+                strokeWeight(1 + isHovered * 2);
+                noFill();
+                rect(
+                    this.leftPad + x * this.cellSize,
+                    this.topPad + y * this.cellSize,
+                    this.cellSize,
+                    this.cellSize
+                );
+            }
+        }
+    }
+
+    shuffle() {
+        // Randomly move and rotate
+
+        let rotations = [0, 1, 2, 3];
+
+        for (let i = 0; i < 100; i++) {
+            let rotation =
+                rotations[Math.floor(Math.random() * rotations.length)];
+
+            for (let j = 0; j < rotation; j++) {
+                this.rotate();
             }
         }
     }
@@ -92,55 +98,27 @@ class Grid {
         this.grid = newGrid;
     }
 
-    move(dir) {
-        // Move every 1s to the direction
-        // If out of bounds, return false
-
-        let newGrid = Array.from({ length: this.grid.length }, () =>
-            Array(this.grid.length).fill(0)
-        );
-
-        for (let y = 0; y < this.grid.length; y++) {
-            for (let x = 0; x < this.grid[y].length; x++) {
-                if (this.grid[y][x] === 1) {
-                    let newX = x;
-                    let newY = y;
-
-                    switch (dir) {
-                        case "up":
-                            newY--;
-                            break;
-                        case "down":
-                            newY++;
-                            break;
-                        case "left":
-                            newX--;
-                            break;
-                        case "right":
-                            newX++;
-                            break;
-                    }
-
-                    if (
-                        newX < 0 ||
-                        newX >= this.grid.length ||
-                        newY < 0 ||
-                        newY >= this.grid.length
-                    ) {
-                        return false;
-                    }
-
-                    newGrid[newY][newX] = 1;
-                }
-            }
+    isHovered() {
+        if (
+            mouseX > this.leftPad &&
+            mouseX < this.leftPad + this.grid.length * this.cellSize &&
+            mouseY > this.topPad &&
+            mouseY < this.topPad + this.grid.length * this.cellSize
+        ) {
+            return true;
         }
+
+        return false;
     }
 }
 
 class Puzzle extends Scene {
     init() {
-        this.tileSize = 10;
+        this.tileSize = 32;
         this.gridSize = 5;
+
+        this.gridWidth = this.tileSize * this.gridSize;
+        this.gridHeight = this.tileSize * this.gridSize;
 
         this.initGrids();
     }
@@ -154,12 +132,63 @@ class Puzzle extends Scene {
                 [1, 0],
                 [2, 0],
                 [0, 1],
-                [2, 0]
+                [2, 1]
+            ],
+            [
+                [1, 1],
+                [0, 2],
+                [1, 2],
+                [1, 3],
+                [2, 3]
+            ],
+            [
+                [0, 3],
+                [0, 4],
+                [1, 4]
+            ],
+            [[3, 0]],
+            [
+                [3, 1],
+                [2, 2],
+                [3, 2],
+                [3, 3]
+            ],
+            [
+                [2, 4],
+                [3, 4],
+                [4, 4]
+            ],
+            [
+                [4, 0],
+                [4, 1],
+                [4, 2],
+                [4, 3]
             ]
         ];
 
-        for (let block of blocks) {
-            let grid = new Grid(this.gridSize, block, 0, 0, this.tileSize);
+        blocks.sort(() => Math.random() - 0.5);
+
+        for (let i = 0; i < blocks.length; i++) {
+            let block = blocks[i];
+
+            let leftPad = 0;
+            let topPad = 0;
+
+            if (i < 4) {
+                leftPad = ((i + 0.5) * canvasWidth) / 4 - this.gridWidth / 2;
+                topPad = canvasHeight * 0.25 - this.gridHeight / 2;
+            } else {
+                leftPad = ((i - 3.5) * canvasWidth) / 3 - this.gridWidth / 2;
+                topPad = canvasHeight * 0.75 - this.gridHeight / 2;
+            }
+
+            let grid = new Grid(
+                this.gridSize,
+                block,
+                leftPad,
+                topPad,
+                this.tileSize
+            );
             this.grids.push(grid);
         }
     }
@@ -167,6 +196,15 @@ class Puzzle extends Scene {
     draw() {
         for (let grid of this.grids) {
             grid.draw();
+        }
+    }
+
+    mousePressed() {
+        super.mousePressed();
+        for (let grid of this.grids) {
+            if (grid.isHovered()) {
+                grid.rotate();
+            }
         }
     }
 }

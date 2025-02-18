@@ -12,6 +12,10 @@ function setup() {
     background(255);
 }
 
+function preload() {
+    menu_bg = loadImage("assets/menu.png");
+}
+
 function draw() {
     background(255);
     if (currentSceneIndex >= 0) {
@@ -19,6 +23,7 @@ function draw() {
         scenes[currentSceneIndex].draw();
         scenes[currentSceneIndex].lateUpdate();
     } else {
+        image(menu_bg, 0, 0, canvasWidth, canvasHeight);
         let dialog = "Nothing can go wrong... right?";
         let currentDialog = dialog.substring(0, currentCharacter);
         dialogBox(currentDialog, "Kikiko", "right");

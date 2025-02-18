@@ -4,7 +4,7 @@ class Button {
         this.y = y;
         this.w = w;
         this.h = h;
-        this.color = [255, 255, 255];
+        this.color = [255, 255, 0];
         this.hovered = false;
         this.clicked = false;
         this.display = true;
@@ -44,6 +44,7 @@ class Button {
 
     onClick(func) {
         this.clickfunc = func;
+        return this;
     }
 
     toggleDisplay() {
