@@ -5,10 +5,11 @@ class Scene {
         this.ui = [];
     }
 
-    init() {}
-    update(dt) {}
-    lateUpdate() {}
-    draw() {}
+    init() { }
+    update(dt) { }
+    lateUpdate() { }
+    draw() { }
+    keyPressed() { }
     mousePressed() {
         for (let ui of this.ui) {
             ui.mousePressed();
