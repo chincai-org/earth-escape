@@ -9,6 +9,7 @@ class Scene {
     update(dt) {}
     lateUpdate() {}
     draw() {}
+    keyPressed() {}
     transition() {}
     mousePressed() {
         for (let ui of this.ui) {

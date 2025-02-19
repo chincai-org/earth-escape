@@ -87,6 +87,9 @@ function keyPressed() {
     if (keyCode >= 48 && keyCode <= 57) {
         transition(keyCode - 48);
     }
+    if (currentSceneIndex >= 0) {
+        scenes[currentSceneIndex].keyPressed();
+    }
 }
 
 function mousePressed() {
