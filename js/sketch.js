@@ -8,6 +8,7 @@ let currentCharacter = 0;
 let lastUpdate = -1;
 
 const dialougeManager = new DialougeManager();
+const tipsManager = new TipsManager();
 
 let dialog = [
     {
@@ -28,6 +29,7 @@ function setup() {
     background(255);
 
     dialougeManager.play(dialog);
+    tipsManager.show(200, 200, "Click here to enter room", true);
 }
 
 function preload() {
@@ -51,6 +53,15 @@ function draw() {
             dialougeManager.draw();
             dialougeManager.lateUpdate();
         }
+
+        // drawTips(200, 200, "Click anywhere to continue", true);
+
+        tipsManager.update(dt);
+        if (tipsManager.active) {
+            tipsManager.draw();
+        }
+
+        ellipse(200, 200, 10, 10);
     }
 }
 
