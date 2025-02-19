@@ -12,6 +12,7 @@ class Cave extends Scene {
     }
 
     draw() {
+        image(cave_bg, 0, 0, canvasWidth, canvasHeight);
         this.jr.draw();
     }
 }

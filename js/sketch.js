@@ -10,6 +10,9 @@ let lastUpdate = -1;
 const dialougeManager = new DialougeManager();
 const tipsManager = new TipsManager();
 
+let menu_bg;
+let cave_bg;
+
 let dialog = [
     {
         name: "Kikiko",
@@ -23,6 +26,9 @@ let dialog = [
     }
 ];
 
+let debug_rects = [];
+let debug_dots = [];
+
 function setup() {
     let canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent("main");
@@ -33,7 +39,8 @@ function setup() {
 }
 
 function preload() {
-    menu_bg = loadImage("assets/menu.png");
+    menu_bg = loadImage("assets/images/menu.png");
+    cave_bg = loadImage("assets/images/cave.png");
 }
 
 function draw() {
@@ -63,6 +70,16 @@ function draw() {
 
         ellipse(200, 200, 10, 10);
     }
+
+    for (let [x, y] of debug_dots) {
+        ellipse(x, y, 10, 10);
+    }
+
+    for (let [x, y, w, h] of debug_rects) {
+        noFill();
+        stroke(135, 206, 235);
+        rect(x, y, w, h);
+    }
 }
 
 function keyPressed() {
@@ -73,6 +90,25 @@ function keyPressed() {
 }
 
 function mousePressed() {
+    console.log(mouseX, mouseY);
+
+    if (keyIsDown(CONTROL)) {
+        debug_dots.push([mouseX, mouseY]);
+
+        if (debug_dots.length == 2) {
+            let [x1, y1] = debug_dots[0];
+            let [x2, y2] = debug_dots[1];
+
+            let width = x2 - x1;
+            let height = y2 - y1;
+
+            debug_rects.push([x1, y1, width, height]);
+            debug_dots = [];
+
+            console.log([x1, y1, width, height]);
+        }
+    }
+
     if (dialougeManager.active) {
         dialougeManager.mousePressed();
         return; // Disable any click events if dialogue is active
@@ -103,5 +139,6 @@ function getDeltaTime() {
 
 function transition(n) {
     currentSceneIndex = n;
+    scenes[currentSceneIndex].transition();
     dialougeManager.reset();
 }
