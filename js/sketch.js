@@ -1,9 +1,9 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 
-const scenes = [new Wiring(), new LogicGates(), new Puzzle(), new Cave(), new screwDriver()];
+const scenes = [new Wiring(), new LogicGates(), new Puzzle(), new Cave(), new Start(), new screwDriver()];
 
-let currentSceneIndex = -1;
+let currentSceneIndex = -1; 
 let currentCharacter = 0;
 let lastUpdate = -1;
 
@@ -36,6 +36,9 @@ function setup() {
 
     dialougeManager.play(dialog);
     tipsManager.show(200, 200, "Click here to enter room", true);
+
+    // scenes[4].initial = false 
+    // scenes[4].transition[0].running = true; 
 }
 
 function preload() {
