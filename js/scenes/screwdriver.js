@@ -5,14 +5,25 @@ class screwDriver extends Scene {
         this.tick = 0;
     }
     update() {
-        if (this.tick % 5 == 0) {
-            const X = this.randint(canvasWidth);
-            const Y = this.randint(canvasHeight);
-            if (!this.screws.some([x, y] => Math.hypot(x - X, y - Y) > (2 * this.screwRadius)) {
-                this.screws.push([X, Y]);
+        if (this.tick % 10 == 0) {
+            let X;
+            let Y;
+            do {
+                X = this.randint(canvasWidth);
+                Y = this.randint(canvasHeight);
+            } while (this.screws.some(([x, y]) => Math.hypot(x - X, y - Y) <= (1.1 * this.screwRadius)));
+            this.screws.push([X, Y]);
+        }
+        this.tick++;
+        if (mouseIsPressed) {
+            for (let i = 0; i < this.screws.length; ++i) {
+                if (Math.hypot(this.screws[i][0] - mouseX, this.screws[i][1] - mouseY) < (this.screwRadius)) {
+                    this.screws.splice(i, 1);
+                    console.log("o")
+                    break;
+                }
             }
         }
-        this.tick += 1;
     }
     randint(max) {
         return Math.floor(Math.random() * max);
