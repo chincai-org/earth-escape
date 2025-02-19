@@ -6,7 +6,7 @@ class Scene {
     }
 
     init() {}
-    update() {}
+    update(dt) {}
     lateUpdate() {}
     draw() {}
     mousePressed() {

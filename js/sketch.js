@@ -1,10 +1,11 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 
-const scenes = [new Wiring(), new LogicGates(), new Puzzle()];
+const scenes = [new Wiring(), new LogicGates(), new Puzzle(), new Cave()];
 
 let currentSceneIndex = -1;
 let currentCharacter = 0;
+let lastUpdate = -1;
 
 const dialougeManager = new DialougeManager();
 
@@ -35,8 +36,11 @@ function preload() {
 
 function draw() {
     background(255);
+
+    let dt = getDeltaTime();
+
     if (currentSceneIndex >= 0) {
-        scenes[currentSceneIndex].update();
+        scenes[currentSceneIndex].update(dt);
         scenes[currentSceneIndex].draw();
         scenes[currentSceneIndex].lateUpdate();
     } else {
@@ -74,6 +78,19 @@ function mouseReleased() {
     }
 }
 
+function getDeltaTime() {
+    if (lastUpdate === -1) {
+        lastUpdate = millis();
+        return 0;
+    }
+
+    let now = millis();
+    let dt = now - lastUpdate;
+    lastUpdate = now;
+    return dt;
+}
+
 function transition(n) {
     currentSceneIndex = n;
+    dialougeManager.reset();
 }

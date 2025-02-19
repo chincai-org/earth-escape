@@ -116,6 +116,13 @@ class DialougeManager {
         this.active = false;
     }
 
+    reset() {
+        this.dialouges = [];
+        this.currentDialougeIndex = 0;
+        this.currentCharacter = 0;
+        this.active = false;
+    }
+
     play(dialouges) {
         this.dialouges = dialouges;
         this.currentDialougeIndex = 0;
