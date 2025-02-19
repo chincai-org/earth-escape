@@ -1,9 +1,9 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 
-const scenes = [new Wiring(), new LogicGates(), new Puzzle(), new Cave()];
+const scenes = [new Wiring(), new LogicGates(), new Puzzle(), new Cave(), new Start()];
 
-let currentSceneIndex = -1;
+let currentSceneIndex = 4; 
 let currentCharacter = 0;
 let lastUpdate = -1;
 
@@ -27,7 +27,10 @@ function setup() {
     canvas.parent("main");
     background(255);
 
-    dialougeManager.play(dialog);
+    // dialougeManager.play(dialog);
+    scenes[4].initial = false //
+    scenes[4].transition[0].running = true; 
+
 }
 
 function preload() {
@@ -43,15 +46,14 @@ function draw() {
         scenes[currentSceneIndex].update(dt);
         scenes[currentSceneIndex].draw();
         scenes[currentSceneIndex].lateUpdate();
-    } else {
-        image(menu_bg, 0, 0, canvasWidth, canvasHeight);
-
-        dialougeManager.update();
-        if (dialougeManager.active) {
-            dialougeManager.draw();
-            dialougeManager.lateUpdate();
-        }
-    }
+    } 
+    // else {
+    //     dialougeManager.update();
+    //     if (dialougeManager.active) {
+    //         dialougeManager.draw();
+    //         dialougeManager.lateUpdate();
+    //     }
+    // }
 }
 
 function keyPressed() {
