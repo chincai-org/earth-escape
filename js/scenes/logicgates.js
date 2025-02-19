@@ -75,7 +75,8 @@ class LogicGates extends Scene {
                 } else if (this.grid[i] == 5 || this.grid[i] == 6) {
                     if (this.dir[i] == 8) {
                         fill(...this.colour[1]);
-                        rect(xPosition + drawPosition[3], yPosition + drawPosition[0], drawPosition[2], drawPosition[1]);
+                        rect(xPosition + drawPosition[1], yPosition + drawPosition[0], drawPosition[1], drawPosition[1]);
+                        rect(xPosition, yPosition + drawPosition[0], drawPosition[1], drawPosition[1]);
                         fill(...this.colour[2]);
                         rect(xPosition + drawPosition[0], yPosition, drawPosition[1], drawPosition[1]);
                     } else if (this.dir[i] == 4) {
