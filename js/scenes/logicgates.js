@@ -306,7 +306,7 @@ class LogicGates extends Scene {
                     isDirectionValid4nxt = this.dir[idx - this.gridSize] === 8 || this.dir[idx - this.gridSize] === 2;
                     isDirectionValid4 = this.dir[idx] === 8 || this.dir[idx] === 2;
                     isDirectionValid5_6 = this.dir[idx] !== 8;
-                    isDirectionValid5_6nxt = this.dir[idx - this.gridSize] !== 8;
+                    isDirectionValid5_6nxt = this.dir[idx - this.gridSize] !== 2;
                     isTarget5_6 = this.grid[idx - this.gridSize] === 5 || this.grid[idx - this.gridSize] === 6;
                     isTarget4 = this.grid[idx - this.gridSize] === 4;
 
@@ -321,7 +321,7 @@ class LogicGates extends Scene {
                     isDirectionValid4nxt = this.dir[idx + 1] === 4 || this.dir[idx + 1] === 1;
                     isDirectionValid4 = this.dir[idx] === 4 || this.dir[idx] === 1;
                     isDirectionValid5_6 = this.dir[idx] !== 4;
-                    isDirectionValid5_6nxt = this.dir[idx + 1] !== 4;
+                    isDirectionValid5_6nxt = this.dir[idx + 1] !== 1;
                     isTarget5_6 = this.grid[idx + 1] === 5 || this.grid[idx + 1] === 6;
                     isTarget4 = this.grid[idx + 1] === 4;
 
@@ -336,7 +336,7 @@ class LogicGates extends Scene {
                     isDirectionValid4nxt = this.dir[idx + this.gridSize] === 2 || this.dir[idx + this.gridSize] === 8;
                     isDirectionValid4 = this.dir[idx] === 2 || this.dir[idx] === 8;
                     isDirectionValid5_6 = this.dir[idx] !== 2;
-                    isDirectionValid5_6nxt = this.dir[idx + this.gridSize] !== 2;
+                    isDirectionValid5_6nxt = this.dir[idx + this.gridSize] !== 8;
                     isTarget5_6 = this.grid[idx + this.gridSize] === 5 || this.grid[idx + this.gridSize] === 6;
                     isTarget4 = this.grid[idx + this.gridSize] === 4;
 
@@ -351,7 +351,7 @@ class LogicGates extends Scene {
                     isDirectionValid4nxt = this.dir[idx - 1] === 1 || this.dir[idx - 1] === 4;
                     isDirectionValid4 = this.dir[idx] === 1 || this.dir[idx] === 4;
                     isDirectionValid5_6 = this.dir[idx] !== 1;
-                    isDirectionValid5_6nxt = this.dir[idx - 1] !== 1;
+                    isDirectionValid5_6nxt = this.dir[idx - 1] !== 4;
                     isTarget5_6 = this.grid[idx - 1] === 5 || this.grid[idx - 1] === 6;
                     isTarget4 = this.grid[idx - 1] === 4;
 
