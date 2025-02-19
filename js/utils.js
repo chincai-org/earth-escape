@@ -138,7 +138,7 @@ class DialougeManager {
             return;
         }
 
-        let dialog = this.dialouges[this.currentDialougeIndex];
+        // let dialog = this.dialouges[this.currentDialougeIndex];
 
         // if (this.currentCharacter >= dialog.text.length) {
         //     this.currentCharacter = 0;
@@ -171,5 +171,69 @@ class DialougeManager {
         let dialog = this.dialouges[this.currentDialougeIndex];
         let currentDialog = dialog.text.substring(0, this.currentCharacter);
         dialogBox(currentDialog, dialog.name, dialog.align || "left");
+    }
+}
+
+class TipsManager {
+    constructor() {
+        this.x = 0;
+        this.y = 0;
+        this.txt = "";
+        this.arrow = false;
+        this.color = [255, 255, 0]; // yellow
+        this.active = false;
+
+        this.arrow_position = 0;
+        this.direction = 1;
+        this.animation_speed = 0.05;
+    }
+
+    setColor(r, g, b) {
+        this.color = [r, g, b];
+    }
+
+    show(x, y, txt, arrow) {
+        this.x = x;
+        this.y = y;
+        this.txt = txt;
+        this.arrow = arrow;
+        this.active = true;
+    }
+
+    deactivate() {
+        this.active = false;
+    }
+
+    update(dt) {
+        if (!this.active) return;
+
+        // Arrow position oscillate between 0 and 1
+        this.arrow_position += this.direction * this.animation_speed;
+        if (this.arrow_position >= 1 || this.arrow_position <= 0) {
+            this.direction *= -1;
+        }
+    }
+
+    draw() {
+        virtualEdit(() => {
+            // Draw the text
+            translate(this.x, this.y);
+            fill(...this.color); // yellow
+
+            let width = textWidth(this.txt);
+            let height = textAscent() + textDescent();
+
+            text(this.txt, -width / 2, -height / 2);
+
+            if (this.arrow) {
+                // Draw upside down triangle with a constant size under the text
+                fill(this.color); // yellow
+                beginShape();
+                vertex(-10, 0 + this.arrow_position * 10);
+                vertex(10, 0 + this.arrow_position * 10);
+                vertex(0, 10 + this.arrow_position * 10);
+                endShape(CLOSE);
+            }
+        });
     }
 }
