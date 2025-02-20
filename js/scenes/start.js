@@ -44,7 +44,6 @@ class Start extends Scene {
         ];
     }
     draw() {
-        console.log("hello");
         background(0);
         let animation = this.transition[this.storyTelling];
 
@@ -81,7 +80,7 @@ class Start extends Scene {
                 textStyle(BOLD);
                 textAlign(CENTER, BOTTOM);
                 text("Click anywhere to begin", 0, -(canvasHeight / 15), canvasWidth, canvasHeight);
-                this.resetStyle(); 
+                this.resetStyle();
             }
         }
         if (this.transition[this.storyTelling].playing == 0) {
