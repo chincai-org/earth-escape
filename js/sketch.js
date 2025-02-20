@@ -23,13 +23,34 @@ let images = {};
 let dialog = [
     {
         name: "Kikiko",
-        text: "Nothing can go wrong... right?",
+        text: "Drive quickly, I am going to be late for a meeting!!!",
         align: "right"
     },
     {
         name: "Polikino",
-        text: "I hope so...",
+        text: "Yes sir. *Press pedal harder*",
         align: "left"
+    },
+    {
+        name: "???",
+        text: "*Kaboom*",
+        align: "left",
+    },
+    {
+        name: "Kikiko",
+        text: "What just happened?",
+        align: "right"
+    },
+    {
+        name: "Polikino",
+        text: "I think the UFO is out of fuel.",
+        align: "left"
+    },
+    {
+        name: "Kikiko",
+        text: "What!? AHHHHHHHHH",
+        align: "right"
+
     }
 ];
 
