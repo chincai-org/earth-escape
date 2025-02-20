@@ -6,6 +6,7 @@ class Start extends Scene {
             {
 
                 running: false,
+                background: "menu_bg",
                 done: 0,
                 type: [0, 1], //+, -
                 alpha: [3, 3],
@@ -16,6 +17,7 @@ class Start extends Scene {
             {
 
                 running: false,
+                background: "cave_bg",
                 done: 0,
                 type: [0, 1], //+, -
                 alpha: [2, 2],
@@ -42,9 +44,10 @@ class Start extends Scene {
 
             }
         ];
+        this.initial = false;
+        this.transition[0].running = true;
     }
     draw() {
-        console.log("hello");
         background(0);
         let animation = this.transition[this.storyTelling];
 
@@ -73,7 +76,7 @@ class Start extends Scene {
         }
 
         if (!this.initial) {
-            image(menu_bg, 0, 0, canvasWidth, canvasHeight);
+            image(images[this.transition[this.storyTelling].background], 0, 0, canvasWidth, canvasHeight);
             if (this.storyTelling == 0) {
                 fill(255, this.transition[this.storyTelling].currentAlpha[0]);
                 textSize(30);
@@ -84,17 +87,9 @@ class Start extends Scene {
                 this.resetStyle(); 
             }
         }
-        if (this.transition[this.storyTelling].playing == 0) {
+        if (this.transition[this.storyTelling].playing == 0 && !this.transition[this.storyTelling].running) {
             dialougeManager.play(this.transition[this.storyTelling].dialog);
             this.transition[this.storyTelling].playing = 1;
-        } else if (this.transition[this.storyTelling].playing == 1 && !this.transition[this.storyTelling].running) {
-            dialougeManager.update();
-            if (dialougeManager.active) {
-                dialougeManager.draw();
-                dialougeManager.lateUpdate();
-            } else {
-                dialougeManager.reset();
-            }
         }
 
 

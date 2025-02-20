@@ -71,21 +71,21 @@ function draw() {
         scenes[currentSceneIndex].lateUpdate();
     } else {
         image(images.menu_bg, 0, 0, canvasWidth, canvasHeight);
-
-        dialougeManager.update();
-        if (dialougeManager.active) {
-            dialougeManager.draw();
-            dialougeManager.lateUpdate();
-        }
-
-        // drawTips(200, 200, "Click anywhere to continue", true);
-
-        tipsManager.update(dt);
-        if (tipsManager.active) {
-            tipsManager.draw();
-        }
-
         ellipse(200, 200, 10, 10);
+
+    }
+
+    dialougeManager.update();
+    if (dialougeManager.active) {
+        dialougeManager.draw();
+        dialougeManager.lateUpdate();
+    }
+
+    // drawTips(200, 200, "Click anywhere to continue", true);
+
+    tipsManager.update(dt);
+    if (tipsManager.active) {
+        tipsManager.draw();
     }
 
     for (let [x, y] of debug_dots) {
