@@ -1,0 +1,3 @@
+class ToolDesk extends Interactable {
+    
+}

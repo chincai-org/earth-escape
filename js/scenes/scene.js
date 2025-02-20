@@ -1,16 +1,24 @@
 class Scene {
     constructor() {
-        this.init();
-
         this.ui = [];
+        this.interactables = [];
+
+        this.init();
     }
 
     init() {}
     update(dt) {}
     lateUpdate() {}
-    draw() {}
+    draw() {
+        for (let ui of this.ui) {
+            ui.draw();
+        }
+        for (let interactable of this.interactables) {
+            interactable.draw();
+        }
+    }
     keyPressed() {}
-    transition() {}
+    transition(prev) {}
     mousePressed() {
         for (let ui of this.ui) {
             ui.mousePressed();

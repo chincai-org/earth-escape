@@ -1,17 +1,24 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 
-const scenes = [new Wiring(), new LogicGates(), new Puzzle(), new Cave(), new Start(), new screwDriver()];
+const scenes = [
+    new Wiring(),
+    new LogicGates(),
+    new Puzzle(),
+    new Cave(),
+    new Start(),
+    new screwDriver()
+];
 
-let currentSceneIndex = -1; 
+let currentSceneIndex = -1;
 let currentCharacter = 0;
 let lastUpdate = -1;
 
 const dialougeManager = new DialougeManager();
 const tipsManager = new TipsManager();
 
-let menu_bg;
-let cave_bg;
+// let menu_bg, cave_bg, ufo_img;
+let images = {};
 
 let dialog = [
     {
@@ -37,13 +44,20 @@ function setup() {
     dialougeManager.play(dialog);
     tipsManager.show(200, 200, "Click here to enter room", true);
 
-    // scenes[4].initial = false 
-    // scenes[4].transition[0].running = true; 
+    // scenes[4].initial = false
+    // scenes[4].transition[0].running = true;
 }
 
 function preload() {
-    menu_bg = loadImage("assets/images/menu.png");
-    cave_bg = loadImage("assets/images/cave.png");
+    // menu_bg = loadImage("assets/images/menu.png");
+    // cave_bg = loadImage("assets/images/cave.png");
+    // ufo_img = loadImage("assets/images/ufo.png");
+
+    images = {
+        menu_bg: loadImage("assets/images/menu.png"),
+        cave_bg: loadImage("assets/images/cave.png"),
+        ufo_img: loadImage("assets/images/ufo.png")
+    };
 }
 
 function draw() {
@@ -56,7 +70,7 @@ function draw() {
         scenes[currentSceneIndex].draw();
         scenes[currentSceneIndex].lateUpdate();
     } else {
-        image(menu_bg, 0, 0, canvasWidth, canvasHeight);
+        image(images.menu_bg, 0, 0, canvasWidth, canvasHeight);
 
         dialougeManager.update();
         if (dialougeManager.active) {
@@ -144,7 +158,8 @@ function getDeltaTime() {
 }
 
 function transition(n) {
+    let prev = currentSceneIndex;
     currentSceneIndex = n;
-    scenes[currentSceneIndex].transition();
+    scenes[currentSceneIndex].transition(prev);
     dialougeManager.reset();
 }
