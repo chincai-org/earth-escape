@@ -20,40 +20,6 @@ const tipsManager = new TipsManager();
 // let menu_bg, cave_bg, ufo_img;
 let images = {};
 
-let dialog = [
-    {
-        name: "Kikiko",
-        text: "Drive quickly, I am going to be late for a meeting!!!",
-        align: "right"
-    },
-    {
-        name: "Polikino",
-        text: "Yes sir. *Press pedal harder*",
-        align: "left"
-    },
-    {
-        name: "???",
-        text: "*Kaboom*",
-        align: "left",
-    },
-    {
-        name: "Kikiko",
-        text: "What just happened?",
-        align: "right"
-    },
-    {
-        name: "Polikino",
-        text: "I think the UFO is out of fuel.",
-        align: "left"
-    },
-    {
-        name: "Kikiko",
-        text: "What!? AHHHHHHHHH",
-        align: "right"
-
-    }
-];
-
 let debug_rects = [];
 let debug_dots = [];
 
@@ -62,7 +28,6 @@ function setup() {
     canvas.parent("main");
     background(255);
 
-    dialougeManager.play(dialog);
     tipsManager.show(200, 200, "Click here to enter room", true);
 
     // scenes[4].initial = false
