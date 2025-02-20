@@ -5,8 +5,16 @@ class screwDriver extends Scene {
         this.tick = 0;
         this.screwDriverType = -1;
         this.screwType = [[255, 255, 255], [255, 0, 0]];
+        this.miss = 0;
     }
     update() {
+        for (let i = 0; i < this.screws.length; ++i) {
+            if (++this.screws[i][3] > 300) {
+                this.screws.splice(i, 1);
+                this.miss++;
+
+            }
+        }
         if (this.tick % 30 == 0) {
             let X;
             let Y;
@@ -16,7 +24,7 @@ class screwDriver extends Scene {
                 Y = this.randint(canvasHeight);
                 screw = this.randint(this.screwType.length);
             } while (this.screws.some(([x, y]) => Math.hypot(x - X, y - Y) <= (1.1 * this.screwDiameter)));
-            this.screws.push([X, Y, screw]);
+            this.screws.push([X, Y, screw, 0]);
         }
         this.tick++;
         if (mouseIsPressed) {
@@ -46,6 +54,11 @@ class screwDriver extends Scene {
 
     draw() {
         background(0)
+        textSize(30);
+        fill(255, 255, 255);
+        textAlign(CENTER, CENTER);
+        const stringMiss = this.miss.toString();
+        text(this.miss, canvasWidth / 2, 30);
         noStroke();
         for (let screw of this.screws) {
             fill(...this.screwType[screw[2]]);
