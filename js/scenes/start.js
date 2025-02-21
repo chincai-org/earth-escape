@@ -63,6 +63,7 @@ class Start extends Scene {
                 type: [0, 1], //+, -
                 alpha: [2, 2],
                 currentAlpha: [0, 255],
+                skipLastTransition: true,
                 playing: 0,
                 dialog:
                     [
@@ -146,6 +147,9 @@ class Start extends Scene {
         if (this.transition[this.storyTelling].playing == 0 && !this.transition[this.storyTelling].running) {
             dialougeManager.play(this.transition[this.storyTelling].dialog);
             this.transition[this.storyTelling].playing = 1;
+        }
+        if (!dialougeManager.active && this.transition[this.storyTelling].playing == 1 && !this.transition[this.storyTelling].running && this.transition[this.storyTelling].skipLastTransition) {
+            this.next();
         }
 
 
