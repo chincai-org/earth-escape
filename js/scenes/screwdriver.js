@@ -6,7 +6,7 @@ class screwDriver extends Scene {
         this.screwDriverType = -1;
         this.screwType = [[255, 255, 255], [255, 0, 0]];
         this.miss = 0;
-        this.spawnRate = 60;
+        this.spawnRate = 100;
         this.gameEnded = false;
     }
     update() {
