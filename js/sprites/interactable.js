@@ -48,4 +48,13 @@ class Interactable {
             this.jr.y <= y + h
         );
     }
+
+    setBox(x, y, w, h) {
+        this.box = [
+            x * canvasWidth,
+            y * canvasHeight,
+            w * canvasWidth,
+            h * canvasHeight
+        ];
+    }
 }
