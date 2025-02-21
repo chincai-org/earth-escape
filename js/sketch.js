@@ -1,6 +1,7 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
 let inventory;
+let hand;
 
 const scenes = [
     new Wiring(),
