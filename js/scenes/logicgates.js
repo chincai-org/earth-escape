@@ -134,16 +134,16 @@ class Gate {
             size * extra
         );
 
-        if (this.type == GATE_TYPES.INPUT) {
-            fill(0);
-            textSize(32);
-            textAlign(CENTER, CENTER);
-            text(
-                this.value,
-                this.displayX + this.tileSize / 2,
-                this.displayY + this.tileSize / 2
-            );
-        }
+        stroke(0);
+        strokeWeight(1);
+        fill(255, 255, 255);
+        textSize(32);
+        textAlign(CENTER, CENTER);
+        text(
+            this.value,
+            this.displayX + this.tileSize / 2,
+            this.displayY + this.tileSize / 2
+        );
     }
 
     loop() {
@@ -170,6 +170,30 @@ class Gate {
         }
 
         return this.layer == other.layer && this.y == other.y;
+    }
+
+    updateValue() {
+        let a = this.inputs[0]?.value || 0;
+        let b = this.inputs[1]?.value || 0;
+
+        switch (this.type) {
+            case GATE_TYPES.AND:
+                this.value = a & b;
+                break;
+            case GATE_TYPES.OR:
+                this.value = a | b;
+                break;
+            case GATE_TYPES.NOT:
+                this.value = 1 - a;
+                if (this.inputs.length == 0) this.value = 0;
+                break;
+            case GATE_TYPES.OUTPUT:
+                this.value = a;
+                break;
+            case GATE_TYPES.NEUTRAL:
+                this.value = a;
+                break;
+        }
     }
 }
 
@@ -201,6 +225,14 @@ class LogicGates extends Scene {
         }
 
         this.gates.push([this.output]);
+    }
+
+    update() {
+        for (let layer of this.gates.slice(1)) {
+            for (let gate of layer) {
+                gate.updateValue();
+            }
+        }
     }
 
     draw() {
@@ -248,7 +280,9 @@ class LogicGates extends Scene {
             if (this.selected.equals(hovered)) {
                 if (this.selected.type == GATE_TYPES.INPUT) {
                     this.selected.toggleValue();
-                } else if (this.selected.type != GATE_TYPES.OUTPUT) {
+                } else if (this.selected.type == GATE_TYPES.OUTPUT) {
+                    this.selected.refresh();
+                } else {
                     this.selected.loop();
                 }
             } else if (hovered.layer - this.selected.layer == 1) {
