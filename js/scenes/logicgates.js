@@ -1,662 +1,307 @@
-class LogicGates extends Scene {
-    lateUpdate() {
-        if (keyIsPressed && (keyCode === ESCAPE || keyCode === 66)) {
-            transition(-1);
+const GATE_TYPES = {
+    INPUT: -1,
+    OUTPUT: -2,
+    NEUTRAL: 0,
+    AND: 1,
+    OR: 2,
+    NOT: 3
+};
+
+const logicGateGridSize = 4;
+
+class Gate {
+    constructor(type, layer, y) {
+        this.y = y;
+        this.layer = layer;
+        this.type = type;
+        this.value = 0;
+
+        this.color = [0, 0, 0];
+
+        this.updateColor();
+
+        this.child = [];
+        this.inputs = [];
+
+        this.updateLimit();
+
+        this.tileSize = 128;
+        this.gridSize = logicGateGridSize;
+        this.gridTotalSize = this.gridSize * this.tileSize;
+
+        this.displayX =
+            canvasWidth / 2 - this.gridTotalSize / 2 + layer * this.tileSize;
+        this.displayY =
+            canvasHeight / 2 - this.gridTotalSize / 2 + y * this.tileSize;
+
+        if (type == GATE_TYPES.INPUT) {
+            this.displayX =
+                canvasWidth / 2 - this.gridTotalSize / 2 - this.tileSize - 20;
+            this.displayY =
+                canvasHeight / 2 -
+                this.gridTotalSize / 2 +
+                y * 3 * this.tileSize;
+        } else if (type == GATE_TYPES.OUTPUT) {
+            this.displayX = canvasWidth / 2 + this.gridTotalSize / 2 + 20;
+            this.displayY = canvasHeight / 2 - this.tileSize / 2;
         }
     }
 
-    init() {
-        this.tileSize = 64;
-        this.gridSize = 9;
-        this.gridArea = 81;
-
-        this.gridWidth = this.tileSize * this.gridSize;
-        this.gridHeight = this.tileSize * this.gridSize;
-
-        this.leftPad = canvasWidth / 2 - this.gridWidth / 2;
-        this.topPad = canvasHeight / 2 - this.gridHeight / 2;
-
-        this.grid = new Array(80);
-        for (let i = 0; i < 80; ++i) this.grid[i] = 0;
-        this.connection = new Array(80);
-        for (let i = 0; i < 80; ++i) this.grid[i] = 0;
-        this.dir = new Array(80);
-        for (let i = 0; i < 80; ++i) this.grid[i] = 0;
-        this.currDir = 8;
-        this.grid[0] = 1;
-        this.grid[72] = 1;
-        this.grid[80] = 2;
-        this.colour = [
-            null,
-            [255, 165, 0],
-            [255, 165, 200],
-            [255, 0, 0],
-            [255, 255, 0],
-            [0, 255, 0],
-            [0, 0, 255]
-        ];
-        this.mode = 3;
+    updateColor() {
+        switch (this.type) {
+            case GATE_TYPES.INPUT:
+                this.color = [0, 255, 0];
+                break;
+            case GATE_TYPES.OUTPUT:
+                this.color = [255, 0, 0];
+                break;
+            case GATE_TYPES.AND:
+                this.color = [0, 0, 255];
+                break;
+            case GATE_TYPES.OR:
+                this.color = [0, 255, 255];
+                break;
+            case GATE_TYPES.NOT:
+                this.color = [255, 0, 255];
+                break;
+            case GATE_TYPES.NEUTRAL:
+                this.color = [0, 0, 0];
+                break;
+        }
     }
 
-    draw() {
-        stroke(0);
-        strokeWeight(2);
-        translate(this.leftPad, this.topPad);
+    updateLimit() {
+        this.inputLimit = 1;
 
-        for (let i = 0; i <= this.gridSize; ++i) {
-            line(0, i * this.tileSize, this.gridWidth, i * this.tileSize);
-            line(i * this.tileSize, 0, i * this.tileSize, this.gridHeight);
+        if (this.type == GATE_TYPES.AND || this.type == GATE_TYPES.OR) {
+            this.inputLimit = 2;
         }
+    }
 
-        const drawPosition = [
-            this.tileSize / 4,
-            this.tileSize / 2,
-            this.tileSize * 0.75,
-            this.tileSize / 8,
-            this.tileSize * 0.875
-        ];
-        for (let i = 0; i <= this.gridArea; ++i) {
-            let xPosition = (i % this.gridSize) * this.tileSize;
-            let yPosition = Math.floor(i / this.gridSize) * this.tileSize;
-            fill(...this.colour[3]);
-            noStroke();
-            //0000 up,right,down,left
-            if (this.connection[i] & 1)
-                rect(
-                    xPosition - drawPosition[0],
-                    yPosition + drawPosition[0],
-                    drawPosition[1],
-                    drawPosition[1]
-                );
-            if (this.connection[i] & 4)
-                rect(
-                    xPosition + drawPosition[2],
-                    yPosition + drawPosition[0],
-                    drawPosition[1],
-                    drawPosition[1]
-                );
-            if (this.connection[i] & 2)
-                rect(
-                    xPosition + drawPosition[0],
-                    yPosition + drawPosition[2],
-                    drawPosition[1],
-                    drawPosition[1]
-                );
-            if (this.connection[i] & 8)
-                rect(
-                    xPosition + drawPosition[0],
-                    yPosition - drawPosition[0],
-                    drawPosition[1],
-                    drawPosition[1]
-                );
-        }
+    toggleValue() {
+        this.value = 1 - this.value;
+    }
 
-        for (let i = 0; i <= this.gridArea; ++i) {
-            if (this.grid[i]) {
-                fill(...this.colour[this.grid[i]]);
-                noStroke();
-                let xPosition = (i % this.gridSize) * this.tileSize;
-                let yPosition = Math.floor(i / this.gridSize) * this.tileSize;
-                if (this.grid[i] == 3) {
-                    rect(
-                        xPosition + drawPosition[0],
-                        yPosition + drawPosition[0],
-                        drawPosition[1],
-                        drawPosition[1]
-                    );
-                } else if (this.grid[i] == 4) {
-                    if (this.dir[i] == 8)
-                        triangle(
-                            xPosition + drawPosition[1],
-                            yPosition + drawPosition[3],
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[2],
-                            xPosition + drawPosition[2],
-                            yPosition + drawPosition[2]
-                        );
-                    else if (this.dir[i] == 4)
-                        triangle(
-                            xPosition + drawPosition[4],
-                            yPosition + drawPosition[1],
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[2],
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[0]
-                        );
-                    else if (this.dir[i] == 2)
-                        triangle(
-                            xPosition + drawPosition[1],
-                            yPosition + drawPosition[4],
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[0],
-                            xPosition + drawPosition[2],
-                            yPosition + drawPosition[0]
-                        );
-                    else if (this.dir[i] == 1)
-                        triangle(
-                            xPosition + drawPosition[3],
-                            yPosition + drawPosition[1],
-                            xPosition + drawPosition[2],
-                            yPosition + drawPosition[2],
-                            xPosition + drawPosition[2],
-                            yPosition + drawPosition[0]
-                        );
-                } else if (this.grid[i] == 5 || this.grid[i] == 6) {
-                    if (this.dir[i] == 8) {
-                        fill(...this.colour[1]);
-                        rect(
-                            xPosition + drawPosition[1],
-                            yPosition + drawPosition[0],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        rect(
-                            xPosition,
-                            yPosition + drawPosition[0],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        fill(...this.colour[2]);
-                        rect(
-                            xPosition + drawPosition[0],
-                            yPosition,
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                    } else if (this.dir[i] == 4) {
-                        fill(...this.colour[1]);
-                        rect(
-                            xPosition + drawPosition[0],
-                            yPosition,
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        rect(
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[1],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        fill(...this.colour[2]);
-                        rect(
-                            xPosition + drawPosition[1],
-                            yPosition + drawPosition[0],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                    } else if (this.dir[i] == 2) {
-                        fill(...this.colour[1]);
-                        rect(
-                            xPosition + drawPosition[1],
-                            yPosition + drawPosition[0],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        rect(
-                            xPosition,
-                            yPosition + drawPosition[0],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        fill(...this.colour[2]);
-                        rect(
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[1],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                    } else if (this.dir[i] == 1) {
-                        fill(...this.colour[1]);
-                        rect(
-                            xPosition + drawPosition[0],
-                            yPosition,
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        rect(
-                            xPosition + drawPosition[0],
-                            yPosition + drawPosition[1],
-                            drawPosition[1],
-                            drawPosition[1]
-                        );
-                        fill(...this.colour[2]);
-                        rect(
-                            xPosition,
-                            yPosition + drawPosition[0],
-                            drawPosition[0],
-                            drawPosition[1]
-                        );
-                    }
+    refresh() {
+        this.updateColor();
+        this.updateLimit();
 
-                    fill(...this.colour[this.grid[i]]);
-                    ellipse(
-                        xPosition + drawPosition[1],
-                        yPosition + drawPosition[1],
-                        drawPosition[1]
-                    );
-                } else {
-                    rect(
-                        xPosition + drawPosition[0],
-                        yPosition + drawPosition[0],
-                        drawPosition[1],
-                        drawPosition[1]
-                    );
+        for (let input of this.inputs) {
+            for (let i = 0; i < input.child.length; i++) {
+                let child = input.child[i];
+                if (this.equals(child)) {
+                    input.child.splice(i, 1);
                 }
             }
         }
+
+        this.inputs = [];
+    }
+
+    appendChild(gate) {
+        // console.log("bruh");
+        if (gate.inputs.length < gate.inputLimit) {
+            this.child.push(gate);
+            gate.inputs.push(this);
+        }
+    }
+
+    draw(size, selected) {
+        for (let child of this.child) {
+            stroke(0);
+            strokeWeight(5);
+            line(
+                this.displayX + this.tileSize / 2,
+                this.displayY + this.tileSize / 2,
+                child.displayX + child.tileSize / 2,
+                child.displayY + child.tileSize / 2
+            );
+        }
+
+        fill(this.color);
+
+        let extra = 1;
+
+        if (this.equals(selected)) {
+            extra = 1.5;
+        } else if (this.isHovered() && selected) {
+            if (this.layer - selected.layer == 1) {
+                extra = 1.2;
+            }
+        }
+
+        noStroke();
+        ellipse(
+            this.displayX + this.tileSize / 2,
+            this.displayY + this.tileSize / 2,
+            size * extra
+        );
+
+        stroke(0);
+        strokeWeight(1);
+        fill(255, 255, 255);
+        textSize(32);
+        textAlign(CENTER, CENTER);
+        text(
+            this.value,
+            this.displayX + this.tileSize / 2,
+            this.displayY + this.tileSize / 2
+        );
+    }
+
+    loop() {
+        this.type = (this.type + 1) % 4;
+
+        this.refresh();
+    }
+
+    isHovered() {
+        return (
+            mouseX > this.displayX &&
+            mouseX < this.displayX + this.tileSize &&
+            mouseY > this.displayY &&
+            mouseY < this.displayY + this.tileSize
+        );
+    }
+
+    equals(other) {
+        if (!other) {
+            return false;
+        }
+
+        return this.layer == other.layer && this.y == other.y;
+    }
+
+    updateValue() {
+        let a = this.inputs[0]?.value || 0;
+        let b = this.inputs[1]?.value || 0;
+
+        switch (this.type) {
+            case GATE_TYPES.AND:
+                this.value = a & b;
+                break;
+            case GATE_TYPES.OR:
+                this.value = a | b;
+                break;
+            case GATE_TYPES.NOT:
+                this.value = 1 - a;
+                if (this.inputs.length == 0) this.value = 0;
+                break;
+            case GATE_TYPES.OUTPUT:
+                this.value = a;
+                break;
+            case GATE_TYPES.NEUTRAL:
+                this.value = a;
+                break;
+        }
+    }
+}
+
+class LogicGates extends Scene {
+    init() {
+        this.gates = [];
+        this.selected = null;
+
+        this.selected = null;
+
+        this.initGates();
+    }
+
+    initGates() {
+        this.input_a = new Gate(GATE_TYPES.INPUT, -1, 0);
+        this.input_b = new Gate(GATE_TYPES.INPUT, -1, 1);
+
+        this.output = new Gate(GATE_TYPES.OUTPUT, logicGateGridSize, 0);
+
+        this.gates.push([this.input_a, this.input_b]);
+
+        for (let layer = 0; layer < logicGateGridSize; layer++) {
+            let currLayer = [];
+            for (let y = 0; y < logicGateGridSize; y++) {
+                currLayer.push(new Gate(GATE_TYPES.NEUTRAL, layer, y));
+            }
+
+            this.gates.push(currLayer);
+        }
+
+        this.gates.push([this.output]);
     }
 
     update() {
-        switch (keyCode) {
-            case 69:
-                //e, erase
-                this.mode = 0;
-                break;
-            case 87:
-                //w, wire
-                this.mode = 3;
-                break;
-            case 78:
-                //n, not gate
-                this.mode = 4;
-                break;
-            case 65:
-                //a, and gate
-                this.mode = 5;
-                break;
-            case 79:
-                //o, or gate
-                this.mode = 6;
-                break;
-        }
-        if (mouseIsPressed) {
-            let x = Math.floor((mouseX - this.leftPad) / this.tileSize);
-            let y = Math.floor((mouseY - this.topPad) / this.tileSize);
-
-            if (x >= 0 && x < this.gridSize && y >= 0 && y < this.gridSize) {
-                this.placeStuff(
-                    this.mode,
-                    y * this.gridSize + x,
-                    x,
-                    y,
-                    this.currDir
-                );
+        for (let layer of this.gates.slice(1)) {
+            for (let gate of layer) {
+                gate.updateValue();
             }
         }
     }
 
-    keyPressed() {
-        if (keyCode == 82) {
-            //rotate
-            this.currDir >>= 1;
-            if (!this.currDir) this.currDir = 8;
+    draw() {
+        if (this.selected) {
+            stroke(0);
+            strokeWeight(10);
+            line(
+                this.selected.displayX + this.selected.tileSize / 2,
+                this.selected.displayY + this.selected.tileSize / 2,
+                mouseX,
+                mouseY
+            );
+        }
+
+        this.drawGates();
+    }
+
+    drawGates() {
+        for (let layer of this.gates) {
+            for (let gate of layer) {
+                gate.draw(30, this.selected);
+            }
         }
     }
-    placeStuff(mode, idx, x, y, dir) {
-        if (!mode) {
-            if ([1, 2].includes(this.grid[idx])) return;
-            this.grid[idx] = mode;
-            this.connection[idx - 1] = 11 & this.connection[idx - 1];
-            this.connection[idx + 1] = 14 & this.connection[idx + 1];
-            this.connection[idx + this.gridSize] =
-                7 & this.connection[idx + this.gridSize];
-            this.connection[idx - this.gridSize] =
-                13 & this.connection[idx - this.gridSize];
-            this.connection[idx] = 0;
-            this.dir[idx] = 0;
+
+    mousePressed() {
+        let gate = this.getHovered();
+
+        if (this.selected) {
+            this.selected.appendChild(gate);
+            this.selected = null;
+        } else {
+            this.selected = gate;
+        }
+    }
+
+    mouseReleased() {
+        if (!this.selected) {
             return;
         }
-        if (this.grid[idx]) return;
-        this.grid[idx] = mode;
-        if (mode == 3) {
-            //0000 up,right,down,left
-            const availableConect = [1, 2, 3, 4, 5, 6];
-            let isDirectionValid4;
-            let isDirectionValid5_6;
-            let isTarget4;
-            let isTarget5_6;
-            if (y - 1 >= 0) {
-                if (availableConect.includes(this.grid[idx - this.gridSize])) {
-                    isDirectionValid4 =
-                        this.dir[idx - this.gridSize] === 8 ||
-                        this.dir[idx - this.gridSize] === 2;
-                    isDirectionValid5_6 = this.dir[idx - this.gridSize] !== 8;
-                    isTarget4 = this.grid[idx - this.gridSize] === 4;
-                    isTarget5_6 =
-                        this.grid[idx - this.gridSize] === 5 ||
-                        this.grid[idx - this.gridSize] === 6;
 
-                    if (
-                        isTarget4
-                            ? isDirectionValid4
-                            : isTarget5_6
-                            ? isDirectionValid5_6
-                            : true
-                    ) {
-                        this.connection[idx - this.gridSize] |= 2;
-                        this.connection[idx] |= 8;
-                    }
-                }
-            }
-            if (x + 1 < this.gridSize) {
-                if (availableConect.includes(this.grid[idx + 1])) {
-                    isDirectionValid4 =
-                        this.dir[idx + 1] === 4 || this.dir[idx + 1] === 1;
-                    isDirectionValid5_6 = this.dir[idx + 1] !== 4;
-                    isTarget4 = this.grid[idx + 1] === 4;
-                    isTarget5_6 =
-                        this.grid[idx + 1] === 5 || this.grid[idx + 1] === 6;
+        let hovered = this.getHovered();
 
-                    if (
-                        isTarget4
-                            ? isDirectionValid4
-                            : isTarget5_6
-                            ? isDirectionValid5_6
-                            : true
-                    ) {
-                        this.connection[idx + 1] |= 1;
-                        this.connection[idx] |= 4;
-                    }
+        if (hovered) {
+            if (this.selected.equals(hovered)) {
+                if (this.selected.type == GATE_TYPES.INPUT) {
+                    this.selected.toggleValue();
+                } else if (this.selected.type == GATE_TYPES.OUTPUT) {
+                    this.selected.refresh();
+                } else {
+                    this.selected.loop();
                 }
-            }
-            if (y + 1 < this.gridSize) {
-                if (availableConect.includes(this.grid[idx + this.gridSize])) {
-                    isDirectionValid4 =
-                        this.dir[idx + this.gridSize] === 2 ||
-                        this.dir[idx + this.gridSize] === 8;
-                    isDirectionValid5_6 = this.dir[idx + this.gridSize] !== 2;
-                    isTarget4 = this.grid[idx + this.gridSize] === 4;
-                    isTarget5_6 =
-                        this.grid[idx + this.gridSize] === 5 ||
-                        this.grid[idx + this.gridSize] === 6;
-
-                    if (
-                        isTarget4
-                            ? isDirectionValid4
-                            : isTarget5_6
-                            ? isDirectionValid5_6
-                            : true
-                    ) {
-                        this.connection[idx + this.gridSize] |= 8;
-                        this.connection[idx] |= 2;
-                    }
-                }
-            }
-            if (x - 1 >= 0) {
-                if (availableConect.includes(this.grid[idx - 1])) {
-                    isDirectionValid4 =
-                        this.dir[idx - 1] === 1 || this.dir[idx - 1] === 4;
-                    isDirectionValid5_6 = this.dir[idx - 1] !== 1;
-                    isTarget4 = this.grid[idx - 1] === 4;
-                    isTarget5_6 =
-                        this.grid[idx - 1] === 5 || this.grid[idx - 1] === 6;
-
-                    if (
-                        isTarget4
-                            ? isDirectionValid4
-                            : isTarget5_6
-                            ? isDirectionValid5_6
-                            : true
-                    ) {
-                        this.connection[idx - 1] |= 4;
-                        this.connection[idx] |= 1;
-                    }
-                }
+            } else if (hovered.layer - this.selected.layer == 1) {
+                this.selected.appendChild(hovered);
             }
         }
-        if (mode == 4 || mode == 5 || mode == 6) {
-            //0000 up,right,down,left
-            this.dir[idx] = dir;
-        }
-        if (mode == 4) {
-            //0000 up,right,down,left
-            const availableConect = [1, 2, 3, 4, 5, 6];
-            let isDirectionValid4;
-            let isDirectionValid4nxt;
-            let isDirectionValid5_6;
-            let isTarget5_6;
-            let isTarget4;
-            if (y - 1 >= 0) {
-                if (availableConect.includes(this.grid[idx - this.gridSize])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx - this.gridSize] === 8 ||
-                        this.dir[idx - this.gridSize] === 2;
-                    isDirectionValid4 =
-                        this.dir[idx] === 8 || this.dir[idx] === 2;
-                    isDirectionValid5_6 = this.dir[idx - this.gridSize] !== 8;
-                    isTarget5_6 =
-                        this.grid[idx - this.gridSize] === 5 ||
-                        this.grid[idx - this.gridSize] === 6;
-                    isTarget4 = this.grid[idx - this.gridSize] === 4;
 
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx - this.gridSize] |= 2;
-                        this.connection[idx] |= 8;
-                    }
-                }
-            }
-            if (x + 1 < this.gridSize) {
-                if (availableConect.includes(this.grid[idx + 1])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx + 1] === 4 || this.dir[idx + 1] === 1;
-                    isDirectionValid4 =
-                        this.dir[idx] === 4 || this.dir[idx] === 1;
-                    isDirectionValid5_6 = this.dir[idx + 1] !== 4;
-                    isTarget5_6 =
-                        this.grid[idx + 1] === 5 || this.grid[idx + 1] === 6;
-                    isTarget4 = this.grid[idx + 1] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx + 1] |= 1;
-                        this.connection[idx] |= 4;
-                    }
-                }
-            }
-            if (y + 1 < this.gridSize) {
-                if (availableConect.includes(this.grid[idx + this.gridSize])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx + this.gridSize] === 2 ||
-                        this.dir[idx + this.gridSize] === 8;
-                    isDirectionValid4 =
-                        this.dir[idx] === 2 || this.dir[idx] === 8;
-                    isDirectionValid5_6 = this.dir[idx + this.gridSize] !== 2;
-                    isTarget5_6 =
-                        this.grid[idx + this.gridSize] === 5 ||
-                        this.grid[idx + this.gridSize] === 6;
-                    isTarget4 = this.grid[idx + this.gridSize] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx + this.gridSize] |= 8;
-                        this.connection[idx] |= 2;
-                    }
-                }
-            }
-            if (x - 1 >= 0) {
-                if (availableConect.includes(this.grid[idx - 1])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx - 1] === 1 || this.dir[idx - 1] === 4;
-                    isDirectionValid4 =
-                        this.dir[idx] === 1 || this.dir[idx] === 4;
-                    isDirectionValid5_6 = this.dir[idx - 1] !== 1;
-                    isTarget5_6 =
-                        this.grid[idx - 1] === 5 || this.grid[idx - 1] === 6;
-                    isTarget4 = this.grid[idx - 1] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx - 1] |= 4;
-                        this.connection[idx] |= 1;
-                    }
-                }
-            }
-        }
-        if (mode == 5 || mode == 6) {
-            //0000 up,right,down,left
-            const availableConect = [1, 2, 3, 4, 5, 6];
-            let isDirectionValid4;
-            let isDirectionValid4nxt;
-            let isDirectionValid5_6nxt;
-            let isDirectionValid5_6;
-            let isTarget5_6;
-            let isTarget4;
-            if (y - 1 >= 0) {
-                if (availableConect.includes(this.grid[idx - this.gridSize])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx - this.gridSize] === 8 ||
-                        this.dir[idx - this.gridSize] === 2;
-                    isDirectionValid4 =
-                        this.dir[idx] === 8 || this.dir[idx] === 2;
-                    isDirectionValid5_6 = this.dir[idx] !== 8;
-                    isDirectionValid5_6nxt =
-                        this.dir[idx - this.gridSize] !== 2;
-                    isTarget5_6 =
-                        this.grid[idx - this.gridSize] === 5 ||
-                        this.grid[idx - this.gridSize] === 6;
-                    isTarget4 = this.grid[idx - this.gridSize] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6nxt
-                                ? isDirectionValid5_6
-                                : false
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx - this.gridSize] |= 2;
-                        this.connection[idx] |= 8;
-                    }
-                }
-            }
-            if (x + 1 < this.gridSize) {
-                if (availableConect.includes(this.grid[idx + 1])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx + 1] === 4 || this.dir[idx + 1] === 1;
-                    isDirectionValid4 =
-                        this.dir[idx] === 4 || this.dir[idx] === 1;
-                    isDirectionValid5_6 = this.dir[idx] !== 4;
-                    isDirectionValid5_6nxt = this.dir[idx + 1] !== 1;
-                    isTarget5_6 =
-                        this.grid[idx + 1] === 5 || this.grid[idx + 1] === 6;
-                    isTarget4 = this.grid[idx + 1] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6nxt
-                                ? isDirectionValid5_6
-                                : false
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx + 1] |= 1;
-                        this.connection[idx] |= 4;
-                    }
-                }
-            }
-            if (y + 1 < this.gridSize) {
-                if (availableConect.includes(this.grid[idx + this.gridSize])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx + this.gridSize] === 2 ||
-                        this.dir[idx + this.gridSize] === 8;
-                    isDirectionValid4 =
-                        this.dir[idx] === 2 || this.dir[idx] === 8;
-                    isDirectionValid5_6 = this.dir[idx] !== 2;
-                    isDirectionValid5_6nxt =
-                        this.dir[idx + this.gridSize] !== 8;
-                    isTarget5_6 =
-                        this.grid[idx + this.gridSize] === 5 ||
-                        this.grid[idx + this.gridSize] === 6;
-                    isTarget4 = this.grid[idx + this.gridSize] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6nxt
-                                ? isDirectionValid5_6
-                                : false
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx + this.gridSize] |= 8;
-                        this.connection[idx] |= 2;
-                    }
-                }
-            }
-            if (x - 1 >= 0) {
-                if (availableConect.includes(this.grid[idx - 1])) {
-                    isDirectionValid4nxt =
-                        this.dir[idx - 1] === 1 || this.dir[idx - 1] === 4;
-                    isDirectionValid4 =
-                        this.dir[idx] === 1 || this.dir[idx] === 4;
-                    isDirectionValid5_6 = this.dir[idx] !== 1;
-                    isDirectionValid5_6nxt = this.dir[idx - 1] !== 4;
-                    isTarget5_6 =
-                        this.grid[idx - 1] === 5 || this.grid[idx - 1] === 6;
-                    isTarget4 = this.grid[idx - 1] === 4;
-
-                    if (
-                        isTarget5_6
-                            ? isDirectionValid5_6nxt
-                                ? isDirectionValid5_6
-                                : false
-                            : isTarget4
-                            ? isDirectionValid4nxt
-                                ? isDirectionValid4
-                                : false
-                            : isDirectionValid4
-                    ) {
-                        this.connection[idx - 1] |= 4;
-                        this.connection[idx] |= 1;
-                    }
-                }
-            }
-        }
+        this.selected = null;
     }
 
-    getCellFromScreenPosition(sx, sy) {
-        let x = Math.floor((sx - this.leftPad) / this.tileSize);
-        let y = Math.floor((sy - this.topPad) / this.tileSize);
+    getHovered() {
+        for (let layer of this.gates) {
+            for (let gate of layer) {
+                if (gate.isHovered()) {
+                    return gate;
+                }
+            }
+        }
 
-        if (x >= 0 && x < this.gridSize && y >= 0 && y < this.gridSize)
-            return this.grid[y * this.gridSize + x];
         return null;
     }
 }

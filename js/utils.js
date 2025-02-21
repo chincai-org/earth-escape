@@ -33,18 +33,27 @@ function dialogBox(txt, name, align) {
     fill(0);
     textFont("Comic Sans", 20);
     textStyle(NORMAL);
+    textAlign(LEFT);
     text(
         txt,
         canvasWidth * 0.116,
         canvasWidth * 0.016 + BoxY,
         canvasWidth * 0.768,
-        BoxHeight - canvasWidth * 0.032
+        BoxHeight - canvasWidth * 0.032 - canvasHeight * 0.03
+    );
+    textAlign(RIGHT);
+    text(
+        "<Click to proceed>",
+        canvasWidth * 0.116,
+        BoxY + canvasHeight * 0.20 - canvasWidth * 0.016,
+        canvasWidth * 0.768,
+        canvasHeight * 0.23 - canvasWidth * 0.032
     );
 
+    textAlign(LEFT);
     if (align == "left") {
         fill(252, 187, 3);
-        rect(
-            canvasWidth * 0.2,
+        rect(canvasWidth * 0.2,
             canvasHeight * 0.68,
             canvasWidth * 0.2,
             canvasHeight * 0.0703,

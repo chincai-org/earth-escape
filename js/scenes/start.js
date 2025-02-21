@@ -34,7 +34,7 @@ class Start extends Scene {
                 },
                 {
                     name: "???",
-                    text: "*Kaboom*",
+                    text: "*dong dong dong dong*",
                     align: "left",
                 },
                 {
@@ -44,12 +44,12 @@ class Start extends Scene {
                 },
                 {
                     name: "Polikino",
-                    text: "I think the UFO is out of fuel.",
+                    text: "I think the spaceship is out of fuel.",
                     align: "left"
                 },
                 {
                     name: "Kikiko",
-                    text: "What!? AHHHHHHHHH",
+                    text: "What!? AHHHHHHHHHH",
                     align: "right"
 
                 }]
@@ -75,12 +75,12 @@ class Start extends Scene {
                         {
                             name: "Polikino",
                             text: "Sorry sir.",
-                            align: "right"
+                            align: "left"
                         },
                         {
                             name: "Kikiko",
                             text: "Where are we?",
-                            align: "left"
+                            align: "right"
                         },
                         {
                             name: "Polikino",
@@ -89,8 +89,8 @@ class Start extends Scene {
                         },
                         {
                             name: "Kikiko",
-                            text: "Hm, look like the spaceship isn't that broken, let us find resources to fix this spaceship on this planet. Go explore and find something useful for me.",
-                            align: "left"
+                            text: "Hm, looks like the spaceship is slightly broken, let us find resources on this planet to fix this spacesship. Go explore and find something useful for me.",
+                            align: "right"
                         },
                         {
                             name: "Polikino",
