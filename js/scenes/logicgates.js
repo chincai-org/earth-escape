@@ -195,6 +195,13 @@ class Gate {
                 break;
         }
     }
+
+    clone() {
+        let gate = new Gate(this.type, this.layer, this.y);
+        gate.value = this.value;
+
+        return gate;
+    }
 }
 
 class LogicGates extends Scene {
@@ -205,6 +212,8 @@ class LogicGates extends Scene {
         this.selected = null;
 
         this.initGates();
+
+        this.solved = false;
     }
 
     initGates() {
@@ -228,7 +237,14 @@ class LogicGates extends Scene {
     }
 
     update() {
-        for (let layer of this.gates.slice(1)) {
+        this.updateGates();
+
+        this.solved = this.isSolved();
+    }
+
+    updateGates(gates = null) {
+        gates = gates || this.gates;
+        for (let layer of gates.slice(1)) {
             for (let gate of layer) {
                 gate.updateValue();
             }
@@ -248,6 +264,12 @@ class LogicGates extends Scene {
         }
 
         this.drawGates();
+
+        if (this.solved) {
+            text("Solved", 0, 0, 100, 100);
+        } else {
+            text("Not solved", 0, 0, 100, 100);
+        }
     }
 
     drawGates() {
@@ -303,5 +325,53 @@ class LogicGates extends Scene {
         }
 
         return null;
+    }
+
+    isSolved() {
+        // Test if gates recreated XOR
+        let foo = this.input_a.value;
+        let bar = this.input_b.value;
+
+        let result = true;
+
+        let testCases = [
+            [0, 0, 0],
+            [0, 1, 1],
+            [1, 0, 1],
+            [1, 1, 0]
+        ];
+
+        for (let [a, b, o] of testCases) {
+            this.input_a.value = a;
+            this.input_b.value = b;
+
+            this.updateGates();
+
+            if (this.output.value != o) {
+                result = false;
+                break;
+            }
+        }
+
+        this.input_a.value = foo;
+        this.input_b.value = bar;
+
+        this.updateGates();
+
+        return result;
+    }
+
+    cloneGates() {
+        let gates = [];
+
+        for (let layer of this.gates) {
+            let currLayer = [];
+
+            for (let gate of layer) {
+                currLayer.push(gate.clone());
+            }
+
+            gates.push(currLayer);
+        }
     }
 }
