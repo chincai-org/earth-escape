@@ -28,7 +28,7 @@ function setup() {
     canvas.parent("main");
     background(255);
 
-    tipsManager.show(200, 200, "Click here to enter room", true);
+    //tipsManager.show(200, 200, "Click here to enter room", true);
 
     // scenes[4].initial = false
     // scenes[4].transition[0].running = true;
