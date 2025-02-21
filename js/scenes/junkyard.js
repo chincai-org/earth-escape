@@ -42,4 +42,8 @@ class junkyard extends Scene {
         if (this.prompt)
             text(this.prompt, canvasWidth / 2, TEXTSIZE + this.promptTime);
     }
+
+    transition() {
+        hand = null;
+    }
 }
