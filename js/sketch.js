@@ -25,14 +25,14 @@ let debug_dots = [];
 
 const music = [
     {
-        link: "https://p.scdn.co/mp3-preview/974b7a90aa0eb97e680dcfcaf75fc0b9009f956c?cid=8ea41de8518143f1857d437b32885843",
+        link: "",
         name: "music1",
-        group: "background music"
+        group: ""
     },
     {
-        link: "https://p.scdn.co/mp3-preview/acc66923ff7c8d2959522429f167bde7fcd2f4b0?cid=8ea41de8518143f1857d437b32885843",
-        name: "music2",
-        group: "background music"
+        link: "",
+        name: "",
+        group: ""
     }
 ];
 
