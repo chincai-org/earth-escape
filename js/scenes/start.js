@@ -22,6 +22,7 @@ class Start extends Scene {
                 alpha: [2, 2],
                 currentAlpha: [0, 255],
                 playing: 0,
+                skipLastTransition: true,
                 dialog: [{
                     name: "Kikiko",
                     text: "Drive quickly, I am going to be late for a meeting!!!",
@@ -63,7 +64,6 @@ class Start extends Scene {
                 type: [0, 1], //+, -
                 alpha: [2, 2],
                 currentAlpha: [0, 255],
-                skipLastTransition: true,
                 playing: 0,
                 dialog:
                     [
@@ -148,6 +148,7 @@ class Start extends Scene {
             dialougeManager.play(this.transition[this.storyTelling].dialog);
             this.transition[this.storyTelling].playing = 1;
         }
+
         if (!dialougeManager.active && this.transition[this.storyTelling].playing == 1 && !this.transition[this.storyTelling].running && this.transition[this.storyTelling].skipLastTransition) {
             this.next();
         }

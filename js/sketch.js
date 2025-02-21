@@ -7,7 +7,8 @@ const scenes = [
     new Puzzle(),
     new Cave(),
     new Start(),
-    new screwDriver()
+    new screwDriver(),
+    new junkyard()
 ];
 
 let currentSceneIndex = -1;

@@ -53,7 +53,8 @@ function dialogBox(txt, name, align) {
     textAlign(LEFT);
     if (align == "left") {
         fill(252, 187, 3);
-        rect(canvasWidth * 0.2,
+        rect(
+            canvasWidth * 0.2,
             canvasHeight * 0.68,
             canvasWidth * 0.2,
             canvasHeight * 0.0703,
