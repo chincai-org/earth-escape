@@ -64,6 +64,9 @@ class Gate {
             case GATE_TYPES.NOT:
                 this.color = [255, 0, 255];
                 break;
+            case GATE_TYPES.NEUTRAL:
+                this.color = [0, 0, 0];
+                break;
         }
     }
 
@@ -147,10 +150,7 @@ class Gate {
     }
 
     loop() {
-        this.type += 1;
-        if (this.type > GATE_TYPES.NOT) {
-            this.type = GATE_TYPES.NEUTRAL;
-        }
+        this.type = (this.type + 1) % 4;
 
         this.refresh();
     }
