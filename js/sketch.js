@@ -20,19 +20,6 @@ const tipsManager = new TipsManager();
 // let menu_bg, cave_bg, ufo_img;
 let images = {};
 
-let dialog = [
-    {
-        name: "Kikiko",
-        text: "Nothing can go wrong... right?",
-        align: "right"
-    },
-    {
-        name: "Polikino",
-        text: "I hope so...",
-        align: "left"
-    }
-];
-
 let debug_rects = [];
 let debug_dots = [];
 
@@ -41,8 +28,7 @@ function setup() {
     canvas.parent("main");
     background(255);
 
-    dialougeManager.play(dialog);
-    tipsManager.show(200, 200, "Click here to enter room", true);
+    //tipsManager.show(200, 200, "Click here to enter room", true);
 
     // scenes[4].initial = false
     // scenes[4].transition[0].running = true;
@@ -71,21 +57,21 @@ function draw() {
         scenes[currentSceneIndex].lateUpdate();
     } else {
         image(images.menu_bg, 0, 0, canvasWidth, canvasHeight);
-
-        dialougeManager.update();
-        if (dialougeManager.active) {
-            dialougeManager.draw();
-            dialougeManager.lateUpdate();
-        }
-
-        // drawTips(200, 200, "Click anywhere to continue", true);
-
-        tipsManager.update(dt);
-        if (tipsManager.active) {
-            tipsManager.draw();
-        }
-
         ellipse(200, 200, 10, 10);
+
+    }
+
+    dialougeManager.update();
+    if (dialougeManager.active) {
+        dialougeManager.draw();
+        dialougeManager.lateUpdate();
+    }
+
+    // drawTips(200, 200, "Click anywhere to continue", true);
+
+    tipsManager.update(dt);
+    if (tipsManager.active) {
+        tipsManager.draw();
     }
 
     for (let [x, y] of debug_dots) {
