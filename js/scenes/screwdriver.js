@@ -14,7 +14,7 @@ class screwDriver extends Scene {
             return;
         }
         for (let i = 0; i < this.screws.length; ++i) {
-            if (++this.screws[i][3] > 300) {
+            if (++this.screws[i][3] > 360) {
                 this.screws.splice(i, 1);
                 this.miss++;
 
