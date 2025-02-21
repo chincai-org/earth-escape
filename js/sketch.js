@@ -39,7 +39,6 @@ const music = [
     }
 ];
 
-
 const sound = new Sound(music);
 
 function setup() {
@@ -61,7 +60,8 @@ function preload() {
     images = {
         menu_bg: loadImage("assets/images/menu.png"),
         cave_bg: loadImage("assets/images/cave.png"),
-        ufo_img: loadImage("assets/images/ufo.png")
+        ufo_img: loadImage("assets/images/ufo.png"),
+        ufo_hovered_img: loadImage("assets/images/ufo_hovered.png")
     };
 }
 
@@ -77,7 +77,6 @@ function draw() {
     } else {
         image(images.menu_bg, 0, 0, canvasWidth, canvasHeight);
         ellipse(200, 200, 10, 10);
-
     }
 
     dialougeManager.update();
@@ -130,7 +129,14 @@ function mousePressed() {
             debug_rects.push([x1, y1, width, height]);
             debug_dots = [];
 
-            console.log([x1, y1, width, height]);
+            console.log(
+                ...[
+                    x1 / canvasWidth,
+                    y1 / canvasHeight,
+                    width / canvasWidth,
+                    height / canvasHeight
+                ]
+            );
         }
     }
 

@@ -18,9 +18,21 @@ class Interactable {
 
     draw() {
         if (this.isHovered()) {
-            image(images[this.hoveredImage], this.x, this.y);
+            image(
+                images[this.hoveredImage],
+                this.x,
+                this.y,
+                canvasWidth,
+                canvasHeight
+            );
         } else {
-            image(images[this.image], this.x, this.y);
+            image(
+                images[this.image],
+                this.x,
+                this.y,
+                canvasWidth,
+                canvasHeight
+            );
         }
     }
 
@@ -47,5 +59,14 @@ class Interactable {
             this.jr.y >= y &&
             this.jr.y <= y + h
         );
+    }
+
+    setBox(x, y, w, h) {
+        this.box = [
+            x * canvasWidth,
+            y * canvasHeight,
+            w * canvasWidth,
+            h * canvasHeight
+        ];
     }
 }
