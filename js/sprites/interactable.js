@@ -18,9 +18,21 @@ class Interactable {
 
     draw() {
         if (this.isHovered()) {
-            image(images[this.hoveredImage], this.x, this.y);
+            image(
+                images[this.hoveredImage],
+                this.x,
+                this.y,
+                canvasWidth,
+                canvasHeight
+            );
         } else {
-            image(images[this.image], this.x, this.y);
+            image(
+                images[this.image],
+                this.x,
+                this.y,
+                canvasWidth,
+                canvasHeight
+            );
         }
     }
 
