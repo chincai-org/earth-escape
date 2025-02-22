@@ -374,4 +374,8 @@ class LogicGates extends Scene {
             gates.push(currLayer);
         }
     }
+
+    transition() {
+        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
+    }
 }

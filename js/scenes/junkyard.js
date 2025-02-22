@@ -45,5 +45,6 @@ class junkyard extends Scene {
 
     transition() {
         hand = null;
+        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
     }
 }

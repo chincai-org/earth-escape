@@ -14,7 +14,7 @@ class screwDriver extends Scene {
             return;
         }
         for (let i = 0; i < this.screws.length; ++i) {
-            if (++this.screws[i][3] > 360) {
+            if (++this.screws[i][3] > 400) {
                 this.screws.splice(i, 1);
                 this.miss++;
 
@@ -44,7 +44,7 @@ class screwDriver extends Scene {
 
         if (this.tick % this.spawnRate == 0) {
             if (this.spawnRate > 50) {
-                --this.spawnRate;
+                this.spawnRate >= 75 ? this.spawnRate -= 2 : this.spawnRate >= 70 ? --this.spawnRate : this.spawnRate -= .5;
             }
             else {
                 this.spawnRate = 1;
