@@ -10,10 +10,13 @@ class Cave extends Scene {
                 0.31756756756756754
             );
 
+        this.bigUFO = new Interactable(this.jr);
+        this.bigUFO.setImages("big_ufo").displayNone();
+
         this.ufo_a = new Door(this.jr);
         this.ufo_a
-            .setImages("big_ufo", "big_ufo_a")
-            .setTransition(7)
+            .setImages("", "big_ufo_a")
+            .setTransition(WIRING)
             .setBox(
                 0.6864525139664804,
                 0.3657289002557545,
@@ -36,9 +39,11 @@ class Cave extends Scene {
             );
 
         this.interactables.push(this.ufo);
+        // this.interactables.push(this.caveExit);
+        this.interactables.push(this.bigUFO);
         this.interactables.push(this.ufo_a);
 
-        this.parts = [this.ufo_a];
+        this.parts = [this.bigUFO, this.ufo_a];
 
         // this.jrStart = { x: 0.19343575418994413, y: 0.4322250639386189 };
         // this.jrEnd = { x: 0.2, y: 0.5 };
@@ -89,6 +94,7 @@ class Cave extends Scene {
         this.currentAct = 0;
 
         this.showBigUFO = false;
+        this.nextLevel = -1;
     }
 
     update(dt) {
@@ -100,16 +106,22 @@ class Cave extends Scene {
 
         let act = this.acts[this.currentAct];
 
-        this.ufo.update();
-        this.ufo_a.update();
+        if (this.ufo.isReached()) {
+            transition(this.nextLevel);
+        } else if (this.ufo.isReached(this.sr)) {
+            this.sr.exist = false;
+        }
+
         if (act.junkYard) this.caveExit.update();
 
         if (act.dialog && act.dialog.length) {
+            // if act has dialog
             if (!act.dialogStarted) {
+                // if dialog has not started
                 dialougeManager.play(act.dialog);
                 act.dialogStarted = true;
             }
-            this.ufo.update();
+            // this.ufo.update();
         } else {
             act.dialogStarted = true;
             act.dialogEnded = true;
@@ -121,15 +133,16 @@ class Cave extends Scene {
             act.dialogEnded = true;
 
             if (act.id == "wiring_tut") {
-                tipsManager.show(
-                    0.17039106145251395 * canvasWidth,
-                    0.31074168797953966 * canvasHeight,
-                    "Click on the UFO.",
-                    true
-                );
-
                 let goDirection = this.ufo_a.getGoDirection();
                 console.log(goDirection);
+                setTimeout(() => {
+                    tipsManager.show(
+                        0.17039106145251395 * canvasWidth,
+                        0.31074168797953966 * canvasHeight,
+                        "Click on the UFO.",
+                        true
+                    );
+                }, 2000);
                 this.sr.travelTo(goDirection.x, goDirection.y);
             }
         }
@@ -142,24 +155,40 @@ class Cave extends Scene {
             return;
         }
 
-        let act = this.acts[this.currentAct];
-
-        if (this.ufo.isHovered()) {
-            let goDirection = this.ufo.getGoDirection();
-            this.jr.travelTo(goDirection.x, goDirection.y);
-            this.showBigUFO = true;
-            this.ufo_a.display = true;
-            return;
-        }
-
         if (this.showBigUFO) {
             for (let parts of this.parts) {
                 if (parts.isHovered() && !this.jr.isTravelling()) {
                     let goDirection = this.ufo_a.getGoDirection();
                     this.jr.travelTo(goDirection.x, goDirection.y);
                     this.showBigUFO = false;
+                    this.nextLevel = parts.transitionDestination;
+
+                    this.parts.forEach(part => {
+                        part.display = false;
+                    });
                 }
             }
+            return;
+        }
+
+        let act = this.acts[this.currentAct];
+
+        if (this.ufo.isHovered()) {
+            // let goDirection = this.ufo.getGoDirection();
+            // this.jr.travelTo(goDirection.x, goDirection.y);
+
+            this.showBigUFO = true;
+            this.parts.forEach(part => {
+                part.display = true;
+            });
+
+            tipsManager.show(
+                0.7304469273743017 * canvasWidth,
+                0.3491048593350384 * canvasHeight,
+                "Click on this room"
+            );
+
+            return;
         }
 
         if (
@@ -176,6 +205,10 @@ class Cave extends Scene {
         image(images.cave_bg, 0, 0, canvasWidth, canvasHeight);
         this.jr.draw();
         this.sr.draw();
+
+        // if (this.showBigUFO) {
+        //     image(images.big_ufo, 0, 0, canvasWidth, canvasHeight);
+        // }
 
         super.draw();
     }

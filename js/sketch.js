@@ -151,6 +151,10 @@ function keyPressed() {
         transition(keyCode - 48, 5, 5);
     }
 
+    if (keyCode == BACKSPACE) {
+        dialougeManager.reset();
+    }
+
     if (dialougeManager.active) {
         dialougeManager.keyPressed();
         return; // Disable any key events if dialogue is active

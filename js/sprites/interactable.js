@@ -25,30 +25,35 @@ class Interactable {
         }
 
         if (this.image == "" || this.hoveredImage == "") {
-            let [x, y, w, h] = this.box;
-            noFill();
-            stroke(135, 206, 235);
-            strokeWeight(2);
-            rect(x, y, w, h);
-            return;
+            // let [x, y, w, h] = this.box;
+            // noFill();
+            // stroke(135, 206, 235);
+            // strokeWeight(2);
+            // rect(x, y, w, h);
+            // return;
+            console.log("not images");
         }
 
         if (this.isHovered()) {
-            image(
-                images[this.hoveredImage],
-                this.x,
-                this.y,
-                canvasWidth,
-                canvasHeight
-            );
+            if (this.hoveredImage.length) {
+                image(
+                    images[this.hoveredImage],
+                    this.x,
+                    this.y,
+                    canvasWidth,
+                    canvasHeight
+                );
+            }
         } else {
-            image(
-                images[this.image],
-                this.x,
-                this.y,
-                canvasWidth,
-                canvasHeight
-            );
+            if (this.image.length) {
+                image(
+                    images[this.image],
+                    this.x,
+                    this.y,
+                    canvasWidth,
+                    canvasHeight
+                );
+            }
         }
     }
 
@@ -62,18 +67,20 @@ class Interactable {
         return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h;
     }
 
-    isReached() {
+    isReached(target = null) {
         if (!this.box) {
             return false;
         }
 
+        target = target || this.jr;
+
         let [x, y, w, h] = this.box;
 
         return (
-            this.jr.x >= x &&
-            this.jr.x <= x + w &&
-            this.jr.y >= y &&
-            this.jr.y <= y + h
+            target.x >= x &&
+            target.x <= x + w &&
+            target.y >= y &&
+            target.y <= y + h
         );
     }
 
