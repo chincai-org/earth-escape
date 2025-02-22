@@ -1,7 +1,14 @@
 class Cave extends Scene {
     init() {
         this.ufo = new Interactable(this.jr);
-        this.ufo.setImages("ufo_img", "ufo_hovered_img");
+        this.ufo
+            .setImages("ufo_img", "ufo_hovered_img")
+            .setBox(
+                0.05411255411255411,
+                0.3162162162162162,
+                0.2712842712842713,
+                0.31756756756756754
+            );
 
         this.ufo_a = new Door(this.jr);
         this.ufo_a
@@ -94,6 +101,7 @@ class Cave extends Scene {
         let act = this.acts[this.currentAct];
 
         this.ufo.update();
+        this.ufo_a.update();
         if (act.junkYard) this.caveExit.update();
 
         if (act.dialog && act.dialog.length) {
@@ -101,6 +109,7 @@ class Cave extends Scene {
                 dialougeManager.play(act.dialog);
                 act.dialogStarted = true;
             }
+            this.ufo.update();
         } else {
             act.dialogStarted = true;
             act.dialogEnded = true;
@@ -119,7 +128,7 @@ class Cave extends Scene {
                     true
                 );
 
-                let goDirection = this.ufo.getGoDirection();
+                let goDirection = this.ufo_a.getGoDirection();
                 console.log(goDirection);
                 this.sr.travelTo(goDirection.x, goDirection.y);
             }
@@ -136,15 +145,17 @@ class Cave extends Scene {
         let act = this.acts[this.currentAct];
 
         if (this.ufo.isHovered()) {
+            let goDirection = this.ufo.getGoDirection();
+            this.jr.travelTo(goDirection.x, goDirection.y);
             this.showBigUFO = true;
-            this.ufo_a.display(); // fuck
+            this.ufo_a.display = true;
             return;
         }
 
         if (this.showBigUFO) {
             for (let parts of this.parts) {
                 if (parts.isHovered() && !this.jr.isTravelling()) {
-                    let goDirection = this.ufo.getGoDirection();
+                    let goDirection = this.ufo_a.getGoDirection();
                     this.jr.travelTo(goDirection.x, goDirection.y);
                     this.showBigUFO = false;
                 }

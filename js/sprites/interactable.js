@@ -11,6 +11,7 @@ class Interactable {
         this.jr = jr;
 
         this.display = true;
+        this.goDirection = { x: -1, y: -1 };
 
         this.init();
     }
@@ -96,5 +97,16 @@ class Interactable {
     displayNone() {
         this.display = false;
         return this;
+    }
+
+    getGoDirection() {
+        if (this.goDirection.x === -1 && this.goDirection.y === -1) {
+            return { x: mouseX, y: mouseY };
+        } else {
+            return {
+                x: this.goDirection.x * canvasWidth,
+                y: this.goDirection.y * canvasHeight
+            };
+        }
     }
 }

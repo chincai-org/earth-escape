@@ -1,7 +1,6 @@
 class Door extends Interactable {
     init() {
         this.transitionDestination = -1;
-        this.goDirection = { x: -1, y: -1 };
     }
 
     setTransition(transitionDestination) {
@@ -12,17 +11,6 @@ class Door extends Interactable {
     setGoDirection(x, y) {
         this.goDirection = { x, y };
         return this;
-    }
-
-    getGoDirection() {
-        if (this.goDirection.x === -1 && this.goDirection.y === -1) {
-            return { x: mouseX, y: mouseY };
-        } else {
-            return {
-                x: this.goDirection.x * canvasWidth,
-                y: this.goDirection.y * canvasHeight
-            };
-        }
     }
 
     update() {
