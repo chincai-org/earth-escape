@@ -104,7 +104,12 @@ class Cave extends Scene {
                     },
                     {
                         name: "Kikiko",
-                        text: "Ok, follow me to the spaceship",
+                        text: "It seems like our spaceship is severely damaged. We need to repair it before we can leave this planet.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Let's start with the wiring. Follow me.",
                         align: "right"
                     },
                     {
@@ -115,7 +120,8 @@ class Cave extends Scene {
                 ],
                 junkYard: false,
                 dialogStarted: false,
-                dialogEnded: false
+                dialogEnded: false,
+                allowedRooms: [WIRING]
             }
         ];
 
@@ -134,8 +140,8 @@ class Cave extends Scene {
 
         let act = this.acts[this.currentAct];
 
-        if (this.ufo.isReached()) {
-            transition(this.nextLevel);
+        if (this.ufo.isReached() && !effect.active) {
+            transition(this.nextLevel, 2, 3);
         } else if (this.ufo.isReached(this.sr)) {
             this.sr.exist = false;
         }
@@ -183,15 +189,23 @@ class Cave extends Scene {
             return;
         }
 
+        let act = this.acts[this.currentAct];
+
         if (this.showBigUFO) {
             let pressed = false;
-            for (let parts of this.parts) {
-                if (parts.isHovered() && !this.jr.isTravelling()) {
+            for (let i = 1; i < this.parts.length; i++) {
+                let parts = this.parts[i];
+                if (
+                    parts.isHovered() &&
+                    !this.jr.isTravelling() &&
+                    act.allowedRooms.includes(parts.transitionDestination)
+                ) {
                     let goDirection = this.ufo_a.getGoDirection();
                     this.jr.travelTo(goDirection.x, goDirection.y);
                     this.showBigUFO = false;
                     this.nextLevel = parts.transitionDestination;
                     pressed = true;
+                    tipsManager.deactivate();
 
                     this.parts.forEach(part => {
                         part.display = false;
@@ -209,8 +223,6 @@ class Cave extends Scene {
             }
             return;
         }
-
-        let act = this.acts[this.currentAct];
 
         if (this.ufo.isHovered()) {
             // let goDirection = this.ufo.getGoDirection();
@@ -261,6 +273,7 @@ class Cave extends Scene {
     }
 
     transition(prev) {
+        this.sr.exist = true;
         if (prev == JUNKYARD) {
             this.jrStart = { x: 0.973463687150838, y: 0.5754475703324808 };
             this.jrEnd = { x: 0.6508379888268156, y: 0.5997442455242967 };

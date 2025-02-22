@@ -135,11 +135,11 @@ class Cell {
 }
 
 class Wiring extends Scene {
-    lateUpdate() {
-        if (keyIsPressed && (keyCode === ESCAPE || keyCode === 66)) {
-            transition(-1);
-        }
-    }
+    // lateUpdate() {
+    //     if (keyIsPressed && (keyCode === ESCAPE || keyCode === 66)) {
+    //         transition(-1);
+    //     }
+    // }
 
     init() {
         this.tileSize = 64;
@@ -169,7 +169,7 @@ class Wiring extends Scene {
 
         this.door = new Door(this.jr);
         this.door
-            .setTransition(7)
+            .setTransition(CAVE)
             .setBox(
                 0.005050505050505051,
                 0.39594594594594595,
@@ -179,7 +179,25 @@ class Wiring extends Scene {
 
         this.interactables.push(this.door);
 
+        this.wireBox = new Interactable(this.jr);
+        this.wireBox.setBox(
+            0.4371508379888268,
+            0.40281329923273657,
+            0.1180167597765363,
+            0.1969309462915601
+        );
+        // .setImages("wiring", "")
+        // .displayNone();
+
         this.firstTime = true;
+
+        this.dialog = [
+            {
+                name: "Kikiko",
+                text: "I TOLD YOU TO CHECK THE FUEL BEFORE WE TAKE OFF YOU CARELESS FOOL! NOW WE CRASHED INTO A CAVE IN SOME RANDOM PLANET!",
+                align: "right"
+            }
+        ];
     }
 
     initCells() {
@@ -288,6 +306,10 @@ class Wiring extends Scene {
     }
 
     update(dt) {
+        if (this.firstTime && dialougeManager.active) {
+            dialougeManager.play(this.dialog);
+        }
+
         if (this.jr.isTravelling()) {
             this.jr.update(dt);
             return;

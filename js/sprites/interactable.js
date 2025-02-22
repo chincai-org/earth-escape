@@ -25,13 +25,16 @@ class Interactable {
         }
 
         if (this.image == "" || this.hoveredImage == "") {
-            // let [x, y, w, h] = this.box;
-            // noFill();
-            // stroke(135, 206, 235);
-            // strokeWeight(2);
-            // rect(x, y, w, h);
             // return;
             console.log("not images");
+        }
+
+        if (this.box) {
+            let [x, y, w, h] = this.box;
+            noFill();
+            stroke(135, 206, 235);
+            strokeWeight(2);
+            rect(x, y, w, h);
         }
 
         if (this.isHovered()) {
