@@ -80,7 +80,7 @@ function draw() {
         if (effect.m == 0) {
             background(0);
             tint(255, effect.x2);
-            effect.x2 += 2
+            effect.x2 += effect.time1;
             if (effect.x2 > 255) {
                 effect.x2 = 255;
                 effect.active = false;
@@ -88,7 +88,7 @@ function draw() {
         } else if (effect.m == 1) {
             background(0);
             tint(255, effect.x1);
-            effect.x1 -= 2
+            effect.x1 -= effect.time2;
             if (effect.x1 < 0) {
                 effect.x1 = 0;
                 effect.m = 0;
@@ -205,6 +205,8 @@ function transition(n, time1, time2) {
         effect.prev = currentSceneIndex;
         effect.next = n;
         effect.active = true;
+        effect.time1 = time1;
+        effect.time2 = time2;
     }
     dialougeManager.reset();
 }
