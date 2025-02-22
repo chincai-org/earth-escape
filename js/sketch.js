@@ -20,6 +20,10 @@ let lastUpdate = -1;
 const dialougeManager = new DialougeManager();
 const tipsManager = new TipsManager();
 
+let effect = {
+    active: false
+}
+
 // let menu_bg, cave_bg, ufo_img;
 let images = {};
 
@@ -69,6 +73,27 @@ function draw() {
     background(255);
 
     let dt = getDeltaTime();
+
+    if (effect.active) {
+        if (effect.m == 0) {
+            background(0);
+            tint(255, effect.x2);
+            effect.x2 += 2
+            if (effect.x2 > 255) {
+                effect.x2 = 255;
+                effect.active = false;
+            }
+        } else if (effect.m == 1) {
+            background(0);
+            tint(255, effect.x1);
+            effect.x1 -= 2
+            if (effect.x1 < 0) {
+                effect.x1 = 0;
+                effect.m = 0;
+                currentSceneIndex = effect.next;
+            }
+        }
+    }
 
     if (currentSceneIndex >= 0) {
         scenes[currentSceneIndex].update(dt);
@@ -168,9 +193,16 @@ function getDeltaTime() {
     return dt;
 }
 
-function transition(n) {
-    let prev = currentSceneIndex;
-    currentSceneIndex = n;
-    scenes[currentSceneIndex].transition(prev);
+function transition(n, time1, time2) {
+    if (time1 == undefined && time2 == undefined) {
+        currentSceneIndex = n;
+    } else {
+        effect.x1 = 255;
+        effect.x2 = 0;
+        effect.m = 1;
+        effect.prev = currentSceneIndex;
+        effect.next = n;
+        effect.active = true;
+    }
     dialougeManager.reset();
 }
