@@ -8,13 +8,21 @@ class screwDriver extends Scene {
         this.miss = 0;
         this.spawnRate = 100;
         this.gameEnded = false;
+        this.howToPlay = true;
     }
     update() {
+        if (this.howToPlay) {
+            if (this.tick > 600) {
+                this.howToPlay = false;
+            }
+            this.tick++;
+            return;
+        }
         if (this.gameEnded) {
             return;
         }
         for (let i = 0; i < this.screws.length; ++i) {
-            if (++this.screws[i][3] > 400) {
+            if (++this.screws[i][3] > 500) {
                 this.screws.splice(i, 1);
                 this.miss++;
 
@@ -69,11 +77,25 @@ class screwDriver extends Scene {
 
     draw() {
         background(0)
+        textSize(30);
+        if (this.howToPlay) {
+            fill(255, 255, 255);
+            textAlign(CENTER, CENTER);
+            if (this.tick < 250) {
+                text("Screwdriver game", canvasWidth / 2, canvasHeight / 2);
+                text("Screw the screws by clicking on the screws with the correct screwdriver", canvasWidth / 2, canvasHeight / 2 + 60);
+                return;
+            }
+            text("Press P to switch to phillip screwdriver type.(Positive symbol)", canvasWidth / 2, canvasHeight / 2);
+            text("Press N to switch to slotted screwdriver type.(Negative symbol)", canvasWidth / 2, canvasHeight / 2 + 60);
+            return;
+
+
+        }
         if (this.gameEnded) {
             this.gameEndDraw();
             return;
         }
-        textSize(30);
         fill(255, 0, 0);
         textAlign(CENTER, CENTER);
         text("Miss: " + this.miss, canvasWidth / 2, 30);
