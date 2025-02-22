@@ -78,10 +78,17 @@ function preload() {
         ufo_hovered_img: loadImage("assets/images/ufo_hovered.png"),
         door_img: loadImage("assets/images/door.png"),
         junkyard_bg: loadImage("assets/images/junkyard.png"),
+        trash_bg: loadImage("assets/images/trash.png"),
         big_ufo: loadImage("assets/images/big_ufo.png"),
         big_ufo_a: loadImage("assets/images/big_ufo_a.png"),
         big_ufo_b: loadImage("assets/images/big_ufo_b.png"),
-        big_ufo_c: loadImage("assets/images/big_ufo_c.png")
+        big_ufo_c: loadImage("assets/images/big_ufo_c.png"),
+        cavedive_img: loadImage("assets/images/cavedive.png"),
+        cavedive_hovered_img: loadImage("assets/images/cavedive_hovered.png"),
+        screwdriver_img: loadImage("assets/images/screwdriver.png"),
+        superglue_img: loadImage("assets/images/superglue.png"),
+        soldering_iron_img: loadImage("assets/images/soldering_iron.png"),
+        plier_img: loadImage("assets/images/plier.png")
     };
 }
 

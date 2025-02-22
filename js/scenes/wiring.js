@@ -485,6 +485,8 @@ class Wiring extends Scene {
             ) {
                 let goDirection = this.door.getGoDirection();
                 this.jr.travelTo(goDirection.x, goDirection.y);
+                this.firstTime = false;
+                return;
             }
 
             if (this.wireBox.isHovered() && !this.jr.isTravelling()) {

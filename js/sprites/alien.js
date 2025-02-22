@@ -63,6 +63,10 @@ class Alien {
         }
     }
 
+    chair() {
+        //
+    }
+
     draw() {
         if (!this.exist) {
             return;

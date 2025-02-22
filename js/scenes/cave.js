@@ -122,6 +122,75 @@ class Cave extends Scene {
                 dialogStarted: false,
                 dialogEnded: false,
                 allowedRooms: [WIRING]
+            },
+            {
+                id: "junkyard_tut",
+                srStart: { x: 0.9671787709497207, y: 0.5179028132992327 },
+                srEnd: { x: 0.5991620111731844, y: 0.4833759590792839 },
+                junkYard: true,
+                allowedRooms: [JUNKYARD],
+                dialog: [
+                    {
+                        name: "Kikiko",
+                        text: "Wow, that was fast.",
+                        align: "right"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "Erm, actually, I'm not done yet.",
+                        align: "left"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "When I'm dealing with the wire, I found out that it disconnected itself everytime I try to connect it",
+                        align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Oh yeah! I forgot that it requires a plier to connect the wire.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "But unfortunately, we don't have it.",
+                        align: "right"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "What should we do now?",
+                        align: "left"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "Wait, from where did you get that chair?",
+                        align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Oh, I was just wandering around and found a junkyard outside this cave.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Oh! That's it! We can find the plier in the junkyard, maybe you can test your luck there.",
+                        align: "right"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "Are you sure about that? Wouldn't there be species from this planet that will hunt us down?",
+                        align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "I mean, I did saw a creature nearby. But it's not like we are going there very often. Just be extremely careful and visit there if we need to.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Nothing can go wrong, right?",
+                        align: "right"
+                    }
+                ]
             }
         ];
 
@@ -178,6 +247,13 @@ class Cave extends Scene {
                     );
                 }, 2000);
                 this.sr.travelTo(goDirection.x, goDirection.y);
+            } else if (act.id == "junkyard_tut") {
+                tipsManager.show(
+                    0.8603351955307262 * canvasWidth,
+                    0.19309462915601022 * canvasHeight,
+                    "Click on the exit.",
+                    true
+                );
             }
         }
     }
