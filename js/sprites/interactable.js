@@ -10,6 +10,8 @@ class Interactable {
         this.hoveredImage = "";
         this.jr = jr;
 
+        this.display = true;
+
         this.init();
     }
 
@@ -17,6 +19,10 @@ class Interactable {
     update(dt) {}
 
     draw() {
+        if (!this.display) {
+            return;
+        }
+
         if (this.image == "" || this.hoveredImage == "") {
             let [x, y, w, h] = this.box;
             noFill();
@@ -78,6 +84,17 @@ class Interactable {
             h * canvasHeight
         ];
 
+        return this;
+    }
+
+    setImages(image = "", hoveredImage = null) {
+        this.image = image;
+        this.hoveredImage = hoveredImage || image;
+        return this;
+    }
+
+    displayNone() {
+        this.display = false;
         return this;
     }
 }

@@ -77,7 +77,11 @@ function preload() {
         ufo_img: loadImage("assets/images/ufo.png"),
         ufo_hovered_img: loadImage("assets/images/ufo_hovered.png"),
         door_img: loadImage("assets/images/door.png"),
-        junkyard_bg: loadImage("assets/images/junkyard.png")
+        junkyard_bg: loadImage("assets/images/junkyard.png"),
+        big_ufo: loadImage("assets/images/big_ufo.png"),
+        big_ufo_a: loadImage("assets/images/big_ufo_a.png"),
+        big_ufo_b: loadImage("assets/images/big_ufo_b.png"),
+        big_ufo_c: loadImage("assets/images/big_ufo_c.png")
     };
 }
 

@@ -4,12 +4,6 @@ class Door extends Interactable {
         this.goDirection = { x: -1, y: -1 };
     }
 
-    setImages(image = "", hoveredImage = null) {
-        this.image = image;
-        this.hoveredImage = hoveredImage || image;
-        return this;
-    }
-
     setTransition(transitionDestination) {
         this.transitionDestination = transitionDestination;
         return this;
