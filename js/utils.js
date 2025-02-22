@@ -212,7 +212,7 @@ class TipsManager {
         this.color = [r, g, b];
     }
 
-    show(x, y, txt, arrow) {
+    show(x, y, txt, arrow = true) {
         this.x = x;
         this.y = y;
         this.txt = txt;

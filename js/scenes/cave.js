@@ -26,6 +26,32 @@ class Cave extends Scene {
             .setGoDirection(0.19343575418994413, 0.4322250639386189)
             .displayNone();
 
+        this.ufo_b = new Door(this.jr);
+        this.ufo_b
+            .setImages("", "big_ufo_b")
+            .setTransition(PUZZLE)
+            .setBox(
+                0.5118715083798883,
+                0.5255754475703325,
+                0.0893854748603352,
+                0.0959079283887468
+            )
+            .setGoDirection(0.19343575418994413, 0.4322250639386189)
+            .displayNone();
+
+        this.ufo_c = new Door(this.jr);
+        this.ufo_c
+            .setImages("", "big_ufo_c")
+            .setTransition(LOGIC_GATES)
+            .setBox(
+                0.3100558659217877,
+                0.5217391304347826,
+                0.06773743016759777,
+                0.10358056265984655
+            )
+            .setGoDirection(0.19343575418994413, 0.4322250639386189)
+            .displayNone();
+
         // console.log(this.ufo.getGoDirection());
 
         this.caveExit = new Door(this.jr);
@@ -42,8 +68,10 @@ class Cave extends Scene {
         // this.interactables.push(this.caveExit);
         this.interactables.push(this.bigUFO);
         this.interactables.push(this.ufo_a);
+        this.interactables.push(this.ufo_b);
+        this.interactables.push(this.ufo_c);
 
-        this.parts = [this.bigUFO, this.ufo_a];
+        this.parts = [this.bigUFO, this.ufo_a, this.ufo_b, this.ufo_c];
 
         // this.jrStart = { x: 0.19343575418994413, y: 0.4322250639386189 };
         // this.jrEnd = { x: 0.2, y: 0.5 };
@@ -156,17 +184,28 @@ class Cave extends Scene {
         }
 
         if (this.showBigUFO) {
+            let pressed = false;
             for (let parts of this.parts) {
                 if (parts.isHovered() && !this.jr.isTravelling()) {
                     let goDirection = this.ufo_a.getGoDirection();
                     this.jr.travelTo(goDirection.x, goDirection.y);
                     this.showBigUFO = false;
                     this.nextLevel = parts.transitionDestination;
+                    pressed = true;
 
                     this.parts.forEach(part => {
                         part.display = false;
                     });
+                    break;
                 }
+            }
+
+            if (!pressed) {
+                // this.bigUFO.display = false;
+                this.showBigUFO = false;
+                this.parts.forEach(part => {
+                    part.display = false;
+                });
             }
             return;
         }
@@ -177,16 +216,7 @@ class Cave extends Scene {
             // let goDirection = this.ufo.getGoDirection();
             // this.jr.travelTo(goDirection.x, goDirection.y);
 
-            this.showBigUFO = true;
-            this.parts.forEach(part => {
-                part.display = true;
-            });
-
-            tipsManager.show(
-                0.7304469273743017 * canvasWidth,
-                0.3491048593350384 * canvasHeight,
-                "Click on this room"
-            );
+            this.displayBigUFO();
 
             return;
         }
@@ -198,6 +228,23 @@ class Cave extends Scene {
         ) {
             let goDirection = this.caveExit.getGoDirection();
             this.jr.travelTo(goDirection.x, goDirection.y);
+        }
+    }
+
+    displayBigUFO() {
+        this.showBigUFO = true;
+        this.parts.forEach(part => {
+            part.display = true;
+        });
+
+        let act = this.acts[this.currentAct];
+
+        if (act.id == "wiring_tut") {
+            tipsManager.show(
+                0.7304469273743017 * canvasWidth,
+                0.3491048593350384 * canvasHeight,
+                "Click on this room"
+            );
         }
     }
 
