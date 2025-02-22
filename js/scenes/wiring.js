@@ -155,6 +155,25 @@ class Wiring extends Scene {
 
         this.track = [];
         this.tracking = false;
+
+        this.puzzleActive = false;
+
+        this.jr = new Alien(0, 0.5);
+        this.sr = new Alien(0.8, 0.5, SENIOR);
+
+        this.door = new Door(this.jr);
+        this.door
+            .setTransition(7)
+            .setBox(
+                0.005050505050505051,
+                0.39594594594594595,
+                0.06421356421356421,
+                0.23243243243243245
+            );
+
+        this.interactables.push(this.door);
+
+        this.firstTime = true;
     }
 
     initCells() {
@@ -212,8 +231,15 @@ class Wiring extends Scene {
     draw() {
         //background(255);
 
-        this.drawGrid();
-        this.drawCells();
+        super.draw();
+
+        this.jr.draw();
+        this.sr.draw();
+
+        if (this.puzzleActive) {
+            this.drawGrid();
+            this.drawCells();
+        }
 
         if (this.isSolved()) {
             text("Solved", 0, 0, 100, 100);
@@ -255,7 +281,17 @@ class Wiring extends Scene {
         }
     }
 
-    update() {
+    update(dt) {
+        if (this.jr.isTravelling()) {
+            this.jr.update(dt);
+            return;
+        }
+
+        if (!this.puzzleActive) {
+            this.door.update();
+            return;
+        }
+
         if (mouseIsPressed && this.tracking) {
             let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
@@ -320,6 +356,13 @@ class Wiring extends Scene {
 
     mousePressed() {
         super.mousePressed();
+
+        if (!this.puzzleActive) {
+            if (this.door.isHovered() && !this.jr.isTravelling()) {
+                this.jr.travelTo(mouseX, mouseY);
+            }
+        }
+
         let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
         if (cell == null) {
@@ -340,6 +383,10 @@ class Wiring extends Scene {
     mouseReleased() {
         super.mouseReleased();
         this.stopTrack();
+    }
+
+    transition() {
+        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
     }
 
     getCellFromScreenPosition(sx, sy) {

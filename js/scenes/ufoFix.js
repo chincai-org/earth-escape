@@ -1,0 +1,1 @@
+class UfoFix extends Scene {}

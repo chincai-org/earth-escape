@@ -1,11 +1,18 @@
+JUNIOR = 0;
+SENIOR = 1;
+
 class Alien {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor(x, y, id = JUNIOR) {
+        this.x = x * canvasWidth;
+        this.y = y * canvasHeight;
 
         this.velocity = 0.2;
 
         this.destinations = [];
+        this.id = id;
+
+        this.lastUpdate = 0;
+        this.FPS = 0;
     }
 
     stopTravel() {
@@ -17,8 +24,12 @@ class Alien {
         console.log(this.destinations);
     }
 
+    isTravelling() {
+        return this.destinations.length;
+    }
+
     update(dt) {
-        if (this.destinations.length > 0) {
+        if (this.isTravelling()) {
             let dest = this.destinations[0];
             let dx = dest.x - this.x;
             let dy = dest.y - this.y;
@@ -46,8 +57,8 @@ class Alien {
     draw() {
         push();
         translate(this.x, this.y);
-        fill(0);
-        ellipse(0, 0, 20, 20);
+        fill(0, 255, 0);
+        ellipse(0, 0, 50 + this.id * 10, 50 + this.id * 10);
 
         for (let i = 0; i < this.destinations.length; i++) {
             let dest = this.destinations[i];

@@ -10,7 +10,8 @@ const scenes = [
     new Cave(),
     new Start(),
     new screwDriver(),
-    new junkyard()
+    new junkyard(),
+    new UfoFix()
 ];
 
 let currentSceneIndex = -1;
@@ -65,7 +66,8 @@ function preload() {
         menu_bg: loadImage("assets/images/menu.png"),
         cave_bg: loadImage("assets/images/cave.png"),
         ufo_img: loadImage("assets/images/ufo.png"),
-        ufo_hovered_img: loadImage("assets/images/ufo_hovered.png")
+        ufo_hovered_img: loadImage("assets/images/ufo_hovered.png"),
+        door_img: loadImage("assets/images/door.png")
     };
 }
 
@@ -155,12 +157,12 @@ function mousePressed() {
             debug_dots = [];
 
             console.log(
-                ...[
+                [
                     x1 / canvasWidth,
                     y1 / canvasHeight,
                     width / canvasWidth,
                     height / canvasHeight
-                ]
+                ].join(", ")
             );
         }
     }

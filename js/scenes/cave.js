@@ -1,7 +1,17 @@
 class Cave extends Scene {
     init() {
         this.jr = new Alien(100, 100);
-        this.ufo = new Ufo(this.jr);
+        this.ufo = new Door(this.jr);
+        this.ufo
+            .setImages("ufo_img", "ufo_hovered_img")
+            .setTransition(7)
+            .setBox(
+                0.05411255411255411, // hard coded values go brrr
+                0.3162162162162162,
+                0.2712842712842713,
+                0.31756756756756754
+            );
+
         this.interactables.push(this.ufo);
     }
 

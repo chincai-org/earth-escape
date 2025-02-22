@@ -241,4 +241,8 @@ class Puzzle extends Scene {
 
         return sum.isPerfect();
     }
+
+    transition() {
+        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
+    }
 }
