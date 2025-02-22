@@ -17,6 +17,15 @@ class Interactable {
     update(dt) {}
 
     draw() {
+        if (this.image == "" || this.hoveredImage == "") {
+            let [x, y, w, h] = this.box;
+            noFill();
+            stroke(135, 206, 235);
+            strokeWeight(2);
+            rect(x, y, w, h);
+            return;
+        }
+
         if (this.isHovered()) {
             image(
                 images[this.hoveredImage],
@@ -68,5 +77,7 @@ class Interactable {
             w * canvasWidth,
             h * canvasHeight
         ];
+
+        return this;
     }
 }
