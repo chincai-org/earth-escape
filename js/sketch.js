@@ -225,5 +225,7 @@ function transition(n, time1, time2) {
         effect.time1 = time1;
         effect.time2 = time2;
     }
+
     dialougeManager.reset();
+    tipsManager.deactivate();
 }

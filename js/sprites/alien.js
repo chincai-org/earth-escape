@@ -41,6 +41,8 @@ class Alien {
             let dx = dest.x - this.x;
             let dy = dest.y - this.y;
 
+            console.log("dest", dest.x, dest.y);
+
             let angle = atan2(dy, dx);
 
             let nextX = this.x + cos(angle) * this.velocity * dt;

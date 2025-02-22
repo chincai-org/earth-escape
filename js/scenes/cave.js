@@ -10,7 +10,7 @@ class Cave extends Scene {
                 0.2712842712842713,
                 0.31756756756756754
             )
-            .setGoDirection(0.973463687150838, 0.5754475703324808);
+            .setGoDirection(0.19343575418994413, 0.4322250639386189);
 
         console.log(this.ufo.getGoDirection());
 
@@ -72,10 +72,10 @@ class Cave extends Scene {
             return;
         }
 
-        this.ufo.update();
-        this.caveExit.update();
-
         let act = this.acts[this.currentAct];
+
+        this.ufo.update();
+        if (act.junkYard) this.caveExit.update();
 
         if (act.dialog && act.dialog.length) {
             if (!act.dialogStarted) {
@@ -109,6 +109,10 @@ class Cave extends Scene {
 
     mousePressed() {
         super.mousePressed();
+
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            return;
+        }
 
         let act = this.acts[this.currentAct];
 

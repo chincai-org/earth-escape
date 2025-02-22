@@ -24,7 +24,10 @@ class Door extends Interactable {
         if (this.goDirection.x === -1 && this.goDirection.y === -1) {
             return { x: mouseX, y: mouseY };
         } else {
-            return this.goDirection;
+            return {
+                x: this.goDirection.x * canvasWidth,
+                y: this.goDirection.y * canvasHeight
+            };
         }
     }
 
