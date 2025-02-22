@@ -61,6 +61,16 @@ class Cave extends Scene {
                         name: "Polikino",
                         text: "We are in planet Earth.",
                         align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Ok, follow me to the spaceship",
+                        align: "right"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "Ok.",
+                        align: "left"
                     }
                 ],
                 junkYard: false,
