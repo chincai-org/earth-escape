@@ -13,6 +13,8 @@ class Alien {
 
         this.lastUpdate = 0;
         this.FPS = 0;
+
+        this.exist = true;
     }
 
     stopTravel() {
@@ -55,24 +57,28 @@ class Alien {
     }
 
     draw() {
+        if (!this.exist) {
+            return;
+        }
+
         push();
         translate(this.x, this.y);
         fill(0, 255, 0);
         ellipse(0, 0, 50 + this.id * 10, 50 + this.id * 10);
 
-        for (let i = 0; i < this.destinations.length; i++) {
-            let dest = this.destinations[i];
-            let prev =
-                i === 0 ? { x: this.x, y: this.y } : this.destinations[i - 1];
-            stroke(0);
-            // line(0, 0, dest.x - this.x, dest.y - this.y);
-            line(
-                prev.x - this.x,
-                prev.y - this.y,
-                dest.x - this.x,
-                dest.y - this.y
-            );
-        }
+        // for (let i = 0; i < this.destinations.length; i++) {
+        //     let dest = this.destinations[i];
+        //     let prev =
+        //         i === 0 ? { x: this.x, y: this.y } : this.destinations[i - 1];
+        //     stroke(0);
+        //     // line(0, 0, dest.x - this.x, dest.y - this.y);
+        //     line(
+        //         prev.x - this.x,
+        //         prev.y - this.y,
+        //         dest.x - this.x,
+        //         dest.y - this.y
+        //     );
+        // }
 
         pop();
     }

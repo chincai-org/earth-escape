@@ -4,17 +4,17 @@ let inventory;
 let hand;
 
 const scenes = [
+    new Start(),
     new Wiring(),
     new LogicGates(),
     new Puzzle(),
     new Cave(),
-    new Start(),
     new screwDriver(),
     new junkyard(),
     new UfoFix()
 ];
 
-let currentSceneIndex = -1;
+let currentSceneIndex = 0;
 let currentCharacter = 0;
 let lastUpdate = -1;
 
@@ -63,7 +63,8 @@ function preload() {
         cave_bg: loadImage("assets/images/cave.png"),
         ufo_img: loadImage("assets/images/ufo.png"),
         ufo_hovered_img: loadImage("assets/images/ufo_hovered.png"),
-        door_img: loadImage("assets/images/door.png")
+        door_img: loadImage("assets/images/door.png"),
+        junkyard_bg: loadImage("assets/images/junkyard.png")
     };
 }
 
@@ -78,7 +79,7 @@ function draw() {
         scenes[currentSceneIndex].lateUpdate();
     } else {
         image(images.menu_bg, 0, 0, canvasWidth, canvasHeight);
-        ellipse(200, 200, 10, 10);
+        // ellipse(200, 200, 10, 10);
     }
 
     dialougeManager.update();
@@ -110,6 +111,12 @@ function keyPressed() {
     if (keyCode >= 48 && keyCode <= 57) {
         transition(keyCode - 48);
     }
+
+    if (dialougeManager.active) {
+        dialougeManager.keyPressed();
+        return; // Disable any key events if dialogue is active
+    }
+
     if (currentSceneIndex >= 0) {
         scenes[currentSceneIndex].keyPressed();
     }

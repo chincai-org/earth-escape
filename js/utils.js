@@ -45,7 +45,7 @@ function dialogBox(txt, name, align) {
     text(
         "<Click to proceed>",
         canvasWidth * 0.116,
-        BoxY + canvasHeight * 0.20 - canvasWidth * 0.016,
+        BoxY + canvasHeight * 0.2 - canvasWidth * 0.016,
         canvasWidth * 0.768,
         canvasHeight * 0.23 - canvasWidth * 0.032
     );
@@ -165,6 +165,16 @@ class DialougeManager {
     }
 
     mousePressed() {
+        this.continue();
+    }
+
+    keyPressed() {
+        if (keyCode == 32) {
+            this.continue();
+        }
+    }
+
+    continue() {
         // Finish typewriter effect if dialogue on-going, else move to next dialogue
         let currentDialog = this.dialouges[this.currentDialougeIndex];
         let dialogText = currentDialog.text;

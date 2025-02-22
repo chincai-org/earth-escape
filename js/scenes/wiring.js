@@ -158,8 +158,14 @@ class Wiring extends Scene {
 
         this.puzzleActive = false;
 
-        this.jr = new Alien(0, 0.5);
-        this.sr = new Alien(0.8, 0.5, SENIOR);
+        // this.jr = new Alien(0, 0.5);
+        // this.sr = new Alien(0.8, 0.5, SENIOR);
+
+        this.jrStart = { x: 0, y: 0.5 };
+        this.jrEnd = { x: 0.2, y: 0.5 };
+
+        this.srStart = { x: 0.8, y: 0.5 };
+        this.srEnd = { x: 0.8, y: 0.5 };
 
         this.door = new Door(this.jr);
         this.door
@@ -359,7 +365,8 @@ class Wiring extends Scene {
 
         if (!this.puzzleActive) {
             if (this.door.isHovered() && !this.jr.isTravelling()) {
-                this.jr.travelTo(mouseX, mouseY);
+                let goDirection = this.door.getGoDirection();
+                this.jr.travelTo(goDirection.x, goDirection.y);
             }
         }
 
@@ -386,7 +393,7 @@ class Wiring extends Scene {
     }
 
     transition() {
-        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
+        super.transition();
     }
 
     getCellFromScreenPosition(sx, sy) {
