@@ -29,8 +29,8 @@ class Door extends Interactable {
     }
 
     update() {
-        if (this.isReached()) {
-            transition(this.transitionDestination);
+        if (this.isReached() && !effect.active) {
+            transition(this.transitionDestination, 2, 2);
             return true;
         }
     }

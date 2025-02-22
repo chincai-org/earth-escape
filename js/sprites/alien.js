@@ -17,13 +17,18 @@ class Alien {
         this.exist = true;
     }
 
+    setPos(x, y) {
+        this.x = x * canvasWidth;
+        this.y = y * canvasHeight;
+    }
+
     stopTravel() {
         this.destinations = [];
     }
 
     travelTo(x, y) {
         this.destinations.push({ x, y });
-        console.log(this.destinations);
+        console.table(this.destinations);
     }
 
     isTravelling() {

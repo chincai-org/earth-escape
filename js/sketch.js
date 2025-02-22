@@ -3,14 +3,23 @@ const canvasHeight = window.innerHeight;
 let inventory;
 let hand;
 
+const START = 0;
+const CAVE = 1;
+const WIRING = 2;
+const JUNKYARD = 3;
+const LOGIC_GATES = 4;
+const PUZZLE = 5;
+const SCREW_DRIVER = 6;
+const UFO_FIX = 7;
+
 const scenes = [
     new Start(),
     new Cave(),
     new Wiring(),
+    new junkyard(),
     new LogicGates(),
     new Puzzle(),
     new screwDriver(),
-    new junkyard(),
     new UfoFix()
 ];
 
@@ -149,7 +158,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    console.log(mouseX, mouseY);
+    console.log([mouseX / canvasWidth, mouseY / canvasHeight].join(", "));
 
     if (keyIsDown(CONTROL)) {
         debug_dots.push([mouseX, mouseY]);

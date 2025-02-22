@@ -46,7 +46,7 @@ class Interactable {
     }
 
     isHovered() {
-        if (!this.box) {
+        if (!this.box || dialougeManager.active || this.jr.isTravelling()) {
             return false;
         }
 
