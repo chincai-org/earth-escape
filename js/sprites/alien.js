@@ -28,7 +28,7 @@ class Alien {
 
     travelTo(x, y) {
         this.destinations.push({ x, y });
-        console.table(this.destinations);
+        // console.table(this.destinations);
     }
 
     isTravelling() {
@@ -41,7 +41,7 @@ class Alien {
             let dx = dest.x - this.x;
             let dy = dest.y - this.y;
 
-            console.log("dest", dest.x, dest.y);
+            // console.log("dest", dest.x, dest.y);
 
             let angle = atan2(dy, dx);
 

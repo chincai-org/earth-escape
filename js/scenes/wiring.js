@@ -175,9 +175,8 @@ class Wiring extends Scene {
                 0.39594594594594595,
                 0.06421356421356421,
                 0.23243243243243245
-            );
-
-        this.interactables.push(this.door);
+            )
+            .setGoDirection(0.04120111731843575, 0.5127877237851662);
 
         this.wireBox = new Interactable(this.jr);
         this.wireBox.setBox(
@@ -189,13 +188,65 @@ class Wiring extends Scene {
         // .setImages("wiring", "")
         // .displayNone();
 
+        this.interactables.push(this.door);
+        this.interactables.push(this.wireBox);
+
         this.firstTime = true;
 
         this.dialog = [
             {
                 name: "Kikiko",
-                text: "I TOLD YOU TO CHECK THE FUEL BEFORE WE TAKE OFF YOU CARELESS FOOL! NOW WE CRASHED INTO A CAVE IN SOME RANDOM PLANET!",
+                text: "It seems like the wiring of this S.H.T desk is all messed up.",
                 align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "It will be an easy fix though, just connect the wires of the same color.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "I will let you do this one. Just click on the dots to connect them.",
+                align: "right"
+            },
+            {
+                name: "Polikino",
+                text: "Are you sure about that?",
+                align: "left"
+            },
+            {
+                name: "Kikiko",
+                text: "I mean, nothing can go wrong,... right?",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "The only thing you need to remember is that you can't cross the wires, and you must FILL in the whole grid, this device is designed in a way that the wire is required to touch every cell for it to work.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "I'm gonna see where exactly did we land, I'll be outside if you need me. Bye!",
+                align: "right"
+            }
+        ];
+
+        this.dialogStarted = false;
+        this.dialogEnded = false;
+        this.startConnected = false;
+        this.broke = false;
+        this.hmmed = false;
+
+        this.hmm = [
+            {
+                name: "Polikino",
+                text: "???",
+                align: "left"
+            },
+            {
+                name: "Polikino",
+                text: "What the hell just happened?",
+                align: "left"
             }
         ];
     }
@@ -306,19 +357,54 @@ class Wiring extends Scene {
     }
 
     update(dt) {
-        if (this.firstTime && dialougeManager.active) {
+        if (this.firstTime && !this.dialogStarted && !dialougeManager.active) {
             dialougeManager.play(this.dialog);
+            this.dialogStarted = true;
+            return;
         }
 
-        if (this.jr.isTravelling()) {
-            this.jr.update(dt);
+        if (this.firstTime && !this.dialogEnded && !dialougeManager.active) {
+            this.dialogEnded = true;
+            let goDirection = this.door.getGoDirection();
+            this.sr.travelTo(goDirection.x, goDirection.y);
+            setTimeout(() => {
+                tipsManager.show(
+                    0.49511173184357543 * canvasWidth,
+                    0.37851662404092073 * canvasHeight,
+                    "Click on the S.H.T desk.",
+                    true
+                );
+            }, 6000);
+        }
+
+        if (this.broke && !this.hmmed && !dialougeManager.active) {
+            dialougeManager.play(this.hmm);
+            this.hmmed = true;
+            tipsManager.show(
+                0.034916201117318434,
+                0.37084398976982097,
+                "Click on door to exit",
+                true
+            );
             return;
+        }
+
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            this.jr.update(dt);
+            this.sr.update(dt);
+            return;
+        }
+
+        if (this.door.isReached(this.sr)) {
+            this.sr.exist = false;
         }
 
         if (!this.puzzleActive) {
             this.door.update();
             return;
         }
+
+        // tipsManager.deactivate();
 
         if (mouseIsPressed && this.tracking) {
             let cell = this.getCellFromScreenPosition(mouseX, mouseY);
@@ -357,6 +443,8 @@ class Wiring extends Scene {
                 this.track[this.track.length - 1].setChild(cell);
                 // cell.parent = this.track[this.track.length - 1];
                 this.stopTrack();
+
+                this.startConnected = true;
             } else if (
                 this.track.length >= 2 &&
                 cell.equals(this.track[this.track.length - 2])
@@ -385,16 +473,49 @@ class Wiring extends Scene {
     mousePressed() {
         super.mousePressed();
 
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            return;
+        }
+
         if (!this.puzzleActive) {
-            if (this.door.isHovered() && !this.jr.isTravelling()) {
+            if (
+                this.door.isHovered() &&
+                !this.jr.isTravelling() &&
+                this.broke
+            ) {
                 let goDirection = this.door.getGoDirection();
                 this.jr.travelTo(goDirection.x, goDirection.y);
             }
+
+            if (this.wireBox.isHovered() && !this.jr.isTravelling()) {
+                this.puzzleActive = true;
+                tipsManager.deactivate();
+            }
+
+            return;
         }
 
         let cell = this.getCellFromScreenPosition(mouseX, mouseY);
 
         if (cell == null) {
+            if (!this.firstTime) {
+                if (!inventory.includes("plier")) {
+                    this.initCells();
+                }
+                this.puzzleActive = false;
+                return;
+            }
+
+            if (this.startConnected && !this.broke) {
+                this.initCells();
+                this.broke = true;
+                return;
+            }
+
+            if (this.broke) {
+                this.puzzleActive = false;
+            }
+
             return;
         }
 

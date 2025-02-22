@@ -1,7 +1,7 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
-let inventory;
-let hand;
+let inventory = [];
+let hand = [];
 
 const START = 0;
 const CAVE = 1;

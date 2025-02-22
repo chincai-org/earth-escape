@@ -26,7 +26,7 @@ class Interactable {
 
         if (this.image == "" || this.hoveredImage == "") {
             // return;
-            console.log("not images");
+            // console.log("not images");
         }
 
         if (this.box) {

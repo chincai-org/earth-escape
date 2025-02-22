@@ -222,6 +222,7 @@ class TipsManager {
 
     deactivate() {
         this.active = false;
+        this.setColor(255, 255, 0);
     }
 
     update(dt) {
