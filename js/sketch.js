@@ -5,10 +5,10 @@ let hand;
 
 const scenes = [
     new Start(),
+    new Cave(),
     new Wiring(),
     new LogicGates(),
     new Puzzle(),
-    new Cave(),
     new screwDriver(),
     new junkyard(),
     new UfoFix()
@@ -23,7 +23,7 @@ const tipsManager = new TipsManager();
 
 let effect = {
     active: false
-}
+};
 
 // let menu_bg, cave_bg, ufo_img;
 let images = {};
@@ -93,6 +93,7 @@ function draw() {
             if (effect.x1 < 0) {
                 effect.x1 = 0;
                 effect.m = 0;
+                scenes[effect.next].transition(currentSceneIndex);
                 currentSceneIndex = effect.next;
             }
         }
@@ -134,7 +135,7 @@ function draw() {
 function keyPressed() {
     // 0-9
     if (keyCode >= 48 && keyCode <= 57) {
-        transition(keyCode - 48);
+        transition(keyCode - 48, 5, 5);
     }
 
     if (dialougeManager.active) {
