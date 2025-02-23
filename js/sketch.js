@@ -100,6 +100,7 @@ function preload() {
         big_ufo_a: loadImage("assets/images/big_ufo_a.png"),
         big_ufo_b: loadImage("assets/images/big_ufo_b.png"),
         big_ufo_c: loadImage("assets/images/big_ufo_c.png"),
+        big_ufo_d: loadImage("assets/images/big_ufo_d.png"),
         cavedive_img: loadImage("assets/images/cavedive.png"),
         cavedive_hovered_img: loadImage("assets/images/cavedive_hovered.png"),
         screwdriver_img: loadImage("assets/images/screwdriver.png"),
@@ -180,7 +181,7 @@ function draw() {
 
     if (sound.slowStopRunning.active) {
         sound.audio.forEach(element => {
-            if (element.audio.volume >= 0.009) { 
+            if (element.audio.volume >= 0.009) {
                 element.audio.volume -= 0.009;
             } else {
                 element.audio.volume = 0;
@@ -192,7 +193,7 @@ function draw() {
             sound.slowStopRunning.n = 0;
             sound.audio.forEach(element => {
                 element.audio.pause();
-                element.audio.currentTime = 0; 
+                element.audio.currentTime = 0;
                 element.audio.volume = 1;
             });
         }
