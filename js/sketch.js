@@ -19,7 +19,7 @@ const PUZZLE = 5;
 const SCREW_DRIVER = 6;
 const UFO_FIX = 7;
 
-let debug = true;
+let debug = false;
 
 const scenes = [
     new Start(),
@@ -285,9 +285,9 @@ function keyPressed() {
         transition(keyCode - 48, 5, 5);
     }
 
-    if (keyCode == SHIFT) {
-        debug = !debug;
-    }
+    // if (keyCode == SHIFT) {
+    //     debug = !debug;
+    // }
 
     if (keyCode == ENTER) {
         dialougeManager.reset();
