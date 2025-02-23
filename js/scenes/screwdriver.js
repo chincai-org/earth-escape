@@ -9,8 +9,13 @@ class screwDriver extends Scene {
         this.spawnRate = 100;
         this.gameEnded = false;
         this.howToPlay = true;
+        this.played = false;
     }
     update() {
+        if (this.played) {
+            this.howToPlay = false;
+        }
+
         if (this.howToPlay) {
             if (this.tick > 600) {
                 this.howToPlay = false;
@@ -19,6 +24,7 @@ class screwDriver extends Scene {
             return;
         }
         if (this.gameEnded) {
+            this.gameEnd();
             return;
         }
         for (let i = 0; i < this.screws.length; ++i) {
@@ -76,14 +82,16 @@ class screwDriver extends Scene {
     }
 
     draw() {
-        background(0)
+        background(0);
         textSize(30);
+        textStyle(NORMAL);
         if (this.howToPlay) {
             fill(255, 255, 255);
             textAlign(CENTER, CENTER);
             if (this.tick < 250) {
                 text("Screwdriver game", canvasWidth / 2, canvasHeight / 2);
                 text("Screw the screws by clicking on the screws with the correct screwdriver", canvasWidth / 2, canvasHeight / 2 + 60);
+                text("Press q to quit game", canvasWidth / 2, canvasHeight / 2 + 90);
                 return;
             }
             text("Press P to switch to phillip screwdriver type.(Positive symbol)", canvasWidth / 2, canvasHeight / 2);
@@ -92,25 +100,34 @@ class screwDriver extends Scene {
 
 
         }
-        if (this.gameEnded) {
-            this.gameEndDraw();
-            return;
-        }
         fill(255, 0, 0);
         textAlign(CENTER, CENTER);
         text("Miss: " + this.miss, canvasWidth / 2, 30);
         noStroke();
         for (let screw of this.screws) {
-            fill(...this.screwType[screw[2]]);
-            ellipse(screw[0], screw[1], this.screwDiameter);
+            image(screw[2] == 1 ? images.negative_screw : images.positive_screw, screw[0], screw[1], this.screwDiameter, this.screwDiameter);
         }
     }
 
 
-    gameEndDraw() {
-        fill(255, 255, 255);
-        textAlign(CENTER, CENTER);
-        text("Game over", canvasWidth / 2, canvasHeight / 2);
-        text("Miss: " + this.miss, canvasWidth / 2, canvasHeight / 2 + 60);
+    gameEnd() {
+        if (!effect.active) {
+            transition(CAVE, 2, 2);
+            this.played = true;
+            this.gameEnded = false;
+        }
     }
+
+    isSolved() {
+        if (this.miss) return false;
+        return true;
+    }
+
+    keyPressed() {
+        if (keyCode == 81 && !effect.active) {
+            transition(CAVE, 2, 2);
+        }
+    }
+
+
 }

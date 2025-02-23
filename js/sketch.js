@@ -8,6 +8,7 @@ const solderingIron = "Soldering Iron";
 
 let inventory = [];
 let hand = [];
+let isJuniorMiss;
 
 const START = 0;
 const CAVE = 1;
@@ -80,6 +81,8 @@ function preload() {
     // ufo_img = loadImage("assets/images/ufo.png");
 
     images = {
+        positive_screw: loadImage("assets/images/Positive_screw.png"),
+        negative_screw: loadImage("assets/images/Negative_screw.png"),
         menu_bg: loadImage("assets/images/menu.png"),
         cave_bg: loadImage("assets/images/cave.png"),
         ufo_img: loadImage("assets/images/ufo.png"),
