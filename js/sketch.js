@@ -69,6 +69,16 @@ const music = [
         link: "assets/audios/piak.mp3",
         name: "piak",
         group: "effect"
+    },
+    {
+        link: "assets/audios/click.mp3",
+        name: "click",
+        group: "effect"
+    },
+    {
+        link: "assets/audios/eh.mp3",
+        name: "eh",
+        group: "effect"
     }
 ];
 
@@ -81,7 +91,9 @@ function setup() {
     canvas.parent("main");
     background(255);
     sound.repeat("background", "group", true);
-    sound.volume("background", "group", 0.9);
+    sound.volume("background", "group", 0.7);
+    sound.volume("click", "name", 0.3);
+    sound.volume("eh", "name", 0.2);
 
     //tipsManager.show(200, 200, "Click here to enter room", true);
 
@@ -266,12 +278,16 @@ function mousePressed() {
     }
 
     if (dialougeManager.active) {
+        sound.repeat("click", "name", false);
+        sound.play("click");
         dialougeManager.mousePressed();
         return; // Disable any click events if dialogue is active
     }
 
     if (currentSceneIndex >= 0) {
         scenes[currentSceneIndex].mousePressed();
+        sound.repeat("click", "name", false);
+        sound.play("click");
     }
 }
 
