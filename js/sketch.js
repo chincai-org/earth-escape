@@ -64,6 +64,11 @@ const music = [
         link: "assets/audios/backgroundmusicv2.mp3",
         name: "backgroundmusicv2",
         group: "background"
+    },
+    {
+        link: "assets/audios/piak.mp3",
+        name: "piak",
+        group: "effect"
     }
 ];
 
@@ -74,6 +79,7 @@ function setup() {
     canvas.parent("main");
     background(255);
     sound.repeat("background", "group", true);
+    sound.volume("background", "group", 0.9);
 
     //tipsManager.show(200, 200, "Click here to enter room", true);
 
