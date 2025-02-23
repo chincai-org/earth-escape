@@ -79,6 +79,11 @@ const music = [
         link: "assets/audios/eh.mp3",
         name: "eh",
         group: "effect"
+    },
+    {
+        link: "assets/audios/win.mp3",
+        name: "win",
+        group: "effect"
     }
 ];
 
