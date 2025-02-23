@@ -8,6 +8,10 @@ class Sound {
                 group: element.group
             });
         });
+        this.slowStopRunning = {
+            active: false,
+            n: 0
+        }
     };
     repeat(nameOrGroup, type="name", repeat=true) {
         if (type == "name") {
@@ -104,5 +108,20 @@ class Sound {
                 return audio;
             }
         }
+    }
+    slowStopAll() {
+        this.slowStopRunning.active = true;
+    }
+    playPlaylist(n) {
+        this.slowStopAll();
+        setTimeout(() => {
+            if (n == 0) {
+                this.play("backgroundmusic");
+            } else if (n == 1) {
+                this.play("backgroundmusicv1");
+            } else if (n == 2) {
+                this.play("backgroundmusicv2");
+            }
+        }, 5000);
     }
 }

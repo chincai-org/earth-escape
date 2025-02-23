@@ -71,7 +71,8 @@ class Start extends Scene {
     mousePressed() {
         if (!this.started) {
             this.started = true;
-            dialougeManager.play(this.dialog);
+            dialougeManager.play(this.dialog); 
+            sound.play("backgroundmusic");
         } else {
             if (!dialougeManager.active) {
                 this.done = true;
