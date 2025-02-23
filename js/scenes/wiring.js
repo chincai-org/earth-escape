@@ -381,8 +381,8 @@ class Wiring extends Scene {
             dialougeManager.play(this.hmm);
             this.hmmed = true;
             tipsManager.show(
-                0.034916201117318434,
-                0.37084398976982097,
+                0.08589385474860335 * canvasWidth,
+                0.3874680306905371 * canvasHeight,
                 "Click on door to exit",
                 true
             );

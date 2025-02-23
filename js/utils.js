@@ -237,9 +237,13 @@ class TipsManager {
 
     draw() {
         virtualEdit(() => {
+            // console.log(this.x, this.y);
             // Draw the text
             translate(this.x, this.y);
             fill(...this.color); // yellow
+            // textAlign(CENTER, CENTER);
+            stroke(0, 0, 0);
+            textSize(20);
 
             let width = textWidth(this.txt);
             let height = textAscent() + textDescent();

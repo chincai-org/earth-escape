@@ -14,12 +14,28 @@ class Interactable {
         this.goDirection = { x: -1, y: -1 };
 
         this.init();
+
+        this.startFlying = false;
+        this.flySpeed = 0.1;
+        this.flyHeight = 50;
+        this.flyY = 0;
     }
 
     init() {}
-    update(dt) {}
+    update(dt) {
+        if (this.startFlying) {
+            this.flyY += this.flySpeed * dt;
+            if (this.flyY >= this.flyHeight) {
+                this.flyY = this.flyHeight;
+                this.startFlying = false;
+                this.display = false;
+                // tipsManager.deactivate();
+            }
+        }
+    }
 
     draw() {
+        if (this.flyY != 0) console.log(this.flyY);
         if (!this.display) {
             return;
         }
@@ -42,7 +58,7 @@ class Interactable {
                 image(
                     images[this.hoveredImage],
                     this.x,
-                    this.y,
+                    this.y - this.flyY,
                     canvasWidth,
                     canvasHeight
                 );

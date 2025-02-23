@@ -6,7 +6,8 @@ class Alien {
         this.x = x * canvasWidth;
         this.y = y * canvasHeight;
 
-        this.velocity = 0.2;
+        // this.velocity = 0.2;
+        this.velocity = 0.7;
 
         this.destinations = [];
         this.id = id;

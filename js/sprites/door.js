@@ -15,6 +15,7 @@ class Door extends Interactable {
 
     update() {
         if (this.isReached() && !effect.active) {
+            console.log("oh");
             transition(this.transitionDestination, 2, 2);
             return true;
         }
