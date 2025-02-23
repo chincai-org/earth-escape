@@ -75,6 +75,7 @@ class screwDriver extends Scene {
                 this.spawnRate = 1;
                 if (this.screws.length) return;
                 this.gameEnded = true;
+                return;
             }
             let X;
             let Y;
@@ -139,14 +140,15 @@ class screwDriver extends Scene {
         }
         fill(255, 0, 0);
         textAlign(CENTER, CENTER);
-        text(
-            "Miss: " +
-                this.miss +
-                ", Selected " +
-                (this.screwDriverType == 0 ? "N" : "P"),
-            canvasWidth / 2,
-            30
-        );
+        text("Miss: " + this.miss, canvasWidth / 2, 30);
+        textAlign(LEFT, CENTER);
+        if (this.screwDriverType === 0) {
+            text("Screwdriver type: Positive", canvasWidth / 100, 30);
+        } else if (this.screwDriverType === 1) {
+            text("Screwdriver type: Negative", canvasWidth / 100, 30);
+        } else {
+            text("Screwdriver type: None", canvasWidth / 100, 30);
+        }
         noStroke();
         for (let screw of this.screws) {
             ellipse(screw[0], screw[1], this.screwDiameter);
@@ -162,10 +164,13 @@ class screwDriver extends Scene {
 
     gameEnd() {
         if (!effect.active) {
-            transition(CAVE, 2, 2);
             isJuniorMiss = this.miss;
             this.played = true;
             this.gameEnded = false;
+            this.tick = 0;
+            this.miss = 0;
+            this.spawnRate = 100;
+            transition(CAVE, 2, 2);
         }
     }
 
@@ -176,7 +181,8 @@ class screwDriver extends Scene {
 
     keyPressed() {
         if (keyCode == 81 && !effect.active) {
-            transition(CAVE, 2, 2);
+            this.gameEnd();
+            this.played = false;
         }
     }
 }

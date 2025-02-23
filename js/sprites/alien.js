@@ -74,8 +74,11 @@ class Alien {
         }
 
         push();
-        translate(this.x, this.y);
-        fill(0, 255, 0);
+        translate(this.x - images.jr.width / 4, this.y - images.jr.height / 4);
+        // fill(0, 255, 0);
+        noFill();
+        stroke(0);
+        strokeWeight(1);
         ellipse(0, 0, 50 + this.id * 10, 50 + this.id * 10);
 
         // for (let i = 0; i < this.destinations.length; i++) {
@@ -91,6 +94,12 @@ class Alien {
         //         dest.y - this.y
         //     );
         // }
+
+        if (this.id === JUNIOR) {
+            image(images.jr, 0, 0, images.jr.width / 2, images.jr.height / 2);
+        } else {
+            image(images.sr, 0, 0, images.jr.width / 2, images.jr.height / 2);
+        }
 
         pop();
     }

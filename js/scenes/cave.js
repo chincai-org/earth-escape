@@ -394,6 +394,7 @@ class Cave extends Scene {
             if (act.id == "wiring_tut") {
                 let goDirection = this.ufo_a.getGoDirection();
                 console.log(goDirection);
+                sound.slowStopAll();
                 setTimeout(() => {
                     tipsManager.show(
                         0.17039106145251395 * canvasWidth,
@@ -402,6 +403,9 @@ class Cave extends Scene {
                         true
                     );
                 }, 2000);
+                setTimeout(() => {
+                    sound.play("backgroundmusicv2");
+                }, 3000);
                 this.sr.travelTo(goDirection.x, goDirection.y);
             } else if (act.id == "junkyard_tut") {
                 tipsManager.show(
@@ -454,7 +458,7 @@ class Cave extends Scene {
                         this.showBigUFO = false;
                         this.nextLevel = parts.transitionDestination;
                         tipsManager.deactivate();
-
+                        sound.playPlaylist(Math.floor((Math.random() * 2) + 1));
                         this.parts.forEach(part => {
                             part.display = false;
                         });
@@ -513,7 +517,7 @@ class Cave extends Scene {
         image(images.cave_bg, 0, 0, canvasWidth, canvasHeight);
         this.jr.draw();
         this.sr.draw();
-
+        
         // if (this.showBigUFO) {
         //     image(images.big_ufo, 0, 0, canvasWidth, canvasHeight);
         // }
