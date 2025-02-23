@@ -78,6 +78,17 @@ class Cave extends Scene {
             )
             .setGoDirection(0.8589385474860335, 0.4782608695652174);
 
+        this.button = new Interactable(this.jr);
+        this.button
+            .setImages("button", "button_hovered")
+            .setBox(
+                0.638268156424581,
+                0.41815856777493604,
+                0.07960893854748603,
+                0.1534526854219949
+            )
+            .displayNone();
+
         this.interactables.push(this.ufo);
         this.interactables.push(this.caveExit);
         this.interactables.push(this.bigUFO);
@@ -85,6 +96,7 @@ class Cave extends Scene {
         this.interactables.push(this.ufo_b);
         this.interactables.push(this.ufo_c);
         this.interactables.push(this.ufo_d);
+        this.interactables.push(this.button);
 
         this.parts = [
             this.bigUFO,
@@ -183,7 +195,7 @@ class Cave extends Scene {
                     },
                     {
                         name: "Polikino",
-                        text: "Wait, from where did you get that chair?",
+                        text: "Wait, from where did you get that chair? (use your imagination)",
                         align: "left"
                     },
                     {
@@ -308,7 +320,7 @@ class Cave extends Scene {
                     },
                     {
                         name: "Kikiko",
-                        text: "Oh, and I left a little surprise for you—a big, shiny launch button right next to the ship. When you're done with everything, just press it. Easy, right? Unless you press it too early. Then, well... let's not think about that.",
+                        text: "Oh, and I left a little surprise for you-a big, shiny launch button right next to the ship. When you're done with everything, just press it. Easy, right? Unless you press it too early. Then, well... let's not think about that.",
                         align: "right"
                     },
                     {
@@ -333,6 +345,8 @@ class Cave extends Scene {
         this.nextLevel = -1;
 
         this.failedPlier = false;
+
+        this.firstFree = true;
     }
 
     update(dt) {
@@ -429,7 +443,13 @@ class Cave extends Scene {
             } else if (act.id == "free") {
                 let goDirection = this.ufo_a.getGoDirection();
                 this.sr.travelTo(goDirection.x, goDirection.y);
-                this.sr.exist = false;
+                this.button.display = true;
+
+                if (this.firstFree) {
+                    this.firstFree = false;
+                } else {
+                    this.sr.exist = false;
+                }
             }
         }
     }
@@ -458,7 +478,7 @@ class Cave extends Scene {
                         this.showBigUFO = false;
                         this.nextLevel = parts.transitionDestination;
                         tipsManager.deactivate();
-                        sound.playPlaylist(Math.floor((Math.random() * 2) + 1));
+                        sound.playPlaylist(Math.floor(Math.random() * 2 + 1));
                         this.parts.forEach(part => {
                             part.display = false;
                         });
@@ -473,6 +493,10 @@ class Cave extends Scene {
                 this.parts.forEach(part => {
                     part.display = false;
                 });
+
+                if (act.id == "free") {
+                    this.button.display = true;
+                }
             }
             return;
         }
@@ -484,6 +508,10 @@ class Cave extends Scene {
             this.displayBigUFO();
 
             return;
+        }
+
+        if (this.button.isHovered() && act.id == "free") {
+            endGame();
         }
 
         if (
@@ -498,6 +526,7 @@ class Cave extends Scene {
 
     displayBigUFO() {
         this.showBigUFO = true;
+        this.button.display = false;
         this.parts.forEach(part => {
             part.display = true;
         });
@@ -517,7 +546,7 @@ class Cave extends Scene {
         image(images.cave_bg, 0, 0, canvasWidth, canvasHeight);
         this.jr.draw();
         this.sr.draw();
-        
+
         // if (this.showBigUFO) {
         //     image(images.big_ufo, 0, 0, canvasWidth, canvasHeight);
         // }
