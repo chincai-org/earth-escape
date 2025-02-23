@@ -62,7 +62,8 @@ class Cave extends Scene {
                 0.08567774936061381,
                 0.24441340782122906,
                 0.7941176470588235
-            );
+            )
+            .setGoDirection(0.8589385474860335, 0.4782608695652174);
 
         this.interactables.push(this.ufo);
         this.interactables.push(this.caveExit);
@@ -233,7 +234,9 @@ class Cave extends Scene {
                         text: "I'm so sorry.",
                         align: "right"
                     }
-                ]
+                ],
+                dialogStarted: false,
+                dialogEnded: false
             }
         ];
 
@@ -241,6 +244,8 @@ class Cave extends Scene {
 
         this.showBigUFO = false;
         this.nextLevel = -1;
+
+        this.failedPlier = false;
     }
 
     update(dt) {
@@ -253,6 +258,8 @@ class Cave extends Scene {
         let act = this.acts[this.currentAct];
         let item = inventory[inventory.length - 1];
 
+        // console.log(act);
+
         if (this.ufo.isReached() && !effect.active) {
             transition(this.nextLevel, 2, 3);
         } else if (this.ufo.isReached(this.sr)) {
@@ -261,25 +268,23 @@ class Cave extends Scene {
 
         if (act.junkYard) {
             this.caveExit.update();
-            if (act.id == "found_plier" && item != plier) {
-                this.currentAct--;
+        }
+
+        let dialog = act.dialog;
+        let template = "";
+
+        if (act.id == "found_plier") {
+            let item = inventory[inventory.length - 1];
+            if (item != plier) {
+                dialog = act.failureDialog;
+                template = item;
             }
         }
 
-        if (act.dialog && act.dialog.length) {
+        if (dialog && dialog.length) {
             // if act has dialog
             if (!act.dialogStarted) {
                 // if dialog has not started
-                let dialog = act.dialog;
-                let template = "";
-
-                if (act.id == "found_plier") {
-                    let item = inventory[inventory.length - 1];
-                    if (item != plier) {
-                        dialog = act.failureDialog;
-                        template = item;
-                    }
-                }
 
                 dialougeManager.play(dialog, template);
                 act.dialogStarted = true;
@@ -318,10 +323,14 @@ class Cave extends Scene {
                 if (item == plier) {
                     act.allowedRooms.push(WIRING);
                     act.junkYard = false;
+                    this.failedPlier = false;
                 } else {
-                    let goDirection = this.caveExit.getGoDirection();
-                    this.jr.travelTo(goDirection.x, goDirection.y);
+                    console.log("yo");
                     act.junkYard = true;
+                    let goDirection = this.caveExit.getGoDirection();
+                    console.log(goDirection);
+                    this.jr.travelTo(goDirection.x, goDirection.y);
+                    this.failedPlier = true;
                 }
             }
         }
@@ -421,7 +430,14 @@ class Cave extends Scene {
     transition(prev) {
         this.sr.exist = true;
 
-        this.currentAct++;
+        let prevAct = this.acts[this.currentAct];
+        if (prevAct && prevAct.id == "found_plier" && this.failedPlier) {
+            prevAct.dialogStarted = false;
+            prevAct.dialogEnded = false;
+        } else {
+            this.currentAct++;
+        }
+
         if (this.currentAct >= this.acts.length) {
             this.currentAct = this.acts.length - 1;
         }

@@ -179,9 +179,8 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    console.log([mouseX / canvasWidth, mouseY / canvasHeight].join(", "));
-
     if (keyIsDown(CONTROL)) {
+        console.log([mouseX / canvasWidth, mouseY / canvasHeight].join(", "));
         debug_dots.push([mouseX, mouseY]);
 
         if (debug_dots.length == 2) {
@@ -234,6 +233,9 @@ function getDeltaTime() {
 }
 
 function transition(n, time1, time2) {
+    time1 = 100;
+    time2 = 100;
+
     if (time1 == undefined && time2 == undefined) {
         currentSceneIndex = n;
     } else {
