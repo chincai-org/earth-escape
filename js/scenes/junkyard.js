@@ -53,13 +53,13 @@ class junkyard extends Scene {
                     0.039804469273743016,
                     0.06265984654731457
                 ),
-            "washingMachine": new Interactable(this.jr).setImages("Washing_machine", ""),
-            "carDoor": new Interactable(this.jr).setImages("Car_door", ""),
-            "wheel": new Interactable(this.jr).setImages("Wheel", ""),
-            "stinkyClothes": new Interactable(this.jr).setImages("Stinky_clothes", ""),
-            "radioBox": new Interactable(this.jr).setImages("Radiobox", ""),
-            "boxOfBottle": new Interactable(this.jr).setImages("Box_of_bottles", ""),
-            "metalPlates": new Interactable(this.jr).setImages("Metal_plates", "")
+            "washing machine": new Interactable(this.jr).setImages("Washing_machine", "").setBox(0.1705710102489019, 0.43601895734597157, 0.04538799414348463, 0.07582938388625593),
+            "carDoor": new Interactable(this.jr).setImages("Car_door", "").setBox(0.568814055636896, 0.4881516587677725, 0.04758418740849195, 0.0995260663507109),
+            "wheel": new Interactable(this.jr).setImages("Wheel", "").setBox(0.6010248901903368, 0.8751974723538705, 0.0527086383601757, 0.08214849921011058),
+            "stinky clothes": new Interactable(this.jr).setImages("Stinky_clothes", "").setBox(0.13177159590043924, 0.3459715639810427, 0.06808199121522694, 0.05055292259083728),
+            "radiobox": new Interactable(this.jr).setImages("Radiobox", "").setBox(0.5256222547584187, 0.8783570300157978, 0.03074670571010249, 0.05055292259083728),
+            "box of bottles": new Interactable(this.jr).setImages("Box_of_bottles", "").setBox(0.19912152269399708, 0.27014218009478674, 0.030014641288433383, 0.03949447077409163),
+            "metal plates": new Interactable(this.jr).setImages("Metal_plates", "").setBox(0.5241581259150805, 0.7819905213270142, 0.0527086383601757, 0.04739336492890995)
         };
 
         this.interactables.push(this.signBoard);
