@@ -133,7 +133,12 @@ function preload() {
         Box_of_bottles: loadImage("assets/images/Box_of_bottles.png"),
         Metal_plates: loadImage("assets/images/Metal_plates.png"),
         jr: loadImage("assets/images/jr_alien.png"),
-        sr: loadImage("assets/images/sr_alien.png")
+        sr: loadImage("assets/images/sr_alien.png"),
+        room: loadImage("assets/images/room.png"),
+        door: loadImage("assets/images/door.png"),
+        door_hovered: loadImage("assets/images/door_hovered.png"),
+        table: loadImage("assets/images/table.png"),
+        table_hovered: loadImage("assets/images/table_hovered.png")
     };
 }
 
