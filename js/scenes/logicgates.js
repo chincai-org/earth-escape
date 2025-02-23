@@ -248,6 +248,141 @@ class LogicGates extends Scene {
                 name: "Kikiko",
                 text: "Well, well, well, such perfect timing",
                 align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "I was just figuring out what's wrong with our CPU",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "I think it's a logic gate problem",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Turns out the XOR gate is destroyed",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "We need to recreate it to fix the CPU",
+                align: "right"
+            },
+            {
+                name: "Polikino",
+                text: "Erm,.. English please?",
+                align: "left"
+            },
+            {
+                name: "Kikiko",
+                text: "Oh right, I forgot you're not a computer scientist",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Listen, I will only say this once",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "There are 6 columns of gates",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "The first column are inputs",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Which value is either 0 or 1",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "You can toggle the inputs however you like.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "The last column is the output",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "In the middle there are 4 columns of gates",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Which are neutral by default",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "You can change the gates by clicking them",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "You can only connnect gates to the next column",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Different gates have different functions",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "AND gate (Dark blue) will output 1 if both inputs connected to the gate are 1",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "OR gate (Light blue) will output 1 if either of the inputs connected to the gate are 1",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "NOT gate (Magenta) will inverse the input (1 to 0, 0 to 1)",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "You need to recreate the XOR gate",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Which will output 1 if the inputs are different, and 0 if the inputs are the same",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "That's all I'm gonna teach you. Figure it out yourself. Good luck!",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Oh, and don't forget to toggle the inputs to test the gate",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "And we require soldering iron to fix the CPU, don't ask me why, it is what it is.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "You can do it before going to the yard again.",
+                align: "right"
+            },
+            {
+                name: "Polikino",
+                text: "I don't understand a thing you said",
+                align: "left"
             }
         ];
 
@@ -339,7 +474,7 @@ class LogicGates extends Scene {
         }
 
         if (debug) {
-            if (this.solved) {
+            if (this.isSolved()) {
                 text("Solved", 0, 0, 100, 100);
             } else {
                 text("Not solved", 0, 0, 100, 100);
