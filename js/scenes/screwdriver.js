@@ -105,7 +105,8 @@ class screwDriver extends Scene {
         text("Miss: " + this.miss, canvasWidth / 2, 30);
         noStroke();
         for (let screw of this.screws) {
-            image(screw[2] == 1 ? images.negative_screw : images.positive_screw, screw[0], screw[1], this.screwDiameter, this.screwDiameter);
+            ellipse(screw[0], screw[1], this.screwDiameter);
+            image(screw[2] == 1 ? images.negative_screw : images.positive_screw, screw[0] - this.screwDiameter / 2, screw[1] - this.screwDiameter / 2, this.screwDiameter, this.screwDiameter);
         }
     }
 
