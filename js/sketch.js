@@ -72,6 +72,8 @@ const music = [
     }
 ];
 
+let state = "nothing";
+
 const sound = new Sound(music);
 
 function setup() {
@@ -126,7 +128,9 @@ function preload() {
         door: loadImage("assets/images/door.png"),
         door_hovered: loadImage("assets/images/door_hovered.png"),
         table: loadImage("assets/images/table.png"),
-        table_hovered: loadImage("assets/images/table_hovered.png")
+        table_hovered: loadImage("assets/images/table_hovered.png"),
+        button: loadImage("assets/images/button.png"),
+        button_hovered: loadImage("assets/images/button_hovered.png")
     };
 }
 
