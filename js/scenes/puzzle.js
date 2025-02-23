@@ -172,8 +172,18 @@ class Puzzle extends Scene {
 
         this.dialog = [
             {
+                name: "Polikino",
+                text: "Wait, why does this room look so familiar?",
+                align: "left"
+            },
+            {
                 name: "Kikiko",
-                text: "Oh hey, what a coincidence!",
+                text: "What do you mean? It's completely different than the other rooms. What, are you accusing the developers of being lazy?",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Anyway, I just figured what's wrong",
                 align: "right"
             },
             {
