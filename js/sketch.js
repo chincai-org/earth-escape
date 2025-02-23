@@ -8,6 +8,7 @@ const solderingIron = "Soldering Iron";
 
 let inventory = [];
 let hand = [];
+let isJuniorMiss;
 
 const START = 0;
 const CAVE = 1;
@@ -86,6 +87,8 @@ function preload() {
     // ufo_img = loadImage("assets/images/ufo.png");
 
     images = {
+        positive_screw: loadImage("assets/images/Positive_screw.png"),
+        negative_screw: loadImage("assets/images/Negative_screw.png"),
         menu_bg: loadImage("assets/images/menu.png"),
         cave_bg: loadImage("assets/images/cave.png"),
         ufo_img: loadImage("assets/images/ufo.png"),
@@ -102,7 +105,14 @@ function preload() {
         screwdriver_img: loadImage("assets/images/screwdriver.png"),
         superglue_img: loadImage("assets/images/superglue.png"),
         soldering_iron_img: loadImage("assets/images/soldering_iron.png"),
-        plier_img: loadImage("assets/images/plier.png")
+        plier_img: loadImage("assets/images/plier.png"),
+        Washing_machine: loadImage("assets/images/Washing_machine.png"),
+        Car_door: loadImage("assets/images/Car_door.png"),
+        Wheel: loadImage("assets/images/Wheel.png"),
+        Stinky_clothes: loadImage("assets/images/Stinky_clothes.png"),
+        Radiobox: loadImage("assets/images/Radiobox.png"),
+        Box_of_bottles: loadImage("assets/images/Box_of_bottles.png"),
+        Metal_plates: loadImage("assets/images/Metal_plates.png")
     };
 }
 

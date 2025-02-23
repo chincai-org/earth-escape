@@ -52,6 +52,19 @@ class Cave extends Scene {
             .setGoDirection(0.19343575418994413, 0.4322250639386189)
             .displayNone();
 
+        this.ufo_d = new Door(this.jr);
+        this.ufo_d
+            .setImages("", "big_ufo_d")
+            .setTransition(SCREW_DRIVER)
+            .setBox(
+                0.401536312849162,
+                0.23017902813299232,
+                0.236731843575419,
+                0.22506393861892582
+            )
+            .setGoDirection(0.19343575418994413, 0.4322250639386189)
+            .displayNone();
+
         // console.log(this.ufo.getGoDirection());
 
         this.caveExit = new Door(this.jr);
@@ -71,8 +84,15 @@ class Cave extends Scene {
         this.interactables.push(this.ufo_a);
         this.interactables.push(this.ufo_b);
         this.interactables.push(this.ufo_c);
+        this.interactables.push(this.ufo_d);
 
-        this.parts = [this.bigUFO, this.ufo_a, this.ufo_b, this.ufo_c];
+        this.parts = [
+            this.bigUFO,
+            this.ufo_a,
+            this.ufo_b,
+            this.ufo_c,
+            this.ufo_d
+        ];
 
         // this.jrStart = { x: 0.19343575418994413, y: 0.4322250639386189 };
         // this.jrEnd = { x: 0.2, y: 0.5 };
@@ -243,7 +263,13 @@ class Cave extends Scene {
                 srStart: { x: 0.5991620111731844, y: 0.4833759590792839 },
                 srEnd: { x: 0.5991620111731844, y: 0.4833759590792839 },
                 junkYard: true,
-                allowedRooms: [WIRING, JUNKYARD, PUZZLE, LOGIC_GATES],
+                allowedRooms: [
+                    WIRING,
+                    JUNKYARD,
+                    PUZZLE,
+                    LOGIC_GATES,
+                    SCREW_DRIVER
+                ],
                 dialog: [
                     {
                         name: "Kikiko",
@@ -525,6 +551,10 @@ class Cave extends Scene {
         let act = this.acts[this.currentAct];
         this.srStart = act.srStart;
         this.srEnd = act.srEnd;
+
+        if (act.id == "free") {
+            this.sr.exist = false;
+        }
 
         super.transition();
     }
