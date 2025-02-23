@@ -217,7 +217,15 @@ function draw() {
             sound.audio.forEach(element => {
                 element.audio.pause();
                 element.audio.currentTime = 0;
-                element.audio.volume = 1;
+                if (element.group == "background") {   
+                    element.audio.volume = 0.7;
+                } else if (element.name == "piak") {
+                    element.audio.volume = 1;
+                } else if (element.name == "click") {
+                    element.audio.volume = 0.3;
+                } else if (element.name == "eh") {
+                    element.audio.volume = 0.2;
+                }
             });
         }
     }
