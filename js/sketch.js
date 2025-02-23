@@ -162,6 +162,7 @@ function draw() {
 
     if (state == "win") {
         image(images.win, 0, 0, canvasWidth, canvasHeight);
+        sound.play("win");
 
         textSize(32);
         text(
