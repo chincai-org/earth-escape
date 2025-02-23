@@ -225,21 +225,23 @@ class LogicGates extends Scene {
         this.door
             .setTransition(CAVE)
             .setBox(
+                0.005050505050505051,
+                0.39594594594594595,
+                0.06421356421356421,
+                0.23243243243243245
+            )
+            .setGoDirection(0.04120111731843575, 0.5127877237851662)
+            .setImages("door", "door_hovered");
+
+        this.cpu = new Interactable(this.jr);
+        this.cpu
+            .setBox(
                 0.43854748603351956,
                 0.540920716112532,
                 0.1403631284916201,
                 0.22122762148337596
             )
-            .setGoDirection(0.04120111731843575, 0.5127877237851662)
-            .setImages("door", "door_img");
-
-        this.cpu = new Interactable(this.jr);
-        this.cpu.setBox(
-            0.4371508379888268,
-            0.40281329923273657,
-            0.1180167597765363,
-            0.1969309462915601
-        );
+            .setImages("table", "table_hovered");
 
         this.interactables.push(this.door);
         this.interactables.push(this.cpu);
@@ -462,6 +464,17 @@ class LogicGates extends Scene {
         this.sr.draw();
 
         if (this.puzzleActive) {
+            fill(255, 255, 255);
+            stroke(10);
+            strokeWeight(10);
+
+            rect(
+                0.2206703910614525 * canvasWidth,
+                0.17135549872122763 * canvasHeight,
+                0.5558659217877095 * canvasWidth,
+                0.6329923273657289 * canvasHeight
+            );
+
             if (this.selected) {
                 stroke(0);
                 strokeWeight(10);
@@ -486,6 +499,7 @@ class LogicGates extends Scene {
     }
 
     drawGates() {
+        // White background
         for (let layer of this.gates) {
             for (let gate of layer) {
                 gate.draw(30, this.selected);

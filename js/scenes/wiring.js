@@ -329,6 +329,12 @@ class Wiring extends Scene {
     }
 
     drawGrid() {
+        // Draw square background
+        fill(255);
+        stroke(0);
+        strokeWeight(10);
+        rect(this.leftPad, this.topPad, this.gridWidth, this.gridHeight);
+
         stroke(0);
         strokeWeight(1);
 

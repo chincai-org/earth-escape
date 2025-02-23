@@ -17,6 +17,19 @@ class Grid {
     }
 
     draw() {
+        // White background
+
+        fill(255);
+        stroke(0);
+        strokeWeight(10);
+
+        rect(
+            this.leftPad,
+            this.topPad,
+            this.grid.length * this.cellSize,
+            this.grid.length * this.cellSize
+        );
+
         for (let y = 0; y < this.grid.length; y++) {
             for (let x = 0; x < this.grid[y].length; x++) {
                 if (this.grid[y][x] === 1) {
@@ -50,6 +63,16 @@ class Grid {
                 );
             }
         }
+
+        noFill();
+        stroke(0);
+        strokeWeight(10);
+        rect(
+            this.leftPad,
+            this.topPad,
+            this.grid.length * this.cellSize,
+            this.grid.length * this.cellSize
+        );
     }
 
     shuffle() {
