@@ -178,6 +178,8 @@ function draw() {
             200,
             200
         );
+
+        return;
     } else if (state == "lose") {
         image(images.lose, 0, 0, canvasWidth, canvasHeight);
 
@@ -187,6 +189,8 @@ function draw() {
             200,
             200
         );
+
+        return;
     }
 
     let dt = getDeltaTime();
@@ -391,9 +395,9 @@ function endGame(jy) {
             Screwdriver: scenes[SCREW_DRIVER]
         };
 
-        for (let game of games) {
-            if (!game.complete) {
-                reason = game.name;
+        for (let [name, game] of Object.entries(games)) {
+            if (!game.isSolved()) {
+                reason = name;
                 state = "lose";
                 return;
             }
