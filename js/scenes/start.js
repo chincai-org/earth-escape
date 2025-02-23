@@ -21,17 +21,17 @@ class Start extends Scene {
             },
             {
                 name: "Kikiko",
-                text: "What just happened?",
+                text: "What?! What just happened? Why are we spinning?!",
                 align: "right"
             },
             {
                 name: "Polikino",
-                text: "I think the spaceship is out of fuel.",
+                text: "Uh... I think the anti-gravity stabilizer just gave out. Did we... skip the maintenance check again?",
                 align: "left"
             },
             {
                 name: "Kikiko",
-                text: "What!? AHHHHHHHHHH",
+                text: "THE STABILIZER?! ARE YOU TELLING ME WE’RE FLOATING AROUND LIKE A DRUNK ASTEROID?! AHHHHHHHHHH!",
                 align: "right"
             }
         ];

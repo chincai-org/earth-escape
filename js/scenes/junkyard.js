@@ -151,6 +151,13 @@ class junkyard extends Scene {
                 return;
             }
         }
+
+        if (this.signBoard.isHovered()) {
+            let goDirection = this.invisibleDoor.getGoDirection();
+            inventory.push("nothing");
+            this.jr.travelTo(goDirection.x, goDirection.y);
+            return;
+        }
     }
 
     transition() {
