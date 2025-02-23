@@ -142,7 +142,9 @@ function preload() {
         table: loadImage("assets/images/table.png"),
         table_hovered: loadImage("assets/images/table_hovered.png"),
         button: loadImage("assets/images/button.png"),
-        button_hovered: loadImage("assets/images/button_hovered.png")
+        button_hovered: loadImage("assets/images/button_hovered.png"),
+        win: loadImage("assets/images/win.png"),
+        lose: loadImage("assets/images/lose.png")
     };
 }
 
