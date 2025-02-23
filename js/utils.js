@@ -140,6 +140,9 @@ class DialougeManager {
         this.currentCharacter = 0;
         this.active = true;
         this.template = template;
+        sound.stop("eh");
+        sound.repeat("eh", "name", false);
+        sound.play("eh");
     }
 
     update() {
@@ -187,6 +190,9 @@ class DialougeManager {
             this.currentCharacter = 0;
             this.currentDialougeIndex++;
         }
+        sound.stop("eh"); 
+        sound.repeat("eh", "name", false);
+        sound.play("eh");
     }
 
     draw() {
