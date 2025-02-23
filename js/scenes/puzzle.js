@@ -139,6 +139,78 @@ class Puzzle extends Scene {
         this.gridHeight = this.tileSize * this.gridSize;
 
         this.initGrids();
+
+        this.firstTime = true;
+
+        this.jrStart = { x: 0, y: 0.5 };
+        this.jrEnd = { x: 0.2, y: 0.5 };
+
+        this.srStart = { x: 0.8, y: 0.5 };
+        this.srEnd = { x: 0.8, y: 0.5 };
+
+        this.door = new Door(this.jr);
+        this.door
+            .setTransition(CAVE)
+            .setBox(
+                0.005050505050505051,
+                0.39594594594594595,
+                0.06421356421356421,
+                0.23243243243243245
+            )
+            .setGoDirection(0.04120111731843575, 0.5127877237851662);
+
+        this.qfc = new Interactable(this.jr);
+        this.qfc.setBox(
+            0.4371508379888268,
+            0.40281329923273657,
+            0.1180167597765363,
+            0.1969309462915601
+        );
+
+        this.interactables.push(this.door);
+        this.interactables.push(this.qfc);
+
+        this.dialog = [
+            {
+                name: "Kikiko",
+                text: "Oh hey, what a coincidence!",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "The Quantum Flux Capacitor seems to have broke apart.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "After investigating, I think I can fix it using superglue.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "But the pieces are all mixed up.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Your task is to rotate them such that it will all fit together when stacked.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "Ah, and don't forget, the superglue, you might need to go test your luck again.",
+                align: "right"
+            },
+            {
+                name: "Kikiko",
+                text: "That's all, I will piece them together once you're done, just make sure it's correct. I won't be able to tell, as you know, my eyesight isn't the best.",
+                align: "right"
+            }
+        ];
+
+        this.dialogStarted = false;
+        this.dialogEnded = false;
+        this.puzzleActive = false;
     }
 
     initGrids() {
@@ -211,24 +283,91 @@ class Puzzle extends Scene {
         }
     }
 
-    draw() {
-        for (let grid of this.grids) {
-            grid.draw();
+    update(dt) {
+        if (this.firstTime && !this.dialogStarted && !dialougeManager.active) {
+            dialougeManager.play(this.dialog);
+            this.dialogStarted = true;
+            return;
         }
 
-        if (this.isSolved()) {
-            text("Solved", 0, 0, 100, 100);
-        } else {
-            text("Not solved", 0, 0, 100, 100);
+        if (this.firstTime && !this.dialogEnded && !dialougeManager.active) {
+            this.dialogEnded = true;
+            let goDirection = this.door.getGoDirection();
+            this.sr.travelTo(goDirection.x, goDirection.y); // Senior go out
+        }
+
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            this.jr.update(dt);
+            this.sr.update(dt);
+            return;
+        }
+
+        if (this.door.isReached(this.sr)) {
+            this.sr.exist = false;
+        }
+
+        if (!this.puzzleActive) {
+            this.door.update();
+            return;
+        }
+    }
+
+    draw() {
+        super.draw();
+
+        this.jr.draw();
+        this.sr.draw();
+
+        if (this.puzzleActive) {
+            for (let grid of this.grids) {
+                grid.draw();
+            }
+        }
+
+        if (debug) {
+            if (this.isSolved()) {
+                text("Solved", 0, 0, 100, 100);
+            } else {
+                text("Not solved", 0, 0, 100, 100);
+            }
         }
     }
 
     mousePressed() {
         super.mousePressed();
+
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            return;
+        }
+
+        if (!this.puzzleActive) {
+            if (this.door.isHovered() && !this.jr.isTravelling()) {
+                let goDirection = this.door.getGoDirection();
+                this.jr.travelTo(goDirection.x, goDirection.y);
+                this.firstTime = false;
+                return;
+            }
+
+            if (this.qfc.isHovered() && !this.jr.isTravelling()) {
+                this.puzzleActive = true;
+                tipsManager.deactivate();
+            }
+
+            return;
+        }
+
+        let pressed = false;
+
         for (let grid of this.grids) {
             if (grid.isHovered()) {
                 grid.rotate();
+                pressed = true;
+                break;
             }
+        }
+
+        if (!pressed) {
+            this.puzzleActive = false;
         }
     }
 
@@ -243,6 +382,6 @@ class Puzzle extends Scene {
     }
 
     transition() {
-        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
+        super.transition();
     }
 }

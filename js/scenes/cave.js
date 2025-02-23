@@ -100,7 +100,7 @@ class Cave extends Scene {
                     },
                     {
                         name: "Polikino",
-                        text: "Uh... according to the navigation system, we’re on... planet Earth.",
+                        text: "Uh... according to the navigation system, we're on... planet Earth.",
                         align: "left"
                     },
                     {
@@ -247,52 +247,52 @@ class Cave extends Scene {
                 dialog: [
                     {
                         name: "Kikiko",
-                        text: "Hey, you’re finally done with the wiring? Took you long enough. I was starting to think you were building a coffee machine instead of fixing the ship.",
+                        text: "Hey, you're finally done with the wiring? Took you long enough. I was starting to think you were building a coffee machine instead of fixing the ship.",
                         align: "right"
                     },
                     {
                         name: "Kikiko",
-                        text: "Anyway, don’t get too comfortable. We’ve still got a laundry list of problems to solve before we can blast off this rock. And by 'we,' I mean *you*.",
+                        text: "Anyway, don't get too comfortable. We've still got a laundry list of problems to solve before we can blast off this rock. And by 'we,' I mean *you*.",
                         align: "right"
                     },
                     {
                         name: "Kikiko",
-                        text: "From now on, you’re in charge. Consider it your… promotion. Congrats!",
+                        text: "From now on, you're in charge. Consider it your... promotion. Congrats!",
                         align: "right"
                     },
                     {
                         name: "Polikino",
-                        text: "Wait, what? Hold on—since when am I in charge? What are you even going to be doing?",
+                        text: "Wait, what? Hold on, since when am I in charge? What are you even going to be doing?",
                         align: "left"
                     },
                     {
                         name: "Kikiko",
-                        text: "Relax, I’ll be around. Probably. Just think of me as your… moral support. Or your emergency hotline. But only for *real* emergencies, like if the ship’s about to explode or something.",
+                        text: "Relax, I'll be around. Probably. Just think of me as your... moral support. Or your emergency hotline. But only for *real* emergencies, like if the ship's about to explode or something.",
                         align: "right"
                     },
                     {
                         name: "Kikiko",
-                        text: "Remember what I told you: stay calm, don’t overthink it, and for the love of the stars, don’t touch the red wires. Seriously, Polikino, I mean it this time.",
+                        text: "Remember what I told you: stay calm, don't overthink it, and for the love of the stars, don't touch the red wires. Seriously, Polikino, I mean it this time.",
                         align: "right"
                     },
                     {
                         name: "Kikiko",
-                        text: "Nothing can go wrong. Probably. Maybe. Okay, just don’t mess it up.",
+                        text: "Nothing can go wrong. Probably. Maybe. Okay, just don't mess it up.",
                         align: "right"
                     },
                     {
                         name: "Kikiko",
-                        text: "Oh, and I left a little surprise for you—a big, shiny launch button right next to the ship. When you’re done with everything, just press it. Easy, right? Unless you press it too early. Then, well… let’s not think about that.",
+                        text: "Oh, and I left a little surprise for you—a big, shiny launch button right next to the ship. When you're done with everything, just press it. Easy, right? Unless you press it too early. Then, well... let's not think about that.",
                         align: "right"
                     },
                     {
                         name: "Kikiko",
-                        text: "That’s all from me. Good luck, don’t die, and try not to blow up the ship. Later!",
+                        text: "That's all from me. Good luck, don't die, and try not to blow up the ship. Later!",
                         align: "right"
                     },
                     {
                         name: "Polikino",
-                        text: "Wait, Kikiko! What do you mean ‘don’t blow up the ship’? Kikiko? KIKIKO!",
+                        text: "Wait, Kikiko! What do you mean 'don't blow up the ship'? Kikiko? KIKIKO!",
                         align: "left"
                     }
                 ],
@@ -400,6 +400,7 @@ class Cave extends Scene {
             } else if (act.id == "free") {
                 let goDirection = this.ufo_a.getGoDirection();
                 this.sr.travelTo(goDirection.x, goDirection.y);
+                this.sr.exist = false;
             }
         }
     }

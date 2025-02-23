@@ -265,10 +265,12 @@ class LogicGates extends Scene {
 
         this.drawGates();
 
-        if (this.solved) {
-            text("Solved", 0, 0, 100, 100);
-        } else {
-            text("Not solved", 0, 0, 100, 100);
+        if (debug) {
+            if (this.solved) {
+                text("Solved", 0, 0, 100, 100);
+            } else {
+                text("Not solved", 0, 0, 100, 100);
+            }
         }
     }
 

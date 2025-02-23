@@ -31,7 +31,7 @@ class Start extends Scene {
             },
             {
                 name: "Kikiko",
-                text: "THE STABILIZER?! ARE YOU TELLING ME WE’RE FLOATING AROUND LIKE A DRUNK ASTEROID?! AHHHHHHHHHH!",
+                text: "THE STABILIZER?! ARE YOU TELLING ME WE'RE FLOATING AROUND LIKE A DRUNK ASTEROID?! AHHHHHHHHHH!",
                 align: "right"
             }
         ];

@@ -316,10 +316,12 @@ class Wiring extends Scene {
             this.drawCells();
         }
 
-        if (this.isSolved()) {
-            text("Solved", 0, 0, 100, 100);
-        } else {
-            text("Not solved", 0, 0, 100, 100);
+        if (debug) {
+            if (this.isSolved()) {
+                text("Solved", 0, 0, 100, 100);
+            } else {
+                text("Not solved", 0, 0, 100, 100);
+            }
         }
     }
 
@@ -366,7 +368,7 @@ class Wiring extends Scene {
         if (this.firstTime && !this.dialogEnded && !dialougeManager.active) {
             this.dialogEnded = true;
             let goDirection = this.door.getGoDirection();
-            this.sr.travelTo(goDirection.x, goDirection.y);
+            this.sr.travelTo(goDirection.x, goDirection.y); // Senior go out
             setTimeout(() => {
                 tipsManager.show(
                     0.49511173184357543 * canvasWidth,
