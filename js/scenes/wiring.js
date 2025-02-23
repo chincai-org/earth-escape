@@ -383,6 +383,8 @@ class Wiring extends Scene {
         }
 
         if (this.broke && !this.hmmed && !dialougeManager.active) {
+            sound.repeat("piak", "name", false);
+            sound.play("piak");
             dialougeManager.play(this.hmm);
             this.hmmed = true;
             tipsManager.show(

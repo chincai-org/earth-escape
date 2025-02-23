@@ -4,7 +4,10 @@ class screwDriver extends Scene {
         this.screwDiameter = 40;
         this.tick = 0;
         this.screwDriverType = -1;
-        this.screwType = [[255, 255, 255], [255, 0, 0]];
+        this.screwType = [
+            [255, 255, 255],
+            [255, 0, 0]
+        ];
         this.miss = 0;
         this.spawnRate = 100;
         this.gameEnded = false;
@@ -17,7 +20,7 @@ class screwDriver extends Scene {
         }
 
         if (this.howToPlay) {
-            if (this.tick > 600) {
+            if (this.tick > 750) {
                 this.howToPlay = false;
             }
             this.tick++;
@@ -31,13 +34,18 @@ class screwDriver extends Scene {
             if (++this.screws[i][3] > 500) {
                 this.screws.splice(i, 1);
                 this.miss++;
-
             }
         }
 
         if (mouseIsPressed) {
             for (let i = 0; i < this.screws.length; ++i) {
-                if (Math.hypot(this.screws[i][0] - mouseX, this.screws[i][1] - mouseY) < (this.screwDiameter / 2)) {
+                if (
+                    Math.hypot(
+                        this.screws[i][0] - mouseX,
+                        this.screws[i][1] - mouseY
+                    ) <
+                    this.screwDiameter / 2
+                ) {
                     if (this.screwDriverType === this.screws[i][2])
                         this.screws.splice(i, 1);
                     break;
@@ -58,12 +66,16 @@ class screwDriver extends Scene {
 
         if (this.tick % this.spawnRate == 0) {
             if (this.spawnRate > 50) {
-                this.spawnRate >= 75 ? this.spawnRate -= 2 : this.spawnRate >= 70 ? --this.spawnRate : this.spawnRate -= .5;
-            }
-            else {
+                this.spawnRate >= 75
+                    ? (this.spawnRate -= 2)
+                    : this.spawnRate >= 70
+                      ? --this.spawnRate
+                      : (this.spawnRate -= 0.5);
+            } else {
                 this.spawnRate = 1;
                 if (this.screws.length) return;
                 this.gameEnded = true;
+                return;
             }
             let X;
             let Y;
@@ -72,7 +84,12 @@ class screwDriver extends Scene {
                 X = this.randint(canvasWidth - 80);
                 Y = this.randint(canvasHeight - 80);
                 screw = this.randint(this.screwType.length);
-            } while (this.screws.some(([x, y]) => Math.hypot(x - X, y - Y) <= (1.1 * this.screwDiameter)));
+            } while (
+                this.screws.some(
+                    ([x, y]) =>
+                        Math.hypot(x - X, y - Y) <= 1.1 * this.screwDiameter
+                )
+            );
             this.screws.push([X + 40, Y + 60, screw, 0]);
         }
         ++this.tick;
@@ -90,33 +107,70 @@ class screwDriver extends Scene {
             textAlign(CENTER, CENTER);
             if (this.tick < 250) {
                 text("Screwdriver game", canvasWidth / 2, canvasHeight / 2);
-                text("Screw the screws by clicking on the screws with the correct screwdriver", canvasWidth / 2, canvasHeight / 2 + 60);
-                text("Press q to quit game", canvasWidth / 2, canvasHeight / 2 + 90);
+                text(
+                    "Screw the screws by clicking on the screws with the correct screwdriver",
+                    canvasWidth / 2,
+                    canvasHeight / 2 + 60
+                );
+                text(
+                    "Press q to quit game",
+                    canvasWidth / 2,
+                    canvasHeight / 2 + 90
+                );
                 return;
+            } else if (this.tick < 500) {
+                text(
+                    "Press P to switch to phillip screwdriver type.(Positive symbol)",
+                    canvasWidth / 2,
+                    canvasHeight / 2
+                );
+                text(
+                    "Press N to switch to slotted screwdriver type.(Negative symbol)",
+                    canvasWidth / 2,
+                    canvasHeight / 2 + 60
+                );
+            } else if (this.tick < 600) {
+                text("3", canvasWidth / 2, canvasHeight / 2);
+            } else if (this.tick < 650) {
+                text("2", canvasWidth / 2, canvasHeight / 2);
+            } else if (this.tick < 700) {
+                text("1", canvasWidth / 2, canvasHeight / 2);
             }
-            text("Press P to switch to phillip screwdriver type.(Positive symbol)", canvasWidth / 2, canvasHeight / 2);
-            text("Press N to switch to slotted screwdriver type.(Negative symbol)", canvasWidth / 2, canvasHeight / 2 + 60);
             return;
-
-
         }
         fill(255, 0, 0);
         textAlign(CENTER, CENTER);
         text("Miss: " + this.miss, canvasWidth / 2, 30);
+        textAlign(LEFT, CENTER);
+        if (this.screwDriverType === 0) {
+            text("Screwdriver type: Positive", canvasWidth / 100, 30);
+        } else if (this.screwDriverType === 1) {
+            text("Screwdriver type: Negative", canvasWidth / 100, 30);
+        } else {
+            text("Screwdriver type: None", canvasWidth / 100, 30);
+        }
         noStroke();
         for (let screw of this.screws) {
             ellipse(screw[0], screw[1], this.screwDiameter);
-            image(screw[2] == 1 ? images.negative_screw : images.positive_screw, screw[0] - this.screwDiameter / 2, screw[1] - this.screwDiameter / 2, this.screwDiameter, this.screwDiameter);
+            image(
+                screw[2] == 1 ? images.negative_screw : images.positive_screw,
+                screw[0] - this.screwDiameter / 2,
+                screw[1] - this.screwDiameter / 2,
+                this.screwDiameter,
+                this.screwDiameter
+            );
         }
     }
 
-
     gameEnd() {
         if (!effect.active) {
-            transition(CAVE, 2, 2);
             isJuniorMiss = this.miss;
             this.played = true;
             this.gameEnded = false;
+            this.tick = 0;
+            this.miss = 0;
+            this.spawnRate = 100;
+            transition(CAVE, 2, 2);
         }
     }
 
@@ -127,9 +181,8 @@ class screwDriver extends Scene {
 
     keyPressed() {
         if (keyCode == 81 && !effect.active) {
-            transition(CAVE, 2, 2);
+            this.gameEnd();
+            this.played = false;
         }
     }
-
-
 }
