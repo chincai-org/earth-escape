@@ -114,6 +114,7 @@ class screwDriver extends Scene {
     gameEnd() {
         if (!effect.active) {
             transition(CAVE, 2, 2);
+            isJuniorMiss = this.miss;
             this.played = true;
             this.gameEnded = false;
         }
