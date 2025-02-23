@@ -144,6 +144,8 @@ function preload() {
         table_hovered: loadImage("assets/images/table_hovered.png"),
         button: loadImage("assets/images/button.png"),
         button_hovered: loadImage("assets/images/button_hovered.png"),
+        win: loadImage("assets/images/win.png"),
+        lose: loadImage("assets/images/lose.png"),
         fatty: loadImage("assets/images/fatty.png"),
         win: loadImage("assets/images/win.png"),
         lose: loadImage("assets/images/lose.png")
@@ -259,7 +261,15 @@ function draw() {
             sound.audio.forEach(element => {
                 element.audio.pause();
                 element.audio.currentTime = 0;
-                element.audio.volume = 1;
+                if (element.group == "background") {
+                    element.audio.volume = 0.7;
+                } else if (element.name == "piak") {
+                    element.audio.volume = 1;
+                } else if (element.name == "click") {
+                    element.audio.volume = 0.3;
+                } else if (element.name == "eh") {
+                    element.audio.volume = 0.2;
+                }
             });
         }
     }
