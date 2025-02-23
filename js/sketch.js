@@ -18,6 +18,8 @@ const PUZZLE = 5;
 const SCREW_DRIVER = 6;
 const UFO_FIX = 7;
 
+let debug = true;
+
 const scenes = [
     new Start(),
     new Cave(),
@@ -45,8 +47,6 @@ let images = {};
 
 let debug_rects = [];
 let debug_dots = [];
-
-let debug = true;
 
 const music = [
     {
@@ -241,8 +241,10 @@ function getDeltaTime() {
 }
 
 function transition(n, time1, time2) {
-    time1 = 100;
-    time2 = 100;
+    if (debug) {
+        time1 = 100;
+        time2 = 100;
+    }
 
     if (time1 == undefined && time2 == undefined) {
         currentSceneIndex = n;
