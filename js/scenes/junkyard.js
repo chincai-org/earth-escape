@@ -52,7 +52,14 @@ class junkyard extends Scene {
                     0.9143222506393862,
                     0.039804469273743016,
                     0.06265984654731457
-                )
+                ),
+            "washingMachine": new Interactable(this.jr).setImages("Washing_machine", ""),
+            "carDoor": new Interactable(this.jr).setImages("Car_door", ""),
+            "wheel": new Interactable(this.jr).setImages("Wheel", ""),
+            "stinkyClothes": new Interactable(this.jr).setImages("Stinky_clothes", ""),
+            "radioBox": new Interactable(this.jr).setImages("Radiobox", ""),
+            "boxOfBottle": new Interactable(this.jr).setImages("Box_of_bottles", ""),
+            "metalPlates": new Interactable(this.jr).setImages("Metal_plates", "")
         };
 
         this.interactables.push(this.signBoard);
