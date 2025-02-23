@@ -50,14 +50,19 @@ let debug_dots = [];
 
 const music = [
     {
-        link: "",
-        name: "music1",
-        group: ""
+        link: "assets/audios/backgroundmusic.mp3",
+        name: "backgroundmusic",
+        group: "background"
     },
     {
-        link: "",
-        name: "",
-        group: ""
+        link: "assets/audios/backgroundmusicv1.mp3",
+        name: "backgroundmusicv1",
+        group: "background"
+    },
+    {
+        link: "assets/audios/backgroundmusicv2.mp3",
+        name: "backgroundmusicv2",
+        group: "background"
     }
 ];
 
@@ -67,6 +72,7 @@ function setup() {
     let canvas = createCanvas(canvasWidth, canvasHeight);
     canvas.parent("main");
     background(255);
+    sound.repeat("background", "group", true);
 
     //tipsManager.show(200, 200, "Click here to enter room", true);
 
@@ -104,7 +110,6 @@ function draw() {
     background(255);
 
     let dt = getDeltaTime();
-
     if (effect.active) {
         if (effect.m == 0) {
             background(0);
@@ -158,6 +163,26 @@ function draw() {
             noFill();
             stroke(135, 206, 235);
             rect(x, y, w, h);
+        }
+    }
+
+    if (sound.slowStopRunning.active) {
+        sound.audio.forEach(element => {
+            if (element.audio.volume >= 0.009) { 
+                element.audio.volume -= 0.009;
+            } else {
+                element.audio.volume = 0;
+            }
+        });
+        sound.slowStopRunning.n += 1;
+        if (sound.slowStopRunning.n > 112) {
+            sound.slowStopRunning.active = false;
+            sound.slowStopRunning.n = 0;
+            sound.audio.forEach(element => {
+                element.audio.pause();
+                element.audio.currentTime = 0; 
+                element.audio.volume = 1;
+            });
         }
     }
 }
