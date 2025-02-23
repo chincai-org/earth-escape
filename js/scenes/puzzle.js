@@ -151,6 +151,7 @@ class Puzzle extends Scene {
         this.door = new Door(this.jr);
         this.door
             .setTransition(CAVE)
+            .setImages("door", "door_hovered")
             .setBox(
                 0.005050505050505051,
                 0.39594594594594595,
@@ -160,12 +161,14 @@ class Puzzle extends Scene {
             .setGoDirection(0.04120111731843575, 0.5127877237851662);
 
         this.qfc = new Interactable(this.jr);
-        this.qfc.setBox(
-            0.4371508379888268,
-            0.40281329923273657,
-            0.1180167597765363,
-            0.1969309462915601
-        );
+        this.qfc
+            .setBox(
+                0.43854748603351956,
+                0.540920716112532,
+                0.1403631284916201,
+                0.22122762148337596
+            )
+            .setImages("table", "table_hovered");
 
         this.interactables.push(this.door);
         this.interactables.push(this.qfc);
@@ -323,6 +326,8 @@ class Puzzle extends Scene {
     }
 
     draw() {
+        image(images.room, 0, 0, canvasWidth, canvasHeight);
+
         super.draw();
 
         this.jr.draw();

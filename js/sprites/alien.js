@@ -79,7 +79,7 @@ class Alien {
         noFill();
         stroke(0);
         strokeWeight(1);
-        ellipse(0, 0, 50 + this.id * 10, 50 + this.id * 10);
+        if (debug) ellipse(0, 0, 50 + this.id * 10, 50 + this.id * 10);
 
         // for (let i = 0; i < this.destinations.length; i++) {
         //     let dest = this.destinations[i];

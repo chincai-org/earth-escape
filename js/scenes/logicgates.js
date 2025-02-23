@@ -225,12 +225,13 @@ class LogicGates extends Scene {
         this.door
             .setTransition(CAVE)
             .setBox(
-                0.005050505050505051,
-                0.39594594594594595,
-                0.06421356421356421,
-                0.23243243243243245
+                0.43854748603351956,
+                0.540920716112532,
+                0.1403631284916201,
+                0.22122762148337596
             )
-            .setGoDirection(0.04120111731843575, 0.5127877237851662);
+            .setGoDirection(0.04120111731843575, 0.5127877237851662)
+            .setImages("door", "door_img");
 
         this.cpu = new Interactable(this.jr);
         this.cpu.setBox(
@@ -453,6 +454,8 @@ class LogicGates extends Scene {
     }
 
     draw() {
+        image(images.room, 0, 0, canvasWidth, canvasHeight);
+
         super.draw();
 
         this.jr.draw();

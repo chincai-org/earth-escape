@@ -170,6 +170,7 @@ class Wiring extends Scene {
         this.door = new Door(this.jr);
         this.door
             .setTransition(CAVE)
+            .setImages("door", "door_hovered")
             .setBox(
                 0.005050505050505051,
                 0.39594594594594595,
@@ -179,13 +180,14 @@ class Wiring extends Scene {
             .setGoDirection(0.04120111731843575, 0.5127877237851662);
 
         this.wireBox = new Interactable(this.jr);
-        this.wireBox.setBox(
-            0.4371508379888268,
-            0.40281329923273657,
-            0.1180167597765363,
-            0.1969309462915601
-        );
-        // .setImages("wiring", "")
+        this.wireBox
+            .setBox(
+                0.43854748603351956,
+                0.540920716112532,
+                0.1403631284916201,
+                0.22122762148337596
+            )
+            .setImages("table", "table_hovered");
         // .displayNone();
 
         this.interactables.push(this.door);
@@ -305,6 +307,7 @@ class Wiring extends Scene {
 
     draw() {
         //background(255);
+        image(images.room, 0, 0, canvasWidth, canvasHeight);
 
         super.draw();
 
@@ -371,8 +374,8 @@ class Wiring extends Scene {
             this.sr.travelTo(goDirection.x, goDirection.y); // Senior go out
             setTimeout(() => {
                 tipsManager.show(
-                    0.49511173184357543 * canvasWidth,
-                    0.37851662404092073 * canvasHeight,
+                    0.5125698324022346 * canvasWidth,
+                    0.5191815856777494 * canvasHeight,
                     "Click on the S.H.T desk.",
                     true
                 );
