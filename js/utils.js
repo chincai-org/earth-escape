@@ -124,6 +124,7 @@ class DialougeManager {
         this.currentDialougeIndex = 0;
         this.currentCharacter = 0;
         this.active = false;
+        this.template = "";
     }
 
     reset() {
@@ -133,11 +134,12 @@ class DialougeManager {
         this.active = false;
     }
 
-    play(dialouges) {
+    play(dialouges, template = "") {
         this.dialouges = dialouges;
         this.currentDialougeIndex = 0;
         this.currentCharacter = 0;
         this.active = true;
+        this.template = template;
     }
 
     update() {
@@ -157,7 +159,7 @@ class DialougeManager {
     }
 
     lateUpdate() {
-        this.currentCharacter += Math.random() / 2;
+        this.currentCharacter += (Math.random() / 2) * 1.5;
         this.currentCharacter = Math.min(
             this.currentCharacter,
             this.dialouges[this.currentDialougeIndex].text.length
@@ -189,7 +191,9 @@ class DialougeManager {
 
     draw() {
         let dialog = this.dialouges[this.currentDialougeIndex];
-        let currentDialog = dialog.text.substring(0, this.currentCharacter);
+        let currentDialog = dialog.text
+            .substring(0, this.currentCharacter)
+            .replaceAll("$$", this.template);
         dialogBox(currentDialog, dialog.name, dialog.align || "left");
     }
 }

@@ -190,6 +190,49 @@ class Cave extends Scene {
                         text: "Nothing can go wrong, right?",
                         align: "right"
                     }
+                ],
+                dialogStarted: false,
+                dialogEnded: false
+            },
+            {
+                id: "found_plier",
+                srStart: { x: 0.5991620111731844, y: 0.4833759590792839 },
+                srEnd: { x: 0.5991620111731844, y: 0.4833759590792839 },
+                junkYard: false,
+                allowedRooms: [],
+                dialog: [
+                    {
+                        name: "Polikino",
+                        text: "I found the plier!",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Great! Now go back to the control room and continue your wiring.",
+                        align: "left"
+                    }
+                ],
+                failureDialog: [
+                    {
+                        name: "Kikiko",
+                        text: "A $$???",
+                        align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "What the hell are you gonna do with a $$???",
+                        align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Go back and find the plier, you idiot. Now you are just increasing the chance of us getting caught by the humans outside.",
+                        align: "left"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "I'm so sorry.",
+                        align: "right"
+                    }
                 ]
             }
         ];
@@ -208,6 +251,7 @@ class Cave extends Scene {
         }
 
         let act = this.acts[this.currentAct];
+        let item = inventory[inventory.length - 1];
 
         if (this.ufo.isReached() && !effect.active) {
             transition(this.nextLevel, 2, 3);
@@ -215,13 +259,29 @@ class Cave extends Scene {
             this.sr.exist = false;
         }
 
-        if (act.junkYard) this.caveExit.update();
+        if (act.junkYard) {
+            this.caveExit.update();
+            if (act.id == "found_plier" && item != plier) {
+                this.currentAct--;
+            }
+        }
 
         if (act.dialog && act.dialog.length) {
             // if act has dialog
             if (!act.dialogStarted) {
                 // if dialog has not started
-                dialougeManager.play(act.dialog);
+                let dialog = act.dialog;
+                let template = "";
+
+                if (act.id == "found_plier") {
+                    let item = inventory[inventory.length - 1];
+                    if (item != plier) {
+                        dialog = act.failureDialog;
+                        template = item;
+                    }
+                }
+
+                dialougeManager.play(dialog, template);
                 act.dialogStarted = true;
             }
             // this.ufo.update();
@@ -254,6 +314,15 @@ class Cave extends Scene {
                     "Click on the exit.",
                     true
                 );
+            } else if (act.id == "found_plier") {
+                if (item == plier) {
+                    act.allowedRooms.push(WIRING);
+                    act.junkYard = false;
+                } else {
+                    let goDirection = this.caveExit.getGoDirection();
+                    this.jr.travelTo(goDirection.x, goDirection.y);
+                    act.junkYard = true;
+                }
             }
         }
     }

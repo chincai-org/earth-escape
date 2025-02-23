@@ -501,7 +501,7 @@ class Wiring extends Scene {
 
         if (cell == null) {
             if (!this.firstTime) {
-                if (!inventory.includes("plier")) {
+                if (!inventory.includes(plier)) {
                     this.initCells();
                 }
                 this.puzzleActive = false;

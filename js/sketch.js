@@ -1,5 +1,11 @@
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
+
+const plier = "Plier";
+const screwdriver = "Screwdriver";
+const superglue = "Superglue";
+const solderingIron = "Soldering Iron";
+
 let inventory = [];
 let hand = [];
 
@@ -120,7 +126,7 @@ function draw() {
     }
 
     if (currentSceneIndex >= 0) {
-        scenes[currentSceneIndex].update(dt);
+        if (!effect.active) scenes[currentSceneIndex].update(dt);
         scenes[currentSceneIndex].draw();
         scenes[currentSceneIndex].lateUpdate();
     } else {
@@ -158,7 +164,7 @@ function keyPressed() {
         transition(keyCode - 48, 5, 5);
     }
 
-    if (keyCode == BACKSPACE) {
+    if (keyCode == ENTER) {
         dialougeManager.reset();
     }
 

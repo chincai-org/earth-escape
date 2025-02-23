@@ -26,10 +26,10 @@ class junkyard extends Scene {
             .setGoDirection(0.029329608938547486, 0.6841432225063938);
 
         this.items = {
-            screwdriver: new Interactable(this.jr)
+            [screwdriver]: new Interactable(this.jr)
                 .setImages("screwdriver_img", "")
                 .setBox(0, 0, 0, 0),
-            superglue: new Interactable(this.jr)
+            [superglue]: new Interactable(this.jr)
                 .setImages("superglue_img", "")
                 .setBox(
                     0.45321229050279327,
@@ -37,7 +37,7 @@ class junkyard extends Scene {
                     0.02723463687150838,
                     0.0319693094629156
                 ),
-            solderingIron: new Interactable(this.jr)
+            [solderingIron]: new Interactable(this.jr)
                 .setImages("soldering_iron_img", "")
                 .setBox(
                     0.12569832402234637,
@@ -45,7 +45,7 @@ class junkyard extends Scene {
                     0.034217877094972066,
                     0.04859335038363171
                 ),
-            plier: new Interactable(this.jr)
+            [plier]: new Interactable(this.jr)
                 .setImages("plier_img", "")
                 .setBox(
                     0.5579608938547486,
