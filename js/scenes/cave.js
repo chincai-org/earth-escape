@@ -390,7 +390,6 @@ class Cave extends Scene {
                     act.junkYard = false;
                     this.failedPlier = false;
                 } else {
-                    console.log("yo");
                     act.junkYard = true;
                     let goDirection = this.caveExit.getGoDirection();
                     console.log(goDirection);

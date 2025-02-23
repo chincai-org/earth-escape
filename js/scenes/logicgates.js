@@ -214,6 +214,47 @@ class LogicGates extends Scene {
         this.initGates();
 
         this.solved = false;
+
+        this.jrStart = { x: 0, y: 0.5 };
+        this.jrEnd = { x: 0.2, y: 0.5 };
+
+        this.srStart = { x: 0.8, y: 0.5 };
+        this.srEnd = { x: 0.8, y: 0.5 };
+
+        this.door = new Door(this.jr);
+        this.door
+            .setTransition(CAVE)
+            .setBox(
+                0.005050505050505051,
+                0.39594594594594595,
+                0.06421356421356421,
+                0.23243243243243245
+            )
+            .setGoDirection(0.04120111731843575, 0.5127877237851662);
+
+        this.cpu = new Interactable(this.jr);
+        this.cpu.setBox(
+            0.4371508379888268,
+            0.40281329923273657,
+            0.1180167597765363,
+            0.1969309462915601
+        );
+
+        this.interactables.push(this.door);
+        this.interactables.push(this.cpu);
+
+        this.dialog = [
+            {
+                name: "Kikiko",
+                text: "Well, well, well, such perfect timing",
+                align: "right"
+            }
+        ];
+
+        this.firstTime = true;
+        this.dialogStarted = false;
+        this.dialogEnded = false;
+        this.puzzleActive = false;
     }
 
     initGates() {
@@ -236,10 +277,35 @@ class LogicGates extends Scene {
         this.gates.push([this.output]);
     }
 
-    update() {
-        this.updateGates();
+    update(dt) {
+        if (this.firstTime && !this.dialogStarted && !dialougeManager.active) {
+            dialougeManager.play(this.dialog);
+            this.dialogStarted = true;
+            return;
+        }
 
-        this.solved = this.isSolved();
+        if (this.firstTime && !this.dialogEnded && !dialougeManager.active) {
+            this.dialogEnded = true;
+            let goDirection = this.door.getGoDirection();
+            this.sr.travelTo(goDirection.x, goDirection.y); // Senior go out
+        }
+
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            this.jr.update(dt);
+            this.sr.update(dt);
+            return;
+        }
+
+        if (this.door.isReached(this.sr)) {
+            this.sr.exist = false;
+        }
+
+        if (!this.puzzleActive) {
+            this.door.update();
+            return;
+        }
+
+        this.updateGates();
     }
 
     updateGates(gates = null) {
@@ -252,18 +318,25 @@ class LogicGates extends Scene {
     }
 
     draw() {
-        if (this.selected) {
-            stroke(0);
-            strokeWeight(10);
-            line(
-                this.selected.displayX + this.selected.tileSize / 2,
-                this.selected.displayY + this.selected.tileSize / 2,
-                mouseX,
-                mouseY
-            );
-        }
+        super.draw();
 
-        this.drawGates();
+        this.jr.draw();
+        this.sr.draw();
+
+        if (this.puzzleActive) {
+            if (this.selected) {
+                stroke(0);
+                strokeWeight(10);
+                line(
+                    this.selected.displayX + this.selected.tileSize / 2,
+                    this.selected.displayY + this.selected.tileSize / 2,
+                    mouseX,
+                    mouseY
+                );
+            }
+
+            this.drawGates();
+        }
 
         if (debug) {
             if (this.solved) {
@@ -283,13 +356,42 @@ class LogicGates extends Scene {
     }
 
     mousePressed() {
-        let gate = this.getHovered();
+        super.mousePressed();
 
-        if (this.selected) {
-            this.selected.appendChild(gate);
-            this.selected = null;
-        } else {
-            this.selected = gate;
+        if (this.jr.isTravelling() || this.sr.isTravelling()) {
+            return;
+        }
+
+        if (!this.puzzleActive) {
+            if (this.door.isHovered() && !this.jr.isTravelling()) {
+                let goDirection = this.door.getGoDirection();
+                this.jr.travelTo(goDirection.x, goDirection.y);
+                this.firstTime = false;
+                return;
+            }
+
+            if (this.cpu.isHovered() && !this.sr.isTravelling()) {
+                this.puzzleActive = true;
+                return;
+            }
+
+            return;
+        }
+
+        if (this.puzzleActive) {
+            let gate = this.getHovered();
+
+            if (gate == null) {
+                this.puzzleActive = false;
+                return;
+            }
+
+            if (this.selected) {
+                this.selected.appendChild(gate);
+                this.selected = null;
+            } else {
+                this.selected = gate;
+            }
         }
     }
 
@@ -378,6 +480,6 @@ class LogicGates extends Scene {
     }
 
     transition() {
-        this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
+        super.transition();
     }
 }
