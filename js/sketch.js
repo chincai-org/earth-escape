@@ -19,7 +19,7 @@ const PUZZLE = 5;
 const SCREW_DRIVER = 6;
 const UFO_FIX = 7;
 
-let debug = true;
+let debug = false;
 
 const scenes = [
     new Start(),
@@ -183,6 +183,8 @@ function draw() {
             200,
             200
         );
+
+        return;
     } else if (state == "lose") {
         image(images.lose, 0, 0, canvasWidth, canvasHeight);
 
@@ -192,6 +194,8 @@ function draw() {
             200,
             200
         );
+
+        return;
     }
 
     let dt = getDeltaTime();
@@ -286,9 +290,9 @@ function keyPressed() {
         transition(keyCode - 48, 5, 5);
     }
 
-    if (keyCode == SHIFT) {
-        debug = !debug;
-    }
+    // if (keyCode == SHIFT) {
+    //     debug = !debug;
+    // }
 
     if (keyCode == ENTER) {
         dialougeManager.reset();
@@ -396,9 +400,9 @@ function endGame(jy) {
             Screwdriver: scenes[SCREW_DRIVER]
         };
 
-        for (let game of games) {
-            if (!game.complete) {
-                reason = game.name;
+        for (let [name, game] of Object.entries(games)) {
+            if (!game.isSolved()) {
+                reason = name;
                 state = "lose";
                 return;
             }
