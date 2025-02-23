@@ -104,7 +104,9 @@ function preload() {
         Stinky_clothes: loadImage("assets/images/Stinky_clothes.png"),
         Radiobox: loadImage("assets/images/Radiobox.png"),
         Box_of_bottles: loadImage("assets/images/Box_of_bottles.png"),
-        Metal_plates: loadImage("assets/images/Metal_plates.png")
+        Metal_plates: loadImage("assets/images/Metal_plates.png"),
+        jr: loadImage("assets/images/jr_alien.png"),
+        sr: loadImage("assets/images/sr_alien.png")
     };
 }
 
