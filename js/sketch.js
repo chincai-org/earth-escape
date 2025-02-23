@@ -19,7 +19,7 @@ const PUZZLE = 5;
 const SCREW_DRIVER = 6;
 const UFO_FIX = 7;
 
-let debug = false;
+let debug = true;
 
 const scenes = [
     new Start(),
@@ -183,12 +183,14 @@ function draw() {
     } else if (state == "lose") {
         image(images.lose, 0, 0, canvasWidth, canvasHeight);
 
+        let r = `You lose! You didn't fix the ${reason}, your ufo exploded`;
+
+        if (reason == "tools") {
+            r = `You lose! You didn't have all the tools, your ufo exploded`;
+        }
+
         textSize(32);
-        text(
-            `You lose! You didn't fix the ${reason}, your ufo exploded`,
-            200,
-            200
-        );
+        text(r, 200, 200);
 
         return;
     }
@@ -388,6 +390,17 @@ function endGame(jy) {
     if (jy) {
         state = "junkyard";
     } else {
+        if (
+            !inventory.includes(superglue) ||
+            !inventory.includes(screwdriver) ||
+            !inventory.includes(plier) ||
+            !inventory.includes(solderingIron)
+        ) {
+            reason = "tools";
+            state = "lose";
+            return;
+        }
+
         let games = {
             Wiring: scenes[WIRING],
             Puzzle: scenes[PUZZLE],
