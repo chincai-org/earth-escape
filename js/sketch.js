@@ -46,6 +46,8 @@ let images = {};
 let debug_rects = [];
 let debug_dots = [];
 
+let debug = true;
+
 const music = [
     {
         link: "",
@@ -147,21 +149,27 @@ function draw() {
         tipsManager.draw();
     }
 
-    for (let [x, y] of debug_dots) {
-        ellipse(x, y, 10, 10);
-    }
+    if (debug) {
+        for (let [x, y] of debug_dots) {
+            ellipse(x, y, 10, 10);
+        }
 
-    for (let [x, y, w, h] of debug_rects) {
-        noFill();
-        stroke(135, 206, 235);
-        rect(x, y, w, h);
+        for (let [x, y, w, h] of debug_rects) {
+            noFill();
+            stroke(135, 206, 235);
+            rect(x, y, w, h);
+        }
     }
 }
 
 function keyPressed() {
     // 0-9
-    if (keyCode >= 48 && keyCode <= 57) {
+    if (keyCode >= 48 && keyCode <= 57 && debug) {
         transition(keyCode - 48, 5, 5);
+    }
+
+    if (keyCode == SHIFT) {
+        debug = !debug;
     }
 
     if (keyCode == ENTER) {

@@ -78,6 +78,8 @@ class junkyard extends Scene {
         ];
 
         this.found = false;
+
+        this.visitCount = 0;
     }
 
     update(dt) {
@@ -136,6 +138,16 @@ class junkyard extends Scene {
                 // tipsManager.setColor(0, 0, 0);
                 tipsManager.show(mouseX, mouseY, `${itemName} +1`, false);
                 this.found = true;
+
+                delete this.items[itemName];
+
+                for (let i = 0; i < this.interactables.length; i++) {
+                    if (this.interactables[i].equals(item)) {
+                        this.interactables.splice(i, 1);
+                        break;
+                    }
+                }
+
                 return;
             }
         }
@@ -145,5 +157,6 @@ class junkyard extends Scene {
         // this.jr.travelTo(0.2 * canvasWidth, 0.5 * canvasHeight);
         super.transition();
         this.found = false;
+        this.visitCount++;
     }
 }

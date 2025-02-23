@@ -237,6 +237,57 @@ class Cave extends Scene {
                 ],
                 dialogStarted: false,
                 dialogEnded: false
+            },
+            {
+                id: "free",
+                srStart: { x: 0.5991620111731844, y: 0.4833759590792839 },
+                srEnd: { x: 0.5991620111731844, y: 0.4833759590792839 },
+                junkYard: true,
+                allowedRooms: [WIRING, JUNKYARD, PUZZLE, LOGIC_GATES],
+                dialog: [
+                    {
+                        name: "Kikiko",
+                        text: "Hey, I assume you are done with the wiring.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "There's still several things we need to fix before we can leave this planet.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "From now on, I will leave everything to you",
+                        align: "right"
+                    },
+                    {
+                        name: "Polikino",
+                        text: "Wait, what?",
+                        align: "left"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Worry not, I will be there if you need me.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Just remember the advice I gave you",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Nothing can go wrong.",
+                        align: "right"
+                    },
+                    {
+                        name: "Kikiko",
+                        text: "Later.",
+                        align: "right"
+                    }
+                ],
+                dialogStarted: false,
+                dialogEnded: false
             }
         ];
 

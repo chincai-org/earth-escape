@@ -7,7 +7,7 @@ class Alien {
         this.y = y * canvasHeight;
 
         // this.velocity = 0.2;
-        this.velocity = 0.7;
+        this.velocity = debug ? 0.7 : 0.2;
 
         this.destinations = [];
         this.id = id;

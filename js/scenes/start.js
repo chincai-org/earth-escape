@@ -79,6 +79,12 @@ class Start extends Scene {
         }
     }
 
+    keyPressed() {
+        if (!dialougeManager.active) {
+            this.done = true;
+        }
+    }
+
     resetStyle() {
         textAlign(LEFT, BASELINE);
         textStyle(NORMAL);

@@ -45,7 +45,7 @@ class Interactable {
             // console.log("not images");
         }
 
-        if (this.box) {
+        if (this.box && debug) {
             let [x, y, w, h] = this.box;
             noFill();
             stroke(135, 206, 235);
@@ -134,5 +134,30 @@ class Interactable {
                 y: this.goDirection.y * canvasHeight
             };
         }
+    }
+
+    equals(other) {
+        // compare box
+        if (this.box.length != other.box.length) {
+            return false;
+        }
+
+        for (let i = 0; i < this.box.length; i++) {
+            if (this.box[i] != other.box[i]) {
+                return false;
+            }
+        }
+
+        // compare image
+        if (this.image != other.image) {
+            return false;
+        }
+
+        // compare hoveredImage
+        if (this.hoveredImage != other.hoveredImage) {
+            return false;
+        }
+
+        return true;
     }
 }
