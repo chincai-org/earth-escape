@@ -144,6 +144,8 @@ class junkyard extends Scene {
         this.found = false;
 
         this.visitCount = 0;
+        this.lose = false;
+        this.playedLose = false;
     }
 
     update(dt) {
@@ -176,6 +178,31 @@ class junkyard extends Scene {
         image(images.trash_bg, 0, 0, canvasWidth, canvasHeight);
 
         this.jr.draw();
+
+        if (this.lose) {
+            image(
+                images.fatty,
+                0.3372905027932961 * canvasWidth,
+                0.59846547314578 * canvasHeight
+            );
+
+            if (this.playedLose == false) {
+                dialougeManager.play([
+                    {
+                        name: "Jacks",
+                        text: "What do we have here? An alien?",
+                        align: "right"
+                    }
+                ]);
+                this.playedLose = true;
+            } else {
+                if (!dialougeManager.active) {
+                    endGame(true);
+                }
+            }
+
+            return;
+        }
 
         // noStroke();
         // fill(255, 255, 255);
@@ -229,5 +256,9 @@ class junkyard extends Scene {
         super.transition();
         this.found = false;
         this.visitCount++;
+
+        if (this.visitCount >= 7) {
+            this.lose = true;
+        }
     }
 }

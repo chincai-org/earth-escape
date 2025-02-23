@@ -83,6 +83,7 @@ const music = [
 ];
 
 let state = "nothing";
+let reason = "";
 
 const sound = new Sound(music);
 
@@ -142,12 +143,49 @@ function preload() {
         table: loadImage("assets/images/table.png"),
         table_hovered: loadImage("assets/images/table_hovered.png"),
         button: loadImage("assets/images/button.png"),
-        button_hovered: loadImage("assets/images/button_hovered.png")
+        button_hovered: loadImage("assets/images/button_hovered.png"),
+        fatty: loadImage("assets/images/fatty.png"),
+        win: loadImage("assets/images/win.png"),
+        lose: loadImage("assets/images/lose.png")
     };
 }
 
 function draw() {
     background(255);
+
+    if (state == "win") {
+        image(images.win, 0, 0, canvasWidth, canvasHeight);
+
+        textSize(32);
+        text(
+            "You win! You fixed the spaceship and you succesfully went to the meeting",
+            200,
+            200
+        );
+
+        return;
+    } else if (state == "junkyard") {
+        fill(0);
+        rect(0, 0, canvasWidth, canvasHeight);
+
+        // Prompt text in center
+        textSize(32);
+        fill(255);
+        text(
+            "You lose! You went to the junkyard for to many times, get caught by human",
+            200,
+            200
+        );
+    } else if (state == "lose") {
+        image(images.lose, 0, 0, canvasWidth, canvasHeight);
+
+        textSize(32);
+        text(
+            `You lose! You didn't fix the ${reason}, your ufo exploded`,
+            200,
+            200
+        );
+    }
 
     let dt = getDeltaTime();
     if (effect.active) {
@@ -330,4 +368,27 @@ function transition(n, time1, time2) {
 
     dialougeManager.reset();
     tipsManager.deactivate();
+}
+
+function endGame(jy) {
+    if (jy) {
+        state = "junkyard";
+    } else {
+        let games = {
+            Wiring: scenes[WIRING],
+            Puzzle: scenes[PUZZLE],
+            "Logic gates": scenes[LOGIC_GATES],
+            Screwdriver: scenes[SCREW_DRIVER]
+        };
+
+        for (let game of games) {
+            if (!game.complete) {
+                reason = game.name;
+                state = "lose";
+                return;
+            }
+        }
+
+        state = "win";
+    }
 }
